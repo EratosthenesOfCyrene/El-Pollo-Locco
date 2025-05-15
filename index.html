@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: rgb(244, 181, 66)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pollo Loco</title>
+    <link rel="icon" type="image/x-icon" href="img_pollo_locco/fav_icon_img/fav_icon_img.png"> <!--Fav-Icon-->
+
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="js/models/level.class.js"></script>
+    <script src="js/models/drawable-object.class.js"></script>
+    <script src="js/models/movable-object.class.js"></script>
+    <script src="js/models/character.class.js"></script>
+    <script src="js/models/chicken.class.js"></script>
+    <script src="js/models/cloud.class.js"></script>
+    <script src="js/models/coins.class.js"></script>
+    <script src="js/models/screens.class.js"></script>
+    <script src="js/models/status-bar.class.js"></script>
+    <script src="js/models/status-bar-bottle.class.js"></script>
+    <script src="js/models/status-bar-coin.class.js"></script>
+    <script src="js/models/status-killed-enemies.class.js"></script>
+    <script src="js/models/world.class.js"></script>
+    <script src="js/models/background-object.class.js"></script>
+    <script src="js/models/keyboard.class.js"></script>
+
+    <script src="js/models/bottle-on-floor.class.js"></script>
+    <script src="js/models/throwable-object.class.js"></script>
+    <script src="js/models/endboss.class.js"></script>
+    <script src="js/levels/level1.js"></script>
+    <script src="js/levels/level2.js"></script>
+    <!--// das 'defer'-Attribut im folgenden Script wird verwendet, um dafür zu sorgen, dass dieses Script bzw. das ihm zugeordnete JS-File erst ausgeführt wird, nachdem das gesamte HTML-dokument vollständig geladen wurde. dies braucht man, da sonst der eventListener, der prüft, ob auf den Button 'Pause Game' geklickt wurde, ausgeführt wird, bevor der Button im Script geladen wurde.-->
+    <script src="js/game.js" defer></script>
+
+
+
+</head>
+
+<body onload="init(), testWindowWidth()">
+
+    <img id="startImg" src="img_pollo_locco/img/9_intro_outro_screens/start/startscreen_1.png" class="background-image"
+        alt="">
+
+    <nav id="nav" class="nav">
+        <h1>El Pollo Loco </h1>
+        <!--  <div class="nav-btn-div">
+            <button class="btn">Spielregeln</button>
+            <button onclick="window.open('https://jean-marie-mayer.developerakademie.net/El%20Pollo%20Locco/JM_Developments/index.html')" class="btn">Über uns</button>
+        </div>  -->
+    </nav>
+
+    <div id="fullscreen" class="fullscreen">
+        <canvas id="canvas" width="720" height="480">
+        </canvas>
+    </div>
+
+    <button onclick="changeSondSettings()" id="soundBtn" class="d-none">
+        <img src="img_pollo_locco/sound_img/sound_off.svg" alt="" class="soundBtnImg d-none" id="soundOffImg">
+        <img src="img_pollo_locco/sound_img/sound_on.svg" alt="" class="soundBtnImg" id="soundOnImg">
+    </button>
+
+    <button onclick="startGame()" id="startGameBtn" class="btn start-game-btn d-none">Start Game</button>
+
+    <div id="pauseEndGameBtns" class=" d-none">
+        <button onclick="pauseGame()" id="pauseGameBtn" class="btn">Pause Game</button>
+        <button onclick="resumeGame()" id="resumeGameBtn" class="btn">Resume Game</button>
+        <button onclick="fullScreen()" class="btn">Fullscreen</button>
+        <button onclick="location.reload()" class="btn">Restart Game</button>
+        <!-- <button class="btn">Leave Fullscreen</button>   -->
+    </div>
+
+
+    <div class="menu-board" id="menuBoard">
+        <h2>Menü</h2>
+        <button onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu()" class="menu-button">📝 Spielregeln</button>
+        <button onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="menu-button">🎮 Levelauswahl</button>
+        <button  onclick="hideShowContentAndMenu(), window.open('https://jean-marie-mayer.developerakademie.net/El%20Pollo%20Locco/JM_Developments/index.html')" class="menu-button">ℹ️ Über uns</button>
+    </div>
+
+<!--
+    <div id="about-btns" class="about-btns">
+        <button onclick="showAboutPanel()" class="btn">Spielregeln</button>
+        <button onclick="showLevelSelectionFast(), hideShowContentAndMenu(), hideShowContent('mobileAboutDiv', 'add')" class="btn">Levelauswahl</button>
+        <button
+            onclick="window.open('https://jean-marie-mayer.developerakademie.net/El%20Pollo%20Locco/JM_Developments/index.html')"
+            class="btn">Über uns</button>
+    </div>
+    -->
+
+    <!--
+    <button style="z-index: 0" class="btn" onclick="startLevel2()">Level 2</button>
+    -->
+
+    <div onclick="showMobileAboutMenu(), hideMobileLevelSelectionDiv()" id="mobileAboutMenu" class="mobileAboutMenu d-none">
+        <svg id="mobileAboutMenuBurgerImg" width="50" height="50" viewBox="0 0 50 50"
+            xmlns="http://www.w3.org/2000/svg">
+            <rect y="8" width="50" height="8" rx="4" fill="white" />
+            <rect y="21" width="50" height="8" rx="4" fill="white" />
+            <rect y="34" width="50" height="8" rx="4" fill="white" />
+        </svg>
+
+        <svg id="mobileAboutMenuXImg" class="mobileAboutMenuXImg d-none" width="50" height="50" viewBox="0 0 50 50"
+            xmlns="http://www.w3.org/2000/svg">
+            <line x1="10" y1="10" x2="40" y2="40" stroke="white" stroke-width="8" stroke-linecap="round" />
+            <line x1="40" y1="10" x2="10" y2="40" stroke="white" stroke-width="8" stroke-linecap="round" />
+        </svg>
+    </div>
+
+    <div id="mobileAboutDiv" class="mobileAboutDiv d-none">
+        <div onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu()"
+            class="mobileAboutDivBtn">Spielregeln</div>
+            <div onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="mobileAboutDivBtn">Levelauswahl</div>
+        <div class="mobileAboutDivBtn"
+            onclick="hideShowContentAndMenu(), window.open('https://jean-marie-mayer.developerakademie.net/JM_Developments/index.html')"
+            class="mobileAboutDivBtn">Über uns
+        </div>
+        <!--
+        <div onclick=" hideShowContentAndMenu()" class="mobileAboutDivBtn">Impressum</div>
+        -->
+    </div>
+
+
+    <div id="mobileMenu" class="mobileMenu d-none">
+        <button class="symbolBtn" onclick="pauseGame()" id="pauseGameBtnMobile" value="">
+            <img class="btnSymbol" src="img_pollo_locco/btn_icons/pause.svg" alt="">
+        </button>
+        <button class="symbolBtn" onclick="resumeGame()" id="resumeGameBtnMobile">
+            <img class="btnSymbol" src="img_pollo_locco/btn_icons/play.svg" alt="">
+        </button>
+        <!-- <button class="symbolBtn" onclick="fullScreen()">
+            <img class="btnSymbol" src="img_pollo_locco/btn_icons/fullscreen.svg" alt="">
+        </button>    location.reload() -->
+        <button class="symbolBtn" onclick="showLevelSelection()">
+            <img class="btnSymbol" src="img_pollo_locco/btn_icons/reload.svg" alt="">
+        </button>
+    </div>
+
+
+    <!-- Mobile control buttons -->
+    <div id="mobileCtrlBtnDiv1" class="mobileCtrlBtnDiv1 d-none">
+        <button class="mobileBtn" id="mobileBtnJump">
+            <img class="mobileBtnImg" src="img_pollo_locco/mobile_btns/up.svg" alt="">
+        </button>
+        <button class="mobileBtn" id="mobileBtnThrow">
+            <img class="mobileBtnImgFadenkreuz" src="img_pollo_locco/mobile_btns/fadenkreuz.svg" alt="">
+        </button>
+    </div>
+    <div id="mobileCtrlBtnDiv2" class="mobileCtrlBtnDiv2 d-none">
+        <button class="mobileBtn" id="mobileBtnLeft">
+            <img class="mobileBtnImg" src="img_pollo_locco/mobile_btns/left.svg" alt="">
+        </button>
+        <button class="mobileBtn" id="mobileBtnRight">
+            <img class="mobileBtnImg" src="img_pollo_locco/mobile_btns/right.svg" alt="">
+        </button>
+    </div>
+
+    <div class="turnDeviceTxtDiv d-none" id="turnDeviceTxtDiv">
+        <h3>Please turn Your device to play...</h3>
+    </div>
+
+    <div id="outerMobileLevelSelectionDiv" class="outerMobileLevelSelectionDiv d-none">
+        <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
+        <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
+        <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
+            <div onclick="hideMobileLevelSelectionDiv(), window.location.href = window.location.pathname + '?level=2'" class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
+            <div onclick="hideMobileLevelSelectionDiv(), window.location.href = window.location.pathname + '?level=1'" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
+        </div>
+        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">Cancel</div>
+    </div>
+
+
+
+    <div id="regelnDiv" class="regelnDiv d-none">
+        <div class="milkyOverlay"></div>
+        <h3>Spielregeln:</h3>
+
+        <img class="rulesImg" src="img_pollo_locco/rules/whistle_1.svg" alt="">
+
+        <div class="rulesDiv">
+            <h4>Ziel des Spiels</h4>
+            <p>
+                Der brave mexikanische agricultor (Landwirt) Pepe muss um sein Leben fürchten, da das mutierte Oberhuhn
+                Maria-Carmen
+                ihm als Vergeltung für die jahrelange Fütterung mit minderwertigem Futter nach dem Leben Trachtet. Dazu
+                mobilisiert sie all die
+                großen und kleinen Hühner
+                aus ihrem Hühnerhaufen. <br>
+                Hilf Pepe, dem wild gewordenen Oberhuhn zuvorzukommen, indem Du es mit eingesammelten Salsa-Flaschen
+                abwirfst und
+                eliminierst. Doch vorsicht: Maria-Carmen hat viele Leben, und wurde sie erst einmal von der scharfen
+                Salsa-Sauce getroffen,
+                wird sie rasend vor Wut! <br>
+                Nimm dich auch vor den anderen hühnern aus Maria-Carmens Hühnerhaufen in acht. Auch sie sind gefährlich
+                und wollen Dich picken!
+                Auch gegen sie kannst Du Dich wehren, indem Du sie mit den eingesammelten Salsa-Flaschen abwirfst oder
+                sie von oben wie eine Pizza-Mexicana platthüpfst!
+                <br>
+                Vergiss auch nicht, die umherliegenden Münzen einzusammeln, denn am Ende des Kampfes wird alles so
+                zerstört sein, dass Du
+                mehr als nur ein paar neue Hühner kaufen musst.
+            </p>
+
+            <h4>Tastenbelegung:</h4>
+            <p>
+                Bewege Pepe mit den beiden <b>Pfeiltasten</b> in die gewünschte Richtung. <br>
+                Wenn Pepe springen soll, drücke die <b>C-Taste</b>. Um Salsa-Flaschen zu werfen, drücke die
+                <b>D-Taste</b>.
+            </p>
+
+            <div class="rulesBtnDiv">
+                <button onclick="hideShowContent('regelnDiv', 'add'),  hideShowContent2('mobileAboutMenu', 'remove');"
+                    class="rulesBtn">zurück zum Spiel</button>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <div id="greyBgrDiv" class="greyBgrDiv d-none"></div>
+
+
+
+
+
+
+
+</body>
+
+</html>
