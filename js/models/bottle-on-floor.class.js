@@ -1,3 +1,17 @@
+
+/**
+ * @typedef {Object} BottleOnFloor
+ * @property {number} x - X position of the bottleOnFloor on the canvas.
+ * @property {number} y - Y position of the bottleOnFloor on the canvas.
+ * @property {number} width - Width of the bottleOnFloor to be drawn.
+ * @property {number} height - Height of the bottleOnFloor to be drawn.
+ * @property {number} speedCloud - Speed by which the cloud moves (to the left).
+ * @property {string} id - Indicates the id (identification number) of the respective bottleOnFloor.
+ * 
+ * @class BottleOnFloor
+ */
+
+
 class BottleOnFloor extends MovableObject {
     static i = 0;   // erschafft eine statische Variable, dien Wert des letzten Aufrufs speichert
     id;
@@ -13,7 +27,7 @@ class BottleOnFloor extends MovableObject {
         } else {
             super().loadImage('img_pollo_locco/img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
         }
-       
+
         this.height = 70;
         this.width = 65;
         this.x = 300 + Math.random() * 5000;
@@ -22,7 +36,13 @@ class BottleOnFloor extends MovableObject {
         BottleOnFloor.i++;
     }
 
-
+    /**
+     * Places the bottleOnFloor along the x-axe. This function creates random x-coordinates for each 
+     * bottleOnFloor, depending if the game was startet at level 1 oder level 2.
+     * 
+     * @method correctPositionOfEachBottle
+     * @memberof BottleOnFloor
+     */
     correctPositionOfEachBottle() {
         const interval = setInterval(() => {
             level.bottleOnFloor.forEach(bottle => {
@@ -41,13 +61,19 @@ class BottleOnFloor extends MovableObject {
             });
         }, 200);
     }
-    
-createIndex() {
-    console.log(BottleOnFloor.i);
-    world.booooottles.push(BottleOnFloor, {'index': BottleOnFloor.i});
-    BottleOnFloor.i++;
-    console.log(this.world.booooottles);
-}
+
+    /**
+     * Creates an index for each bottleOnFloor
+     * 
+     * @method createIndex
+     * @memberof BottleOnFloor
+     */
+    createIndex() {
+        console.log(BottleOnFloor.i);
+        world.booooottles.push(BottleOnFloor, { 'index': BottleOnFloor.i });
+        BottleOnFloor.i++;
+        console.log(this.world.booooottles);
+    }
 
 
 

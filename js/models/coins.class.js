@@ -5,7 +5,7 @@
  * @property {number} y - Y position of the coin on the canvas.
  * @property {number} width - Width of the coin to be drawn.
  * @property {number} height - Height of the coin to be drawn.
- * @property {string} id - Indicates the id (identification number) of the respective coin
+ * @property {string} id - Indicates the id (identification number) of the respective coin.
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the coin to the canvas context.
  * 
  * @class Coin

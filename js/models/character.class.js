@@ -1,5 +1,32 @@
 
-
+/**
+ * @typedef {Object} Character
+ * @property {number} x - X position of the character on the canvas.
+ * @property {number} y - Y position of the character on the canvas.
+ * @property {number} width - Width of the character to be drawn.
+ * @property {number} height - Height of the character to be drawn.
+ * @property {number} speed - Speed by which the character moves (to the left).
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
+ * @property {boolean} idle -  Indicates whether the character has been idle for a short period. Defaults to false.
+ * @property {boolean} longIdle - Indicates whether the character has been idle for a long period. Defaults to false.
+ * @property {number} idleTimeOutID - ID of the timeout that tracks regular idle state.
+ * @property {number} longIdleTimeOutID - ID of the timeout that triggers after a long idle period.
+ * @property {number} idleIntervalID - ID of the interval that checks idle activity.
+ * @property {number} counterInveralID - ID of the interval that counts for how many seconds the character has been idle.
+ * @property {number} counter - Counts the seconds for how long the character is idle.
+ * @property {boolean} idleAnimation - Indicates whether idle-animation is playing at the moment. Defaults to false.
+ * @property {boolean} imagesDeadPlayed - Indicates whether images-dead-animation is playing at the moment. Defaults to false.
+ * @property {HTMLAudioElement} walking_sound - Sound played while the character is walking.
+ * @property {HTMLAudioElement} spinJump_sound - Sound played during a jump.
+ * @property {HTMLAudioElement} hurt_sound - Sound played when the character gets hurt.
+ * @property {HTMLAudioElement} healthRecharge_sound - Sound played when health of the character is recharged.
+ * @property {HTMLAudioElement} bottleCollected_sound - Sound played when a bottle is collected.
+ * @property {HTMLAudioElement} coinCollected_sound - Sound played when a coin is collected.
+ * @property {HTMLAudioElement} enemyHit_sound - Sound played when an enemy is hit.
+ * @property {HTMLAudioElement} enemyDeleted_sound - Sound played when an enemy is defeated or deleted.
+ * 
+ * @class Character
+ */
 
 
 class Character extends MovableObject {
@@ -110,6 +137,19 @@ class Character extends MovableObject {
         this.speedYtoZero();
     }
 
+    /**
+     * This function calls various intervalls which control the character:
+     * 
+     * moving the character along the x-axis
+     *  -> right & left
+     * jump
+     * idle state
+     * 
+     * as well as the intervall that controls the corresponding animation.
+     * 
+     * @method animate@memberof Character
+     * 
+     */
     animate() {
         setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
             //--Rechts
@@ -150,7 +190,7 @@ class Character extends MovableObject {
 
 
 
-        setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck iner Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
+        setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck einer Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
             //this.hurt_sound.pause();
             if (this.world.gamePaused == false) {
                 if (this.isDead()) {
@@ -189,6 +229,12 @@ class Character extends MovableObject {
         }, 1500);
     }
 
+    /**
+     * Handles the idle-animation if the character is idle
+     * 
+     * @method playIdleAnimation
+     * @memberof Character
+     */
     playIdleAnimation() {   // spielt die Animation ab, wenn der Character nnicht bewegt wird
         this.idleAnimation = true;  // gibt an, ob playIdleAnimation() ausgeführt wird
         this.loadImage('img_pollo_locco/img/2_character_pepe/1_idle/idle/I-1.png');  // dieses Bild wird geladen, sobald keine Taste gedrückt wird, damit der Character wieder zurück in eine neutrale Ausgangsposition kommt
