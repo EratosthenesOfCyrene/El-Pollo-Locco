@@ -1,5 +1,15 @@
 
-
+/**
+ * @typedef {Object} Cloud
+ * @property {number} x - X position of the cloud on the canvas.
+ * @property {number} y - Y position of the cloud on the canvas.
+ * @property {number} width - Width of the cloud to be drawn.
+ * @property {number} height - Height of the cloud to be drawn.
+ * @property {number} speedCloud - Speed by which the cloud moves (to the left).
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
+ * 
+ * @class Cloud
+ */
 
 class Cloud extends MovableObject {
     width = 500;
@@ -14,6 +24,12 @@ class Cloud extends MovableObject {
         this.y = 20;
     }
 
+    /**
+     * Animates the movement of the clouds
+     * 
+     * @method animateMovement
+     * @memberof Cloud
+     */
     animateMovement() {
         setInterval(() => {
            if (typeof gameStarted !== 'undefined' && gameStarted == true && world.keyboard.RIGHT && !world.gamePaused) {  //-- "typeof gameStarted !== 'undefined'" prüft, ob gameStarted geladen wurd, da es sonst eiinen Fehler gäbe
