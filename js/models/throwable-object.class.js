@@ -49,7 +49,6 @@ class ThrowableObject extends MovableObject {
         this.speedY = 30;
         this.applyGravity();
     
-       // this.throwBottleIntervalID = setInterval(() => {
             if (world.character.otherdirection == true) {      // Diese Funktion prüft, ob der Character nach linkt oder nach rechts zeigt. Entsprechend wird die Funktion, die die Flasche nach links oder anch rechts wirft, ausgeführt.
                this.throwBottleLeft();
             } else {

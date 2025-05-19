@@ -1,4 +1,32 @@
-let level;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let level;
 let canvas;
 let world;
 let keyboard = new Keyboard();
@@ -468,7 +496,7 @@ function bindBtnsPressEvents() {
  *   - `testIfDeviceIsVertivalOrHorizontal()` to assess orientation.
  *   - `initMobileView()` to initialize basic mobile layout.
  *   - If in landscape: `initMobileLandscapeView()` and, if the game has started, `initMobileGameView()`.
- *   - On small-width devices (< 700px), it hides some content sections.
+ *   - On small-width devices (&lt; 700px), it hides some content sections.
  * - In **desktop view** (> 1200px), it:
  *   - Sets `mobileWindow` to `false`
  *   - Hides mobile-specific UI elements like `mobileMenu` and `mobileAboutMenu`
@@ -498,13 +526,13 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
             initMobileView();
         }
 
-        if (mediaQuery.matches && window.innerWidth > window.innerHeight) {
+        if (mediaQuery.matches &amp;&amp; window.innerWidth > window.innerHeight) {
             mobileWindow = true;
             initMobileLandscapeView();  //-- blendet alles Notwendige für mobile Breitbildansicht ein bzw. aus
 
             if (gameStarted == true) {
                 initMobileGameView();  //-- blendet UI-content ein
-            } if (window.innerWidth < 700) {
+            } if (window.innerWidth &lt; 700) {
                 hideShowContent('pauseEndGameBtns', 'add');
                 hideShowContent('about-btns', 'add');
             }
@@ -518,7 +546,7 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
                 //hideShowContent('nav', 'remove');
                 hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
                 //soundBtnDesktop();
-            } if (gameStarted == true && window.innerWidth > 700) {
+            } if (gameStarted == true &amp;&amp; window.innerWidth > 700) {
                 hideShowContent('pauseEndGameBtns', 'remove');
             }
         }
@@ -616,7 +644,7 @@ function hideShowContent2(param1, param2) {
  * @function testIfDeviceIsVertivalOrHorizontal
  */
 function testIfDeviceIsVertivalOrHorizontal() {
-    if (window.innerWidth > window.innerHeight && gameStarted == true) {  //-- if device is horizontal
+    if (window.innerWidth > window.innerHeight &amp;&amp; gameStarted == true) {  //-- if device is horizontal
         initHorizontalView();
         deviceVertical = true;
         if (deviceWasTurned) {
@@ -630,7 +658,7 @@ function testIfDeviceIsVertivalOrHorizontal() {
             deviceVertical = false;
             deviceWasTurned = true;
         }
-    } if (window.innerWidth < 600) {
+    } if (window.innerWidth &lt; 600) {
         initSmallVertikal();
     }
 }
@@ -687,13 +715,13 @@ function initSmallVertikal() {
  */
 function fullScreenMobile() {
     setInterval(() => {
-        if (mobileWindow && deviceVertical) {
+        if (mobileWindow &amp;&amp; deviceVertical) {
             document.getElementById('canvas').classList.add('canvasMaxHeight');
             document.getElementById('fullscreen').classList.add('fullscreenMobile');
             document.getElementById('startImg').classList.add('startImgMobile');
         }
 
-        if (mobileWindow === false /*&& deviceVertical*/) {
+        if (mobileWindow === false /*&amp;&amp; deviceVertical*/) {
             document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
             document.getElementById('startImg').classList.remove('startImgMobileVertical');
             document.getElementById('canvas').classList.remove('canvasMaxHeight');  //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
@@ -756,3 +784,26 @@ function hideShowContentAndMenu() {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:keydown">keydown</a></li><li><a href="global.html#event:keyup">keyup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#changeSondSettings">changeSondSettings</a></li><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#fullScreenMobile">fullScreenMobile</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initMobileLandscapeView">initMobileLandscapeView</a></li><li><a href="global.html#loadSoundSettings">loadSoundSettings</a></li><li><a href="global.html#pauseGame">pauseGame</a></li><li><a href="global.html#playBackgroundMusic">playBackgroundMusic</a></li><li><a href="global.html#resumeGame">resumeGame</a></li><li><a href="global.html#showMobileAboutMenu">showMobileAboutMenu</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#testIfDeviceIsVertivalOrHorizontal">testIfDeviceIsVertivalOrHorizontal</a></li><li><a href="global.html#testWindowWidth">testWindowWidth</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon May 19 2025 14:19:28 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

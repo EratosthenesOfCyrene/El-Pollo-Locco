@@ -39,8 +39,6 @@ const level1 = new Level(
         new BottleOnFloor(),
     ],
 
-
-
     [
         new Coin(),
         new Coin(),
