@@ -6,7 +6,7 @@
  * @property {number} width - Width of the coin to be drawn.
  * @property {number} height - Height of the coin to be drawn.
  * @property {string} id - Indicates the id (identification number) of the respective coin
- * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the coin to the canvas context.
  * 
  * @class Coin
  */
