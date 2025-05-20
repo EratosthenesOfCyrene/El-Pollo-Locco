@@ -1,5 +1,15 @@
 
-
+/**
+ * @typedef {Object} Chicken
+ * @property {number} x - X position of the chicken on the canvas.
+ * @property {number} y - Y position of the chicken on the canvas.
+ * @property {number} width - Width of the chicken to be drawn.
+ * @property {number} height - Height of the chicken to be drawn.
+ * @property {number} speed - Speed by which the character moves (to the left).
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
+ * 
+ * @class Chicken
+ */
 
 
 class Chicken extends MovableObject {
@@ -42,6 +52,15 @@ class Chicken extends MovableObject {
         }
     }
 
+    /**
+     * Places the chicken along the x-axis and attributes a value of speed to each one.
+     * This function creates random x-coordinates and values for their speed for each 
+     * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
+     * values to each chicken. 
+     * 
+     * @method correctSpeedOfEachChicken
+     * @memberof Chicken
+     */
     correctSpeedOfEachChicken() {    //-- diese Funktion wird oben in World (Z. 58) aufgerufen
         const interval = setInterval(() => {
             level.enemies.forEach(enemy => {
@@ -107,6 +126,14 @@ class Chicken extends MovableObject {
         this.loadImage(this.IMAGE_DEAD_SMALL);
     }
 
+    /**
+     * Initiates Movement of the chicken and draws them onto the canvas
+     * 
+     * @param {Array} images - The images of the chickens that are to be drawn onto the canvas
+     * 
+     * @method animate
+     * @memberof Chicken
+     */
     animate(images) {
         setInterval(() => {
             this.moveLeft();

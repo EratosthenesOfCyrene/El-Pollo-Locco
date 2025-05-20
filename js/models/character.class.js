@@ -230,7 +230,7 @@ class Character extends MovableObject {
     }
 
     /**
-     * Handles the idle-animation if the character is idle
+     * Handles the idle-animation if the character is in idle-state
      * 
      * @method playIdleAnimation
      * @memberof Character
