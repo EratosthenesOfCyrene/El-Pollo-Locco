@@ -1,4 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: character.class.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: character.class.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 /**
  * @typedef {Object} Character
  * @property {number} x - X position of the character on the canvas.
@@ -6,7 +34,7 @@
  * @property {number} width - Width of the character to be drawn.
  * @property {number} height - Height of the character to be drawn.
  * @property {number} speed - Speed by which the character moves (to the left).
- * @property {function(CanvasRenderingContext2D):void} draw - Draws the character to the canvas context.
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
  * @property {boolean} idle -  Indicates whether the character has been idle for a short period. Defaults to false.
  * @property {boolean} longIdle - Indicates whether the character has been idle for a long period. Defaults to false.
  * @property {number} idleTimeOutID - ID of the timeout that tracks regular idle state.
@@ -141,7 +169,7 @@ class Character extends MovableObject {
      * This function calls various intervalls which control the character:
      * 
      * moving the character along the x-axis
-     *  -> right & left
+     *  -> right &amp; left
      * jump
      * idle state
      * 
@@ -153,7 +181,7 @@ class Character extends MovableObject {
     animate() {
         setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
             //--Rechts
-            if (this.world.keyboard.RIGHT && this.x < level.level_end_x && this.world.gamePaused == false) {
+            if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; level.level_end_x &amp;&amp; this.world.gamePaused == false) {
                 this.moveRight();
                 this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
                 if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
@@ -165,7 +193,7 @@ class Character extends MovableObject {
                 }
             }
             //-- Links
-            if (this.world.keyboard.LEFT && this.x > 100 && this.world.gamePaused == false) {
+            if (this.world.keyboard.LEFT &amp;&amp; this.x > 100 &amp;&amp; this.world.gamePaused == false) {
                 this.moveLeft();
                 this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
                 if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
@@ -177,7 +205,7 @@ class Character extends MovableObject {
                 }
             }
             //-- Springen
-            if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
+            if (this.world.keyboard.SPACE &amp;&amp; !this.isAboveGround() /*&amp;&amp; this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&amp;&amp;) dass "this.isAboveGround()" nicht ("!") stimmt. 
                 this.speedY = 30;
                 this.spinJump_sound.play();
             }
@@ -201,7 +229,7 @@ class Character extends MovableObject {
                             this.playAnimation(this.IMAGES_SKELETON);
                             this.imagesDeadPlayed = true;
                     }, 7100);
-                } else if (this.isHurt() /*&& this.jumpingOnEnemy == false *//*&& !this.isJumpingOnEnemy(world.indexOfCurrentEnemy)*/) {
+                } else if (this.isHurt() /*&amp;&amp; this.jumpingOnEnemy == false *//*&amp;&amp; !this.isJumpingOnEnemy(world.indexOfCurrentEnemy)*/) {
                     this.playAnimation(this.IMAGES_HURT);
                     this.hurt_sound.play();
                 }
@@ -220,7 +248,7 @@ class Character extends MovableObject {
         }, 50);
 
         this.idleIntervalID = setInterval(() => {
-            if (this.idleAnimation == false && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.world.keyboard.letterD) {    // prüft, ob keine des Characters geschieht (bwz. ob KEINE Taste gedrückt wurde). Die Bedingung "this.idleAnimation == false" sorgt dafür, dass die Funktion "this.playIdleAnimation();" nur einmal und nicht mehrfach aufgerufen wird, da sonst die erhöhung des "counter" exponentiell ansteigt/zunimmt!
+            if (this.idleAnimation == false &amp;&amp; !this.world.keyboard.RIGHT &amp;&amp; !this.world.keyboard.LEFT &amp;&amp; !this.world.keyboard.SPACE &amp;&amp; !this.world.keyboard.letterD) {    // prüft, ob keine des Characters geschieht (bwz. ob KEINE Taste gedrückt wurde). Die Bedingung "this.idleAnimation == false" sorgt dafür, dass die Funktion "this.playIdleAnimation();" nur einmal und nicht mehrfach aufgerufen wird, da sonst die erhöhung des "counter" exponentiell ansteigt/zunimmt!
                 this.idle = true;
                 this.playIdleAnimation();  // spielt die Animation ab, wenn der Character nicht bewegt wird
                 this.walking_sound.pause();
@@ -241,7 +269,7 @@ class Character extends MovableObject {
         this.counterInveralID = setInterval(() => {
             this.counter++;
             if (world.gameOver === false) {
-                if (this.counter > 5 && this.counter <= 16) {
+                if (this.counter > 5 &amp;&amp; this.counter &lt;= 16) {
                     this.playAnimation(this.IMAGES_IDLE);
                 } else if (this.counter > 15) {
                     this.playAnimation(this.IMAGES_LONGIDLE);
@@ -263,4 +291,26 @@ class Character extends MovableObject {
 
 
 
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottleOnFloor.html">BottleOnFloor</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animate@memberofCharacter">animate@memberof Character</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue May 20 2025 12:38:45 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

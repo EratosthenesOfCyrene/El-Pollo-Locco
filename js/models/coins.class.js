@@ -36,7 +36,7 @@ class Coin extends MovableObject {
     }
 
     /**
-     * Places the coins along the x-axe. This function creates random x-coordinates for each 
+     * Places the coins along the x-axis. This function creates random x-coordinates for each 
      * coin, depending if the game was startet at level 1 oder level 2.
      * 
      * @method correctPositionOfEachCoin
