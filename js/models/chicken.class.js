@@ -52,10 +52,7 @@ class Chicken extends MovableObject {
     }
 
     /**
-     * Places the chicken along the x-axis and attributes a value of speed to each one.
-     * This function creates random x-coordinates and values for their speed for each 
-     * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
-     * values to each chicken. 
+     * Calls the functions that place the chickens along the x-axis and attribute a value of speed to each one.
      * 
      * @method correctSpeedOfEachChicken
      * @memberof Chicken
@@ -63,45 +60,78 @@ class Chicken extends MovableObject {
     correctSpeedOfEachChicken() {    //-- diese Funktion wird oben in World (Z. 58) aufgerufen
         const interval = setInterval(() => {
             level.enemies.forEach(enemy => {
+                //-- Level
                 if (world?.testIfLevel2 === false) {
-                    if (enemy.chickenBig) {
-                        enemy.speed = 0.15 + Math.random() * 0.63;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
-                        enemy.currentspeed = enemy.speed;
-                        enemy.x = 1000 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
-                        console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
-                    }
-                    if (!enemy.chickenBig) {
-                        enemy.speed = 0.15 + Math.random() * 0.25;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
-                        enemy.currentspeed = enemy.speed;
-                        enemy.x = 800 + Math.random() * 2900;  //-- platziert die Enemies entlang der X-Achse
-                        //console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
-                    } 
+                    this.correctSpeedOfEachChickenLevel1();
                     level.enemies[11].x = 5300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
-                    level.enemies[11].speed = 0;  
+                    level.enemies[11].speed = 0;
                     clearInterval(interval);
 
                     //-- Level 2
                 } if (world?.testIfLevel2 === true) {
-                    if (enemy.chickenBig) {
-                        enemy.speed = 0.3 + Math.random() * 0.8;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
-                        enemy.currentspeed = enemy.speed;
-                        enemy.x = 1000 + Math.random() * 8900;  //-- platziert die Enemies entlang der X-Achse
-                        console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
-                    }
-                    if (!enemy.chickenBig) {
-                        enemy.speed = 0.3 + Math.random() * 0.35;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
-                        enemy.currentspeed = enemy.speed;
-                        enemy.x = 800 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
-                        console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed,'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
-                    }
+                    this.correctSpeedOfEachChickenLevel2();
                     level.enemies[21].x = 8300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
-                    level.enemies[21].speed = 0;  
+                    level.enemies[21].speed = 0;
                     clearInterval(interval);
                 }
             });
         }, 200);
     }
 
+    /**
+     * This function creates random x-coordinates and values for their speed for each 
+     * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
+     * values to each chicken. 
+     * 
+     * @method correctSpeedOfEachChickenLevel1
+     * @memberof Chicken
+     */
+    correctSpeedOfEachChickenLevel1() {
+        if (enemy.chickenBig) {
+            enemy.speed = 0.15 + Math.random() * 0.63;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
+            enemy.currentspeed = enemy.speed;
+            enemy.x = 1000 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
+            console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
+        }
+        if (!enemy.chickenBig) {
+            enemy.speed = 0.15 + Math.random() * 0.25;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
+            enemy.currentspeed = enemy.speed;
+            enemy.x = 800 + Math.random() * 2900;  //-- platziert die Enemies entlang der X-Achse
+            //console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
+        }
+    }
+
+    /**
+     * This function creates random x-coordinates and values for their speed for each 
+     * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
+     * values to each chicken. 
+     * 
+     * @method correctSpeedOfEachChickenLevel2
+     * @memberof Chicken
+     */
+    correctSpeedOfEachChickenLevel2() {
+        if (enemy.chickenBig) {
+            enemy.speed = 0.3 + Math.random() * 0.8;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
+            enemy.currentspeed = enemy.speed;
+            enemy.x = 1000 + Math.random() * 8900;  //-- platziert die Enemies entlang der X-Achse
+            console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
+        }
+        if (!enemy.chickenBig) {
+            enemy.speed = 0.3 + Math.random() * 0.35;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
+            enemy.currentspeed = enemy.speed;
+            enemy.x = 800 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
+            console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
+        }
+    }
+
+    /**
+     * Loads the properties of the big chickens,
+     * such as: 
+     *  width, height and the corresponding images to be drawn onto the canvas.
+     * 
+     * @method loadPropertiesChickenBig
+     * @memberof Chicken
+     */
     loadPropertiesChickenBig() {
         this.chickenBig = true;
         this.width = 70;
@@ -113,6 +143,14 @@ class Chicken extends MovableObject {
         this.loadImage(this.IMAGE_DEAD);
     }
 
+    /**
+     * Loads the properties of the small chickens,
+     * such as: 
+     *  width, height and the corresponding images to be drawn onto the canvas.
+     * 
+     * @method loadPropertiesChickenSmall
+     * @memberof Chicken
+     */
     loadPropertiesChickenSmall() {
         this.chickenBig = false;
         this.width = 40;
@@ -143,7 +181,7 @@ class Chicken extends MovableObject {
         }, 200);
     }
 
-    
+
 
 
 
