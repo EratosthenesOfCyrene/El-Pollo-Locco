@@ -1,4 +1,22 @@
 
+/**
+ * @typedef {Object} Endboss
+ * @property {number} x - X position of the endboss on the canvas.
+ * @property {number} y - Y position of the endboss on the canvas.
+ * @property {number} width - Width of the endboss to be drawn.
+ * @property {number} height - Height of the endboss to be drawn.
+ * @property {number} sendbossSpeed - Speed by which the enboss moves (to the left).
+ * @property {number} endbossLife - How much life the endboss has
+ * @property {boolean} endbossHit - Indicates whether the endoss was hit by abottle. Defaults to false.
+ * @property {boolean} playImagesAttack - Indicates whether the attack images are currently played. Defaults to false.
+ * @property {number} playAnimationIntervallID - ID of the interval that initiates the animation of the endboss.
+ * @property {boolean} playHurtAnimation - Indicates wheter the hurt-animation (if the endboss is hurt) is currently played.#
+ * 
+ * 
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
+ * 
+ * @class Endboss
+ */
 
 class Endboss extends MovableObject {
 
@@ -11,8 +29,8 @@ class Endboss extends MovableObject {
     endbossHit = false;
     playImagesAttack = false;
     playAnimationIntervallID;
-    playAttackIntervalID;
-    playHurtIntervalID;
+    //playAttackIntervalID;
+    //playHurtIntervalID;
     playHurtAnimation = false;
     playHurtAnimationTest = false;
     playHurtAnimationTest2 = false;

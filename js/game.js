@@ -512,12 +512,7 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
             mobileWindow = false;
             hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
             if (gameStarted == true) {
-                //hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
-                //hideShowContent('mobileCtrlBtnDiv1', 'add');
-                //hideShowContent('mobileCtrlBtnDiv2', 'add');
-                //hideShowContent('nav', 'remove');
                 hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
-                //soundBtnDesktop();
             } if (gameStarted == true && window.innerWidth > 700) {
                 hideShowContent('pauseEndGameBtns', 'remove');
             }

@@ -138,43 +138,38 @@ class Character extends MovableObject {
     }
 
     /**
-     * This function calls various intervalls which control the character:
+     * This function calls various functions which control the character:
      * 
-     * moving the character along the x-axis
-     *  -> right & left
-     * jump
-     * idle state
+     * moving the character along the x-axis,
+     *  -> right & left,
+     * jump,
+     * idle state,
+     * as well as the function that controls the corresponding animation.
      * 
-     * as well as the intervall that controls the corresponding animation.
-     * 
-     * @method animate@memberof Character
-     * 
+     * @method animate
+     * @memberof Character
      */
     animate() {
+        this.runMovementInterval(); //-- The interval that enables the Character to move if an UI-Event occured.
+        this.runAnimationInterval(); //-- The intervall that calls up the animation/sequence of images, which gives the impression that the character is moving, 20 times per second
+        this.runIdleIntervall(); //-- The interval that plays the idle animation if the character is idle.
+    }
+
+    /**
+     * Starts the interval that enables the Character to move if an UI-Event occured.
+     * 
+     * @method runMovementInterval
+     * @memberof Character
+     */
+    runMovementInterval() {
         setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
             //--Rechts
             if (this.world.keyboard.RIGHT && this.x < level.level_end_x && this.world.gamePaused == false) {
-                this.moveRight();
-                this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
-                if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-                    this.walking_sound.play();
-                    this.spinJump_sound.pause();
-                } else if (this.isAboveGround()) {
-                    this.spinJump_sound.play();
-                    this.walking_sound.pause();
-                }
+                this.moveCharacterRight();
             }
             //-- Links
             if (this.world.keyboard.LEFT && this.x > 100 && this.world.gamePaused == false) {
-                this.moveLeft();
-                this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
-                if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-                    this.walking_sound.play();
-                    this.spinJump_sound.pause();
-                } else if (this.isAboveGround()) {
-                    this.spinJump_sound.play();
-                    this.walking_sound.pause();
-                }
+                this.moveCharacterLeft();
             }
             //-- Springen
             if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
@@ -187,21 +182,51 @@ class Character extends MovableObject {
             }
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
+    }
 
+    moveCharacterRight() {
+        this.moveRight();
+        this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
+        if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
+            this.walking_sound.play();
+            this.spinJump_sound.pause();
+        } else if (this.isAboveGround()) {
+            this.spinJump_sound.play();
+            this.walking_sound.pause();
+        }
+    }
 
+    moveCharacterLeft() {
+        this.moveLeft();
+        this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
+        if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
+            this.walking_sound.play();
+            this.spinJump_sound.pause();
+        } else if (this.isAboveGround()) {
+            this.spinJump_sound.play();
+            this.walking_sound.pause();
+        }
+    }
 
+    /**
+     * Starts the intervall that calls up the animation/sequence of images 
+     * which give the impression that the character is moving, 20 times per second.
+     * 
+     * @method runAnimationInterval
+     * @memberof Character
+     */
+    runAnimationInterval() {
         setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck einer Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
-            //this.hurt_sound.pause();
             if (this.world.gamePaused == false) {
-                if (this.isDead()) {
+                if (this.isDead()) { //-- if the character is dead
                     if (this.imagesDeadPlayed === false) {
                         this.playAnimation(this.IMAGES_DEAD);
                     }
                     setTimeout(() => {
-                            this.playAnimation(this.IMAGES_SKELETON);
-                            this.imagesDeadPlayed = true;
+                        this.playAnimation(this.IMAGES_SKELETON);
+                        this.imagesDeadPlayed = true;
                     }, 7100);
-                } else if (this.isHurt() /*&& this.jumpingOnEnemy == false *//*&& !this.isJumpingOnEnemy(world.indexOfCurrentEnemy)*/) {
+                } else if (this.isHurt()) { //-- if the character is hurt
                     this.playAnimation(this.IMAGES_HURT);
                     this.hurt_sound.play();
                 }
@@ -209,16 +234,22 @@ class Character extends MovableObject {
                 else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMPING);
                 }
-
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {  // "||" ist ein logisches "oder" und hei?t, dass der Code in den geschweiften Klammern entweder ausgeführt wird, wenn die rechts- oder die links-Taste gedrückt wurde
 
                     // Walk-Animation
                     this.playAnimation(this.IMAGES_WALKING);
                 }
-
             }
         }, 50);
+    }
 
+    /**
+     * Starts interval that plays the idle animation if the character is idle.
+     * 
+     * @method runIdleIntervall
+     * @memberof Character
+     */
+    runIdleIntervall() {
         this.idleIntervalID = setInterval(() => {
             if (this.idleAnimation == false && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT && !this.world.keyboard.SPACE && !this.world.keyboard.letterD) {    // prüft, ob keine des Characters geschieht (bwz. ob KEINE Taste gedrückt wurde). Die Bedingung "this.idleAnimation == false" sorgt dafür, dass die Funktion "this.playIdleAnimation();" nur einmal und nicht mehrfach aufgerufen wird, da sonst die erhöhung des "counter" exponentiell ansteigt/zunimmt!
                 this.idle = true;

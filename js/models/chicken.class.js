@@ -5,7 +5,6 @@
  * @property {number} y - Y position of the chicken on the canvas.
  * @property {number} width - Width of the chicken to be drawn.
  * @property {number} height - Height of the chicken to be drawn.
- * @property {number} speed - Speed by which the character moves (to the left).
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
  * 
  * @class Chicken
