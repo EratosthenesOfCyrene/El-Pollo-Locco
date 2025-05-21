@@ -89,7 +89,6 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-
         this.playImagesWalking = false;
         this.animate();
         this.checkForAttack();
@@ -107,80 +106,123 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    /**
+     * Chicks if the endboss was attacked (hit by a bottle) by the character.
+     * This function calls up the respective functions, depending on how often the character was hit.
+     * 
+     * @method checkForAttack
+     * @memberof Endboss
+     */
     checkForAttack() {
         setInterval(() => {
             // Hit 1
             if (this.endbossHit == true && this.endbossLife >= 80 && this.playImagesAttack == false) {
-                clearInterval(this.playAnimationIntervallID);
-                this.playAnimation(this.IMAGES_ATTACK);
+               this.hit1();
 
                 //  Hit 2
             } else if (this.endbossHit == true && this.endbossLife < 80 && this.endbossLife >= 60) {
-                if (this.playHurtAnimation == false) {
-                    this.playAnimation(this.IMAGES_HURT);
-                    world.background_sound.playbackRate = 1.2;
-                }
-                this.timeoutHit2IntervalID = setTimeout(() => {
-                    if (this.playHurtAnimationTest == false) {
-                        this.playHurtAnimation = true;
-                        this.playHurtAnimationTest = true;
-                    }
-                    this.playAnimation(this.IMAGES_ATTACK);
-                    this.endbossMoveLeft();
-                }, 1000);
+               this.hit2();
 
                 //  Hit 3
             } else if (this.endbossHit == true && this.endbossLife < 60 && this.endbossLife >= 40) {
-                if (this.playHurtAnimation == false) {
-                    this.playAnimation(this.IMAGES_HURT);
-                    world.background_sound.playbackRate = 1.4;
-                }
-
-                console.log(this.playHurtAnimation);
-                this.timeoutHit3IntervalID = setTimeout(() => {
-                    if (this.playHurtAnimationTest2 == false) {
-                        this.playHurtAnimation = true;
-                        this.playHurtAnimationTest2 = true;
-                    }
-                    this.playAnimation(this.IMAGES_ATTACK);
-                    this.endbossMoveLeft();
-                }, 2000);
+              this.hit3();
 
                 //  Hit 4
             } else if (this.endbossHit == true && this.endbossLife < 40 && this.endbossLife >= 20) {
-                if (this.playHurtAnimation == false) {
-                    this.playAnimation(this.IMAGES_HURT);
-                    world.background_sound.playbackRate = 1.7;
-                }
-                console.log(this.playHurtAnimation);
-                this.timeoutHit4IntervalID = setTimeout(() => {
-                    if (this.playHurtAnimationTest3 == false) {
-                        this.playHurtAnimation = true;
-                        this.playHurtAnimationTest3 = true;
-                    }
-                    this.playAnimation(this.IMAGES_ATTACK);
-                    this.endbossMoveLeft();
-                }, 4000);
+                this.hit4();
 
                 //  Hit 5
             } else if (this.endbossHit == true && this.endbossLife < 20) {
-                if (this.playHurtAnimation == false) {
-                    this.playAnimation(this.IMAGES_HURT);
-                    world.background_sound.playbackRate = 2;
-                }
-                if (this.endbossLife <= 0) {
-                    this.endBossSpeed = 0;
-                }
-                console.log(this.playHurtAnimation);
-                setTimeout(() => {
-                    if (this.playHurtAnimationTest4 == false) {
-                        this.playHurtAnimation = true;
-                        this.playHurtAnimationTest4 = true;
-                    }
-                    this.playAnimation(this.IMAGES_DEAD);
-                }, 1000);
+                this.hit5();
             }
         }, 200);
+    }
+
+    /**
+     * Stops the playing of the normal movement of the endboss and inits the attack-animation.
+     * 
+     * @method hit1
+     * @memberof Endboss
+     */
+    hit1() {
+        clearInterval(this.playAnimationIntervallID);
+        this.playAnimation(this.IMAGES_ATTACK);
+    }
+
+    /**
+     * This function is executed when the endbos was hit for
+     * the second time. 
+     * It check whether the hurtAnimation ia´s currently playing. 
+     * If that isn't the case, then the hurtAnimation will be played and
+     * the playbackrate of the background_sound is set to 1.2. 
+     * 
+     * If the hurtAnimation ins not playing by the moment `hit2()` is called, 
+     * a timeout is started which will - after 1 second - move the endboss leftward.
+     * 
+     * @method hit2
+     * @memberof Endboss
+     */
+    hit2() {
+        if (this.playHurtAnimation == false) {
+            this.playAnimation(this.IMAGES_HURT);
+            world.background_sound.playbackRate = 1.2;
+        }
+        this.timeoutHit2IntervalID = setTimeout(() => {
+            if (this.playHurtAnimationTest == false) {
+                this.playHurtAnimation = true;
+                this.playHurtAnimationTest = true;
+            }
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.endbossMoveLeft();
+        }, 1000);
+    }
+
+    hit3() {
+        if (this.playHurtAnimation == false) {
+            this.playAnimation(this.IMAGES_HURT);
+            world.background_sound.playbackRate = 1.4;
+        }
+        this.timeoutHit3IntervalID = setTimeout(() => {
+            if (this.playHurtAnimationTest2 == false) {
+                this.playHurtAnimation = true;
+                this.playHurtAnimationTest2 = true;
+            }
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.endbossMoveLeft();
+        }, 2000);
+    }
+
+    hit4() {
+        if (this.playHurtAnimation == false) {
+            this.playAnimation(this.IMAGES_HURT);
+            world.background_sound.playbackRate = 1.7;
+        }
+        this.timeoutHit4IntervalID = setTimeout(() => {
+            if (this.playHurtAnimationTest3 == false) {
+                this.playHurtAnimation = true;
+                this.playHurtAnimationTest3 = true;
+            }
+            this.playAnimation(this.IMAGES_ATTACK);
+            this.endbossMoveLeft();
+        }, 4000);
+    }
+
+    hit5() {
+        if (this.playHurtAnimation == false) {
+            this.playAnimation(this.IMAGES_HURT);
+            world.background_sound.playbackRate = 2;
+        }
+        if (this.endbossLife <= 0) {
+            this.endBossSpeed = 0;
+        }
+        //console.log(this.playHurtAnimation);
+        setTimeout(() => {
+            if (this.playHurtAnimationTest4 == false) {
+                this.playHurtAnimation = true;
+                this.playHurtAnimationTest4 = true;
+            }
+            this.playAnimation(this.IMAGES_DEAD);
+        }, 1000);
     }
 
     endbossMoveLeft() {
@@ -193,12 +235,3 @@ class Endboss extends MovableObject {
 
 
 
-
-
-/*setInterval(() => {
-    this.playAnimation(this.IMAGES_HURT);
-
-    setTimeout(() => {
-        this.playAnimation(this.IMAGES_ATTACK);
-    }, 1000);
-}, 200);*/
