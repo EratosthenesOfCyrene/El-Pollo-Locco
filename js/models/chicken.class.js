@@ -62,14 +62,14 @@ class Chicken extends MovableObject {
             level.enemies.forEach(enemy => {
                 //-- Level
                 if (world?.testIfLevel2 === false) {
-                    this.correctSpeedOfEachChickenLevel1();
+                    this.correctSpeedOfEachChickenLevel1(enemy);
                     level.enemies[11].x = 5300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
                     level.enemies[11].speed = 0;
                     clearInterval(interval);
 
                     //-- Level 2
                 } if (world?.testIfLevel2 === true) {
-                    this.correctSpeedOfEachChickenLevel2();
+                    this.correctSpeedOfEachChickenLevel2(enemy);
                     level.enemies[21].x = 8300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
                     level.enemies[21].speed = 0;
                     clearInterval(interval);
@@ -83,10 +83,11 @@ class Chicken extends MovableObject {
      * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
      * values to each chicken. 
      * 
+     * @param {object} enemy - The object for which the x-value and the speed are adjusted.
      * @method correctSpeedOfEachChickenLevel1
      * @memberof Chicken
      */
-    correctSpeedOfEachChickenLevel1() {
+    correctSpeedOfEachChickenLevel1(enemy) {
         if (enemy.chickenBig) {
             enemy.speed = 0.15 + Math.random() * 0.63;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
@@ -106,10 +107,11 @@ class Chicken extends MovableObject {
      * chicken, depending if the game was startet at level 1 oder level 2 and attributes those 
      * values to each chicken. 
      * 
+     * @param {object} enemy - The object for which the x-value and the speed are adjusted.
      * @method correctSpeedOfEachChickenLevel2
      * @memberof Chicken
      */
-    correctSpeedOfEachChickenLevel2() {
+    correctSpeedOfEachChickenLevel2(enemy) {
         if (enemy.chickenBig) {
             enemy.speed = 0.3 + Math.random() * 0.8;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
