@@ -1,3 +1,14 @@
+/**
+ * Initializes level 1 with all required game objects including enemies, clouds,
+ * bottles, coins, and background elements.
+ * 
+ * @type {Level}
+ * @property {Enemy[]} enemies - Array of enemies including multiple Chickens and one Endboss.
+ * @property {Cloud[]} clouds - Array of cloud objects for background animation.
+ * @property {BottleOnFloor[]} bottleOnFloor - Array of bottles placed on the ground for collection.
+ * @property {Coin[]} coins - Array of collectible coin objects.
+ * @property {BackgroundObject[]} backgroundObjects - Array of background layer objects.
+ */
 
 
 const level1 = new Level(

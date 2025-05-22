@@ -34,7 +34,7 @@
  * @property {number} width - Width of the character to be drawn.
  * @property {number} height - Height of the character to be drawn.
  * @property {number} speed - Speed by which the character moves (to the left).
- * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
+ * @property {function(CanvasRenderingContext2D):void} draw - Draws the character to the canvas context.
  * @property {boolean} idle -  Indicates whether the character has been idle for a short period. Defaults to false.
  * @property {boolean} longIdle - Indicates whether the character has been idle for a long period. Defaults to false.
  * @property {number} idleTimeOutID - ID of the timeout that tracks regular idle state.
@@ -54,6 +54,7 @@
  * @property {HTMLAudioElement} enemyDeleted_sound - Sound played when an enemy is defeated or deleted.
  * 
  * @class Character
+ * @extends MovableObject
  */
 
 
@@ -166,43 +167,38 @@ class Character extends MovableObject {
     }
 
     /**
-     * This function calls various intervalls which control the character:
+     * This function calls various functions which control the character:
      * 
-     * moving the character along the x-axis
-     *  -> right &amp; left
-     * jump
-     * idle state
+     * moving the character along the x-axis,
+     *  -> right &amp; left,
+     * jump,
+     * idle state,
+     * as well as the function that controls the corresponding animation.
      * 
-     * as well as the intervall that controls the corresponding animation.
-     * 
-     * @method animate@memberof Character
-     * 
+     * @method animate
+     * @memberof Character
      */
     animate() {
+        this.runMovementInterval(); //-- The interval that enables the Character to move if an UI-Event occured.
+        this.runAnimationInterval(); //-- The intervall that calls up the animation/sequence of images, which gives the impression that the character is moving, 20 times per second
+        this.runIdleIntervall(); //-- The interval that plays the idle animation if the character is idle.
+    }
+
+    /**
+     * Starts the interval that enables the Character to move if an UI-Event occured.
+     * 
+     * @method runMovementInterval
+     * @memberof Character
+     */
+    runMovementInterval() {
         setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
             //--Rechts
             if (this.world.keyboard.RIGHT &amp;&amp; this.x &lt; level.level_end_x &amp;&amp; this.world.gamePaused == false) {
-                this.moveRight();
-                this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
-                if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-                    this.walking_sound.play();
-                    this.spinJump_sound.pause();
-                } else if (this.isAboveGround()) {
-                    this.spinJump_sound.play();
-                    this.walking_sound.pause();
-                }
+                this.moveCharacterRight();
             }
             //-- Links
             if (this.world.keyboard.LEFT &amp;&amp; this.x > 100 &amp;&amp; this.world.gamePaused == false) {
-                this.moveLeft();
-                this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
-                if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-                    this.walking_sound.play();
-                    this.spinJump_sound.pause();
-                } else if (this.isAboveGround()) {
-                    this.spinJump_sound.play();
-                    this.walking_sound.pause();
-                }
+                this.moveCharacterLeft();
             }
             //-- Springen
             if (this.world.keyboard.SPACE &amp;&amp; !this.isAboveGround() /*&amp;&amp; this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&amp;&amp;) dass "this.isAboveGround()" nicht ("!") stimmt. 
@@ -215,21 +211,51 @@ class Character extends MovableObject {
             }
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
+    }
 
+    moveCharacterRight() {
+        this.moveRight();
+        this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
+        if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
+            this.walking_sound.play();
+            this.spinJump_sound.pause();
+        } else if (this.isAboveGround()) {
+            this.spinJump_sound.play();
+            this.walking_sound.pause();
+        }
+    }
 
+    moveCharacterLeft() {
+        this.moveLeft();
+        this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
+        if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
+            this.walking_sound.play();
+            this.spinJump_sound.pause();
+        } else if (this.isAboveGround()) {
+            this.spinJump_sound.play();
+            this.walking_sound.pause();
+        }
+    }
 
+    /**
+     * Starts the intervall that calls up the animation/sequence of images 
+     * which give the impression that the character is moving, 20 times per second.
+     * 
+     * @method runAnimationInterval
+     * @memberof Character
+     */
+    runAnimationInterval() {
         setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck einer Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
-            //this.hurt_sound.pause();
             if (this.world.gamePaused == false) {
-                if (this.isDead()) {
+                if (this.isDead()) { //-- if the character is dead
                     if (this.imagesDeadPlayed === false) {
                         this.playAnimation(this.IMAGES_DEAD);
                     }
                     setTimeout(() => {
-                            this.playAnimation(this.IMAGES_SKELETON);
-                            this.imagesDeadPlayed = true;
+                        this.playAnimation(this.IMAGES_SKELETON);
+                        this.imagesDeadPlayed = true;
                     }, 7100);
-                } else if (this.isHurt() /*&amp;&amp; this.jumpingOnEnemy == false *//*&amp;&amp; !this.isJumpingOnEnemy(world.indexOfCurrentEnemy)*/) {
+                } else if (this.isHurt()) { //-- if the character is hurt
                     this.playAnimation(this.IMAGES_HURT);
                     this.hurt_sound.play();
                 }
@@ -237,16 +263,22 @@ class Character extends MovableObject {
                 else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMPING);
                 }
-
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {  // "||" ist ein logisches "oder" und hei?t, dass der Code in den geschweiften Klammern entweder ausgeführt wird, wenn die rechts- oder die links-Taste gedrückt wurde
 
                     // Walk-Animation
                     this.playAnimation(this.IMAGES_WALKING);
                 }
-
             }
         }, 50);
+    }
 
+    /**
+     * Starts interval that plays the idle animation if the character is idle.
+     * 
+     * @method runIdleIntervall
+     * @memberof Character
+     */
+    runIdleIntervall() {
         this.idleIntervalID = setInterval(() => {
             if (this.idleAnimation == false &amp;&amp; !this.world.keyboard.RIGHT &amp;&amp; !this.world.keyboard.LEFT &amp;&amp; !this.world.keyboard.SPACE &amp;&amp; !this.world.keyboard.letterD) {    // prüft, ob keine des Characters geschieht (bwz. ob KEINE Taste gedrückt wurde). Die Bedingung "this.idleAnimation == false" sorgt dafür, dass die Funktion "this.playIdleAnimation();" nur einmal und nicht mehrfach aufgerufen wird, da sonst die erhöhung des "counter" exponentiell ansteigt/zunimmt!
                 this.idle = true;
@@ -301,13 +333,13 @@ class Character extends MovableObject {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottleOnFloor.html">BottleOnFloor</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animate@memberofCharacter">animate@memberof Character</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BottleOnFloor.html">BottleOnFloor</a></li><li><a href="Character.html">Character</a></li><li><a href="Chicken.html">Chicken</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="Coin.html">Coin</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="Screens.html">Screens</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="StatusBarBottles.html">StatusBarBottles</a></li><li><a href="StatusBarCoins.html">StatusBarCoins</a></li><li><a href="StatusKilledEnemies.html">StatusKilledEnemies</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue May 20 2025 12:38:45 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Thu May 22 2025 16:11:31 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Cloud</title>
+    <title>JSDoc: Class: Keyboard</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Cloud</h1>
+    <h1 class="page-title">Class: Keyboard</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Cloud<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Keyboard<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -41,7 +41,7 @@
     
 
     
-    <h4 class="name" id="Cloud"><span class="type-signature"></span>new Cloud<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Keyboard"><span class="type-signature"></span>new Keyboard<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -86,13 +86,13 @@
 
         <tr>
             
-                <td class="name"><code>x</code></td>
+                <td class="name"><code>LEFT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -102,20 +102,20 @@
 
             
 
-            <td class="description last">X position of the cloud on the canvas.</td>
+            <td class="description last">Checks if the left arrow key is pressed.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>y</code></td>
+                <td class="name"><code>RIGHT</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -125,20 +125,20 @@
 
             
 
-            <td class="description last">Y position of the cloud on the canvas.</td>
+            <td class="description last">Checks if the right arrow key is pressed.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>width</code></td>
+                <td class="name"><code>UP</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -148,20 +148,20 @@
 
             
 
-            <td class="description last">Width of the cloud to be drawn.</td>
+            <td class="description last">Checks if the up arrow key is pressed.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>height</code></td>
+                <td class="name"><code>DOWN</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -171,20 +171,20 @@
 
             
 
-            <td class="description last">Height of the cloud to be drawn.</td>
+            <td class="description last">Checks if the down arrow key is pressed.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>speedCloud</code></td>
+                <td class="name"><code>SPACE</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -194,20 +194,20 @@
 
             
 
-            <td class="description last">Speed by which the cloud moves (to the left).</td>
+            <td class="description last">Checks if the spacebar is pressed.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>draw</code></td>
+                <td class="name"><code>letterD</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -217,7 +217,7 @@
 
             
 
-            <td class="description last">Draws the cloud to the canvas context.</td>
+            <td class="description last">Checks if the "D" key  is pressed.</td>
         </tr>
 
     
@@ -256,7 +256,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cloud.class.js.html">cloud.class.js</a>, <a href="cloud.class.js.html#line2">line 2</a>
+        <a href="keyboard.class.js.html">keyboard.class.js</a>, <a href="keyboard.class.js.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -290,15 +290,6 @@
     </div>
 
     
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="MovableObject.html">MovableObject</a></li>
-    </ul>
-
 
     
 
@@ -312,100 +303,6 @@
 
     
 
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".animateMovement"><span class="type-signature">(static) </span>animateMovement<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Animates the movement of the clouds
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="cloud.class.js.html">cloud.class.js</a>, <a href="cloud.class.js.html#line28">line 28</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 
     

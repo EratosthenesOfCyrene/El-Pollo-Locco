@@ -36,7 +36,6 @@
 class World {
 
     character = new Character();
-
     gameStarted = false;
     testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
     canvas;

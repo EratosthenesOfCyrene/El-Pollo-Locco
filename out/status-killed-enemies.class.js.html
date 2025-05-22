@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: status-killed-enemies.class.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,47 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: status-killed-enemies.class.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @typedef {object} StatusKilledEnemies
+ * @class StatusKilledEnemies
+ * @extends DrawableObject
+ * @classdesc Draws the skull that represents the killed enemies onto the canvas.
+ *
+ * @property {number} x - X position of the skull-image on the sreen.
+ * @property {number} y - Y position of the skull-image on the sreen.
+ * @property {number} width - Width of the skull-image to be shown.
+ * @property {number} height - Height of the skull-image to be shown.
+ */
+
+class StatusKilledEnemies extends DrawableObject {
+    IMAGE_KILLED_ENEMY = [
+        'img_pollo_locco/skul/Skull_2.png',
+    ];
 
 
-    <h3> </h3>
+    constructor() {
+        super();
+        this.loadImage(this.IMAGE_KILLED_ENEMY);
+        this.x = 660; // X-Koordinate der Anzeige des StatusIcons
+        this.y = 20;
+        this.width = 30;
+        this.height = 30;
+
+    }
 
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+}</code></pre>
+        </article>
+    </section>
 
 
 

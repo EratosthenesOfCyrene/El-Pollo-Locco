@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: level.class.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,57 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: level.class.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * @typedef {Object} Level
+ *
+ * @classdesc Represents a game level containing enemies, collectibles, and background elements.
+ *
+ * @property {Array&lt;Enemy>} enemies - Array of enemy objects in the level.
+ * @property {Array&lt;Cloud>} clouds - Array of cloud objects for background decoration.
+ * @property {Array&lt;BottleOnFloor>} bottleOnFloor - Array of bottle objects placed on the ground.
+ * @property {Array&lt;Coins>} coins - Array of collectible coin objects.
+ * @property {Array&lt;Backgroundobjects>} backgroundObjects - Array of background elements like scenery.
+ * @property {Array&lt;ThrowableObject>} collectedBottle - Array of bottles that have been collected.
+ * @property {number} level_end_x - The maximum x-coordinate the character can move to (default: 5100).
+ * 
+ *  @class Level
+ */
 
 
-    <h3> </h3>
+class Level {
+
+    enemies;
+    clouds;
+    bottleOnFloor;
+    coins;
+    backgroundObjects;
+    collectedBottle;
+
+    level_end_x = 5100;  //-- weiter kann sich der Character nicht bewegen
+
+    constructor(enemies, clouds, bottleOnFloor, coins, backgroundObjects, collectedBottle) {
+        this.enemies = enemies;
+        this.clouds = clouds;
+        this.bottleOnFloor = bottleOnFloor;
+        this.coins = coins;
+        this.backgroundObjects = backgroundObjects;
+        this.collectedBottle = collectedBottle;
+    }
 
 
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+}</code></pre>
+        </article>
+    </section>
 
 
 
