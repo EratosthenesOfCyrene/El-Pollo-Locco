@@ -79,6 +79,17 @@
         <button  onclick="hideShowContentAndMenu(), window.open('https://jean-marie-mayer.developerakademie.net/El%20Pollo%20Locco/JM_Developments/index.html')" class="menu-button">ℹ️ Über uns</button>
     </div>
 
+    <div class="button-board" id="buttonBoard">
+        <h2>Tastenbelegung</h2>
+        <div>
+            <p>Pfeil nach rechts: Pepe läuft nach rechts</p>
+            <p>Pfeil nach links: Pepe läuft nachlinks</p>
+            <p>C-Taste: Pepe springt</p>
+            <p>D-Taste: Pepe wirft eine Flasche</p>
+        </div>
+        <button  onclick="hideShowContent('buttonBoard', 'add'), adjustButtonBoardFlag('false')" class="menu-button">Verstanden</button>
+    </div>
+
 <!--
     <div id="about-btns" class="about-btns">
         <button onclick="showAboutPanel()" class="btn">Spielregeln</button>

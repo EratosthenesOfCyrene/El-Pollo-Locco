@@ -10,6 +10,7 @@ let deviceVertical;
 let showMobileAboutMenuVar = false;  // diese Variable wird benötigt, um den Toggle-Button des Hamburger-Menus bzw. das "X" zum Schließen in der Funktion "showMobileAboutMenu()" zu regeln
 let testIfLevel2 = false;
 let deviceWasTurned = false;
+let buttonBoardShown = true;
 
 /**
  * 
@@ -529,6 +530,7 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
 function initMobileView() {
     hideShowContent('mobileAboutMenu', 'remove'); //zeigt das Hamburger-Menu an
     hideShowContent('menuBoard', 'add'); //blendet das Menu der Desktop-Ansicht aus
+    hideShowContent('buttonBoard', 'add'); //blendet das buttonBoard der Desktop-Ansicht aus
 }
 /**
  * This function Shows or hides everything necessary for mobile widescreen view,
@@ -565,11 +567,23 @@ function initDesktopView() {
     hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
     hideShowContent('menuBoard', 'remove'); //zeigt das Menu der Desktop-Ansicht an
     hideMobileGameUI();
+    testIfButtonBoardMustBeShown();
 }
 
 function hideMobileGameUI() {
     hideShowContent('mobileCtrlBtnDiv1', 'add');
     hideShowContent('mobileCtrlBtnDiv2', 'add');
+}
+
+function testIfButtonBoardMustBeShown() {
+    if (buttonBoardShown === true) {
+        hideShowContent('buttonBoard', 'remove'); //zeigt das buttonBoard der Desktop-Ansicht an
+    }
+}
+
+function adjustButtonBoardFlag(param) {
+    buttonBoardShown = param;
+    console.log('buttonBoardShown', buttonBoardShown);
 }
 
 function adjustStartImageOrientation(isHorizontal) {

@@ -258,7 +258,7 @@ class Character extends MovableObject {
                 this.walking_sound.pause();
                 this.hurt_sound.pause();
             }
-        }, 1500);
+        }, 100);
     }
 
     /**
