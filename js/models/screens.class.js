@@ -1,3 +1,16 @@
+/**
+ * @typedef {object} Screens
+ * @class Screens
+ * @extends DrawableObject
+ * @classdesc Handles the display of the game-won oder game-lost image on the screen.
+ *
+ * @property {number} x - X position of the image sreen.
+ * @property {number} y - Y position of the image sreen.
+ * @property {number} width - Width of the image to be shown.
+ * @property {number} height - Height of the image to be shown.
+ */
+
+
 class Screens extends DrawableObject {
 
     IMAGE_START = [
@@ -23,6 +36,12 @@ class Screens extends DrawableObject {
         this.showScreen();
     }
 
+    /**
+     * Shows the game-won or game-lost screen depending if the game was lost or won
+     * 
+     * @method showScreen
+     * @memberof Screens
+     */
     showScreen() {
         const interval = setInterval(() => {
             if (world.character.energy == 0 && !world.gameOver) {

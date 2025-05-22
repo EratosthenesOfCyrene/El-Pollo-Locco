@@ -16,6 +16,7 @@
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
  * 
  * @class Endboss
+ * @extends MovableObject
  */
 
 class Endboss extends MovableObject {

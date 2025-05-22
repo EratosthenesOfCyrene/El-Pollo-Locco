@@ -3,6 +3,33 @@
  * Represents the game world, controls game logic, collision detection,
  * sound effects and rendering onto the canvas.
  * 
+ * @typedef {Object} World
+ * @property {Character} character - The main player character.
+ * @property {boolean} gameStarted - Indicates whether the game has started.
+ * @property {boolean} testIfLevel2 - Flag imported from game.js to check if level 2 is active.
+ * @property {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
+ * @property {CanvasRenderingContext2D} ctx - The 2D drawing context of the canvas.
+ * @property {Keyboard} keyboard - The keyboard input handler.
+ * @property {boolean} gamePaused - Indicates whether the game is currently paused. Defaults to false.
+ * @property {number} camera_x - Horizontal movement of the camera.
+ * @property {StatusBar} statusBar - Displays the player's health/energy.
+ * @property {Array<Object>} bottleOnFloor - Bottles available for collection on the ground.
+ * @property {Array<Object>} collectedThrowableObjects - Bottles already collected by the player.
+ * @property {Array<Object>} booooottles - Alternative array storing bottles (usage-specific).
+ * @property {StatusBarBottles} statusBarBottles - Displays the number of bottles collected in a statusbar.
+ * @property {StatusBarCoins} statusBarCoins - Displays the number of coins collected in a statusbar.
+ * @property {StatusKilledEnemies} statusKilledEnemies - Displays how many enemies have been defeated.
+ * @property {boolean} bottleInAir - Indicates whether a bottle is currently in the air. Defaults to false.
+ * @property {Screens} screens - Manages the display of the game over screens.
+ * @property {number} indexOfCurrentEnemy - Tracks the index of the enemy currently involved in a collision.
+ * @property {boolean} canCheckJumpingOnEnemy - Enables or disables the possibility for jumping on an enemy.
+ * @property {boolean} canExecuteCollisionCheck - Enables or disables general collision checks.
+ * @property {Array<Object>} coin - Array of coin objects in the level.
+ * @property {number} killedEnemies - Counter of how many enemies have been killed.
+ * @property {boolean} gameOver - Indicates whether the game is over. Defaults to false.
+ * @property {boolean} isMuted - Indicates whether the sound is muted. Defaults to false.
+ * @property {HTMLAudioElement} background_sound - Background music audio element.
+ *  
  * @class World
  */
 
@@ -178,6 +205,19 @@ class World {
      * @memberof World
      */
     checkCollisions() {
+        this.checkForCollisionsWhithEnemies();
+        this.checkIfCharacterJumpsOnEnemy();
+        this.checkForCollisionsWhithThrowableObjects();
+        this.checkForCollisionsWhithCoins();
+    }
+
+    /**
+     * Checks for Collisions whith Enemies.
+     * 
+     * @method checkForCollisionsWhithEnemies
+     * @memberof World
+     */
+    checkForCollisionsWhithEnemies() {
         setInterval(() => {   // Checking for Collisions whith Enemies
             level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDead) {
@@ -186,7 +226,15 @@ class World {
                 }
             });
         }, 20);
+    }
 
+    /**
+     * Checks if Character jumps on Enemy.
+     * 
+     * @method checkIfCharacterJumpsOnEnemy
+     * @memberof World
+     */
+    checkIfCharacterJumpsOnEnemy() {
         setInterval(() => {   // Checking if Character jumps on Enemy
             level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (this.character.isJumpingOnEnemy(enemy)) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
@@ -197,7 +245,15 @@ class World {
                 }
             });
         }, 200);
+    }
 
+    /**
+     * Checks for Collisions whith Bottles/ThrowableObjects.
+     * 
+     * @method checkForCollisionsWhithThrowableObjects
+     * @memberof World
+     */
+    checkForCollisionsWhithThrowableObjects() {
         setInterval(() => {   // Checking for Collisions whith Bottles/ThrowableObjects
             level.bottleOnFloor.forEach((bottleOnFloor, indexOfBottle) => {
                 if (this.character.isColliding(bottleOnFloor)) {
@@ -210,7 +266,15 @@ class World {
                 }
             });
         }, 200);
+    }
 
+    /**
+     * Checks for Collisions whith coins.
+     * 
+     * @method checkForCollisionsWhithCoins
+     * @memberof World
+     */
+    checkForCollisionsWhithCoins() {
         setInterval(() => {   // Checking for Collisions whith Coins
             level.coins.forEach((coin, indexOfCoin) => {
                 if (this.character.isColliding(coin)) {
@@ -243,7 +307,6 @@ class World {
     }
 
     playDeadChickenAnimation(enemy) {
-        //let enemy = level.enemies[indexOfEnemy];
         const deadChickenIntervalID = setInterval(() => {
             if (enemy.chickenBig == true) {   // diese Abfrage prüft, ob es sich um ein großes oder ein kleines Ckicken handelt, damit im Folgenden das richtige Bild des toten Chicken geladen werden kann
                 enemy.loadImage(enemy.IMAGE_DEAD);

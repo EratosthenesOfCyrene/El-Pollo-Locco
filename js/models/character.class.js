@@ -26,6 +26,7 @@
  * @property {HTMLAudioElement} enemyDeleted_sound - Sound played when an enemy is defeated or deleted.
  * 
  * @class Character
+ * @extends MovableObject
  */
 
 

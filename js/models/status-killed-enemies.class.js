@@ -1,4 +1,14 @@
-
+/**
+ * @typedef {object} StatusKilledEnemies
+ * @class StatusKilledEnemies
+ * @extends DrawableObject
+ * @classdesc Draws the skull that represents the killed enemies onto the canvas.
+ *
+ * @property {number} x - X position of the skull-image on the sreen.
+ * @property {number} y - Y position of the skull-image on the sreen.
+ * @property {number} width - Width of the skull-image to be shown.
+ * @property {number} height - Height of the skull-image to be shown.
+ */
 
 class StatusKilledEnemies extends DrawableObject {
     IMAGE_KILLED_ENEMY = [

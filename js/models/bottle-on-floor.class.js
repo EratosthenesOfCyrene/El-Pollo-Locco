@@ -9,6 +9,7 @@
  * @property {string} id - Indicates the id (identification number) of the respective bottleOnFloor.
  * 
  * @class BottleOnFloor
+ * @extends MovableObject
  */
 
 

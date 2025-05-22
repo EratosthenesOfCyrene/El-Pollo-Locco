@@ -9,6 +9,7 @@
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the cloud to the canvas context.
  * 
  * @class Cloud
+ * @extends MovableObject
  */
 
 class Cloud extends MovableObject {

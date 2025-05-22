@@ -8,6 +8,7 @@
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
  * 
  * @class Chicken
+ * @extends MovableObject
  */
 
 

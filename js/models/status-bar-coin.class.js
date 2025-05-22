@@ -1,3 +1,14 @@
+/**
+ * @typedef {object} StatusBarCoins
+ * @class StatusBarCoins
+ * @extends DrawableObject
+ * @classdesc Draws the coins bar showing the amount of coins collected onto the canvas.
+ *
+ * @property {number} x - X position of the coins-bar image sreen.
+ * @property {number} y - Y position of the coins-bar image sreen.
+ * @property {number} width - Width of the coins-bar image to be shown.
+ * @property {number} height - Height of the coins-bar image to be shown.
+ */
 
 
 class StatusBarCoins extends DrawableObject {
@@ -22,12 +33,30 @@ class StatusBarCoins extends DrawableObject {
         this.setCoinNumber(0);
     }
 
+    /**
+     * Adjusts/counts the number of the coins collected by the character.
+     * 
+     * @param {number} collectedCoins - Number of the collected coins.
+     * @method setCoinNumber
+     * @memberof StatusBarCoins
+     */
     setCoinNumber(collectedCoins) {
         this.collectedCoins = collectedCoins;
         let path = this.IMAGES_STATUSBAR_COINS[this.resolveImageIndex()];
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Shows the correct picture out of the array 'IMAGES_STATUSBAR_COINS',
+     * depending on how many coins are currently in the inventar of the character.
+     * 
+     * @returns {number} 0 - If the character has collected less than 1 coin.
+     * @returns {number} 1 - If the character has collected more than 3 coins and less than 6 coins.
+     * Ans so on.
+     * 
+     * @method resolveImageIndex
+     * @memberof StatusBarCoins
+     */
     resolveImageIndex() {
         if (this.collectedCoins < 1) {
             return 0;  // zeigt das 0. Bild aus dem Array IMAGES_STATUSBAR_COINS an. 
