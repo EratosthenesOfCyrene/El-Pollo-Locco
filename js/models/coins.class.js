@@ -49,13 +49,11 @@ class Coin extends MovableObject {
                 //-- Level 1
                 if (world?.testIfLevel2 === false) {
                     coin.x = 300 + Math.random() * 4900;  //-- platziert die Coins entlang der X-Achse
-                    console.log('coin x', coin.x);
                     clearInterval(interval);
 
                     //-- Level 2
                 } if (world?.testIfLevel2 === true) {
                     coin.x = 300 + Math.random() * 7900;  //-- platziert die Coins entlang der X-Achse
-                    console.log('coin x', coin.x);
                     clearInterval(interval);
                 }
             });

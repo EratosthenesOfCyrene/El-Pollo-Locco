@@ -277,11 +277,9 @@ class World {
         setInterval(() => {   // Checking for Collisions whith Coins
             level.coins.forEach((coin, indexOfCoin) => {
                 if (this.character.isColliding(coin)) {
-                    //console.log('Collision with COIN', indexOfCoin);  // gibt den Index der Coin aus, mit der der Character kollidiert ist
                     level.coins.splice(indexOfCoin, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarCoins.collectedCoins++;  // erhöht den Wert der gesammelten Coins für die Coin-Status-Bar
                     this.statusBarCoins.setCoinNumber(this.statusBarCoins.collectedCoins);  // aktualisiert die Anzeige der Bottle-Status-Bar
-                    //this.character.bottleCollected_sound.play();
                     this.character.coinCollected_sound.play();
                 }
             });
@@ -335,7 +333,6 @@ class World {
 
     deleteAllEnemies() {
         level.enemies.length = 0  //-- .length = 0 leert das Array
-        console.log('huhuhuhuhuuh!!!', level.enemies);
     }
 
     addObjectsToMap(objects) {

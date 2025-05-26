@@ -3,15 +3,11 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* height: 100vh;*/
     height: 100vh;
     background-image: url('img_pollo_locco/img/10_backgrounds/bgr_desert.png');
     background-repeat: no-repeat;
     background-size: cover;
-    /*background-size: 100%;*/
-    /* oder 'contain', je nach gewünschtem Effekt */
     background-position: center center;
-    /*background-color: lightyellow;*/
     font-family: 'zabars', Arial, Helvetica, sans-serif;
     /* Zabars ist die Wunschschrift; falls diese nicht geladen werden kann, wird Arial geladen; falls auch das nicht klappt, wird Helvetica geladen; und falls auch das nicht klappt, wird einfach eine Sreifenloe Schrift genommen*/
     margin: 0;
@@ -30,24 +26,15 @@ body {
     width: 70vw;
     display: flex;
     justify-content: center;
-    /*display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-
-    /*background-color: aquamarine;*/
 }
 
 .nav-btn-div {
     width: 240px;
     height: 150px;
-    /*margin-right: 30px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: end;
-
-    /*background-color: blue;*/
 }
 
 h1 {
@@ -64,8 +51,6 @@ h3 {
     position: absolute;
 }
 
-
-
 .fullscreen {
     width: 720px;
     height: 480px;
@@ -77,17 +62,12 @@ h3 {
 .fullscreenMobile {
     height: 100vh !important;
     width: auto !important;
-    /*position: absolute;*/
     top: 0;
 }
 
 canvas {
-    /*background-color: black;*/
     display: block;
-    /* width: 100%;
-    height: 100%;*/
     display: block;
-    /* Prevents scrollbar issues */
 }
 
 .canvasMaxHeight {
@@ -102,9 +82,7 @@ canvas {
     background-size: cover;
     justify-content: center;
     align-items: center;
-
     transition: all 0.9s ease;
-    /*background-size: 100% 100%;*/
 }
 
 .startImgMobileHorizontal {
@@ -173,21 +151,17 @@ canvas {
 
 .btn:disabled {
     background-color: #cccccc;
-    /* Grau */
     color: #666666;
     cursor: not-allowed;
 }
 
 .start-game-btn {
-    /*width: 100px;
-    height: 40px;*/
     position: absolute;
     top: 90vh;
     font-weight: 700;
     width: 160px;
     height: 46px;
     font-size: 20px;
-
     transform: scale(1);
     animation: pulse 1.7s infinite;
 }
@@ -246,8 +220,6 @@ canvas {
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 4px;
-    /*width: 130px;
-    height: 28px;*/
     width: 40px;
     height: 40px;
     display: flex;
@@ -262,7 +234,6 @@ canvas {
 
 .symbolBtn:disabled {
     background-color: #cccccc;
-    /* Grau */
     color: #666666;
     cursor: not-allowed;
 }
@@ -326,30 +297,23 @@ body.no-scroll {
     position: absolute;
     right: 2vw;
     bottom: 10vh;
-    /*height: 110px;*/
     display: flex;
     justify-content: space-between;
-    /*flex-direction: column;*/
     width: 110px;
 }
 
 .regelnDiv {
-    background: rgba(255, 255, 255, 0.3);
-    /* Leicht transparent */
+    background: rgba(255, 255, 255, 0.3); /* Leicht transparent */
     background-image: url('img_pollo_locco/rules/rulesBgr.png');
     background-repeat: no-repeat;
     background-size: cover;
-    /*background-size: 100%;*/
-    /* oder 'contain', je nach gewünschtem Effekt */
     background-position: center center;
-    background-attachment: fixed; /* Hintergrundbild fixieren */
+    background-attachment: fixed; /* Hintergrundbild fixieren, damit es nicht mitscrollt */
     position: absolute;
-    /*width: calc(100vw - 100px);*/
     width: 100vw;
     height: 105vh;
     top: 0;
     left: 0;
-    /*padding-left: 100px;*/
     padding-top: 70px;
     padding-bottom: 155px;
     font-size: 27px;
@@ -363,8 +327,7 @@ body.no-scroll {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-    /* Milchiger Effekt */
+    background: rgba(255, 255, 255, 0.3); /* Milchiger Effekt */
     /*backdrop-filter: blur(10px); /* Unschärfe */
 }
 
@@ -418,8 +381,7 @@ body.no-scroll {
     align-items: center;
     border-radius: 4px;
     border-style: solid;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
-    /* Schatten nach rechts und unten */
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4); /* Schatten nach rechts und unten */
     z-index: 100;
 }
 
@@ -456,14 +418,11 @@ body.no-scroll {
 .mobileAboutDivBtn:hover {
     cursor: pointer;
     background-color: rgba(255, 205, 0, 0.7);
-    /*text-decoration: underline;*/
 }
 
 .greyBgrDiv {
-    background: rgba(255, 255, 255, 0.3);
-    /* Milchiger Effekt */
-    backdrop-filter: blur(10px);
-    /* Unschärfe */
+    background: rgba(255, 255, 255, 0.3); /* Milchiger Effekt */
+    backdrop-filter: blur(10px);  /* Unschärfe */
     position: absolute;
     top: 0;
     height: 100vh;
@@ -474,12 +433,9 @@ body.no-scroll {
     display: none;
 }
 
-
 .outerMobileLevelSelectionDiv {
-    background: rgba(255, 255, 255, 0.3);
-    /* Milchiger Effekt */
-    backdrop-filter: blur(10px);
-    /* Unschärfe */
+    background: rgba(255, 255, 255, 0.3); /* Milchiger Effekt */
+    backdrop-filter: blur(10px); /* Unschärfe */
     position: absolute;
     top: 0;
     width: 100vw;
@@ -538,7 +494,6 @@ body.no-scroll {
 @import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
 
 .menu-board {
-    background: url('grafik.png'); /* dein Bild als Holzbrett-Hintergrund */
     background-size: cover;
     background-position: center;
     width: 280px;
@@ -555,7 +510,7 @@ body.no-scroll {
 }
 
 .button-board {
-    /*background: rgba(255, 255, 255, 0.3); /* Heller durch halbtransparentes Weiß */
+    /*background: rgba(255, 255, 255, 0.3); /* Heller durch halbtransparentes weiß */
     /*background: rgb(246 203 203 / 30%);*/
     background: rgb(248 210 151 / 30%);
     backdrop-filter: blur(3.5px); /* Unschärfe */
@@ -608,7 +563,6 @@ body.no-scroll {
     transform: scale(1.05);
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
 }
-
 
 
 
@@ -700,11 +654,6 @@ body.no-scroll {
         right: 12px;
         top: 20px;
     }
-
-    /* .soundBtn {
-        top: 55vh;
-        left: 4vw;
-    } */
 
     .rulesDiv {
         top: 120px;

@@ -50,13 +50,11 @@ class BottleOnFloor extends MovableObject {
                 //-- Level 1
                 if (world?.testIfLevel2 === false) {
                     bottle.x = 300 + Math.random() * 4900;  //-- platziert die Coins entlang der X-Achse
-                    console.log('coin x', bottle.x);
                     clearInterval(interval);
 
                     //-- Level 2
                 } if (world?.testIfLevel2 === true) {
                     bottle.x = 300 + Math.random() * 7900;  //-- platziert die Coins entlang der X-Achse
-                    console.log('coin x', bottle.x);
                     clearInterval(interval);
                 }
             });
@@ -70,10 +68,8 @@ class BottleOnFloor extends MovableObject {
      * @memberof BottleOnFloor
      */
     createIndex() {
-        console.log(BottleOnFloor.i);
         world.booooottles.push(BottleOnFloor, { 'index': BottleOnFloor.i });
         BottleOnFloor.i++;
-        console.log(this.world.booooottles);
     }
 
 

@@ -216,7 +216,6 @@ class Endboss extends MovableObject {
         if (this.endbossLife <= 0) {
             this.endBossSpeed = 0;
         }
-        //console.log(this.playHurtAnimation);
         setTimeout(() => {
             if (this.playHurtAnimationTest4 == false) {
                 this.playHurtAnimation = true;

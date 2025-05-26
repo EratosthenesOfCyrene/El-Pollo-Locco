@@ -93,7 +93,7 @@ class Chicken extends MovableObject {
             enemy.speed = 0.15 + Math.random() * 0.63;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
             enemy.x = 1000 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
-            console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
+            //console.log("Level 1 ist aktiv!", enemy.chickenBig, enemy.speed, enemy.currentspeed, enemy.x, level.enemies[11].speed, level.enemies[11].x);
         }
         if (!enemy.chickenBig) {
             enemy.speed = 0.15 + Math.random() * 0.25;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
@@ -117,13 +117,13 @@ class Chicken extends MovableObject {
             enemy.speed = 0.3 + Math.random() * 0.8;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
             enemy.x = 1000 + Math.random() * 8900;  //-- platziert die Enemies entlang der X-Achse
-            console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
+            //console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
         }
         if (!enemy.chickenBig) {
             enemy.speed = 0.3 + Math.random() * 0.35;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
             enemy.x = 800 + Math.random() * 4900;  //-- platziert die Enemies entlang der X-Achse
-            console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
+            //console.log("Level 2 ist aktiv!", enemy.chickenBig, 'speed:', enemy.speed, 'x:', enemy.x, 'x [21]:', level.enemies[21].speed, 'x [21]:', level.enemies[21].x);
         }
     }
 

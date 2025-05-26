@@ -59,7 +59,6 @@ class StatusBar extends DrawableObject {
      * @memberof StatusBar
      */
     resolveImageIndex() {
-        console.log();
         if (this.percentage == 100) {
             return 5;  // zeigt das 5. Bild aus dem Array IMAGES_STATUSBAR_LIFE an. 
         } else if (this.percentage > 80 && this.percentage < 100) {

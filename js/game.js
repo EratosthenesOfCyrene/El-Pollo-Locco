@@ -167,10 +167,8 @@ function muteSound() {
     world.character.healthRecharge_sound.volume = 0;
     world.background_sound.volume = 0;
     world.character.bottleCollected_sound.volume = 0;
-    //world.collectedThrowableObjects[0].enemyHurt_sound.volume = 0;
     world.character.enemyHit_sound.volume = 0;
     world.character.coinCollected_sound.volume = 0;
-    //world.collectedThrowableObjects[0].enemyDeleted_sound.volume = 0;
     world.character.enemyDeleted_sound.volume = 0;
 }
 
@@ -182,10 +180,8 @@ function amplifySound() {
     world.character.bottleCollected_sound.volume = 1;
     world.background_sound.volume = 0.18;
     world.character.bottleCollected_sound.volume = 1;
-    //world.collectedThrowableObjects[0].enemyHurt_sound.volume = 1;
     world.character.enemyHit_sound.volume = 1;
     world.character.coinCollected_sound.volume = 1;
-    //world.collectedThrowableObjects[0].enemyDeleted_sound.volume = 1;
     world.character.enemyDeleted_sound.volume = 1;
 }
 
@@ -263,7 +259,7 @@ function resumeGame() {
 
 function restartChicken() {
     level.enemies.forEach((enemy, indexOfEnemy) => {
-        level.enemies[indexOfEnemy].speed = /*world.*/level.enemies[indexOfEnemy].currentspeed;
+        level.enemies[indexOfEnemy].speed = level.enemies[indexOfEnemy].currentspeed;
     });
 }
 
@@ -305,11 +301,6 @@ function resizeCanvasToFullscreen() {
     canvas.style.height = '100%';
 }
 
-
-
-// Link für sounds: https://mixkit.co/free-sound-effects/video-game/    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
 /**
  * Handles `keydown` events and updates the `keyboard` state object based on 
  * the key pressed. 
@@ -326,7 +317,6 @@ function resizeCanvasToFullscreen() {
  * @param {KeyboardEvent} event - The keydown event object.
  */
 window.addEventListener("keydown", (event) => {
-    //console.log(event);
     if (event.keyCode == 39) {
         keyboard.RIGHT = true;
     }
@@ -369,7 +359,6 @@ window.addEventListener("keydown", (event) => {
  * @param {KeyboardEvent} event - The keyup event object.
  */
 window.addEventListener("keyup", (event) => {
-    //console.log(event);
     if (event.keyCode == 39) {
         keyboard.RIGHT = false;
     }
@@ -583,7 +572,6 @@ function testIfButtonBoardMustBeShown() {
 
 function adjustButtonBoardFlag(param) {
     buttonBoardShown = param;
-    console.log('buttonBoardShown', buttonBoardShown);
 }
 
 function adjustStartImageOrientation(isHorizontal) {
