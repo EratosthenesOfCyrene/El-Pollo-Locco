@@ -36,7 +36,7 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     applyGravity() {  // die Illusion von Schwerkraft erzeugen
-        setInterval(() => {
+        const interval = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
@@ -44,6 +44,7 @@ class MovableObject extends DrawableObject {
                 this.speedY = 0;
             }
         }, 1000 / 25);
+        this.addIntervalToIntervalArray(interval);  
     }
 
     /**
@@ -54,11 +55,12 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     speedYtoZero() {    //-- Diese Funktion sorgt dafür, dass speedY des Characters nach dem Start auf null gesetzt  wird, da sonst nicht erkannt würde, ob er mit einem Huhn kollidiert oder auf dasselbe springt
-        setInterval(() => {
+        const interval = setInterval(() => {
             if (this.y >= 168) {
                 this.speedY = 0;
             }
         }, 200);
+        this.addIntervalToIntervalArray(interval);  
     }
 
     /**
@@ -96,22 +98,33 @@ class MovableObject extends DrawableObject {
         return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
             this.y + this.height > movingObject.y &&
             this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
-            this.y +50 < movingObject.y -50 + movingObject.height;
+            this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
 
     /**
-     * Chscks whether a thrown bottle hits an enemy.
+     * Checks whether a thrown bottle hits an enemy. If a chicken was hit, the corresponding code 
+     * is adjusting the borders of the chiken image in order to improve collision animation.
+     * If the endboss is hit, similar adjustments are made due to the endboss img beeing too 
+     * large for reasonable collision animations.
      * 
      * @param {object} movingObject 
      * @returns {boolean}  True if a thrown bottle hits an enemy; otherwise, false.
      * @method isCollidingBottleEnemy
      * @memberof MovableObject
      */
-    isCollidingBottleEnemy(movingObject) {         // prüft, ob eine Flasche ein Huhn trifft. Die "-8" bei movingObject.x sorgt dafür, dass das Huhn auch als getroffen erkannt wird, auch wenn die Flasche leicht links davon aufkommt. Dies macht das Gameplay natürlicher.
-        return this.x + this.width > (movingObject.x - 8) &&
-            this.y + this.height > movingObject.y &&
-            this.x  < movingObject.x + movingObject.width &&
-            this.y < movingObject.y + movingObject.height;
+    isCollidingBottleEnemy(movingObject) {         // prüft, ob eine Flasche ein Huhn oder einen Endboss trifft. Die "-8" bei movingObject.x sorgt dafür, dass das Huhn auch als getroffen erkannt wird, auch wenn die Flasche leicht links davon aufkommt. Dies macht das Gameplay natürlicher.
+        if (movingObject instanceof Chicken) {
+            return this.x + this.width > (movingObject.x - 8) &&
+                this.y + this.height > movingObject.y &&
+                this.x < movingObject.x + movingObject.width &&
+                this.y < movingObject.y + movingObject.height;
+        }
+        if (movingObject instanceof Endboss) {
+            return this.x + this.width > (movingObject.x + 30) &&
+                this.y + this.height > (movingObject.y + 95) &&
+                this.x < movingObject.x + (movingObject.width - 70) &&
+                this.y < movingObject.y + (movingObject.height - 90);
+        }
     }
 
     /**
@@ -143,11 +156,11 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     hit() {
-            this.energy -= 0.25;
-            if (this.energy < 0) {
-                this.energy = 0;
-            } else {
-                this.lastHit = new Date().getTime();
+        this.energy -= 0.25;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
         }
     }
 
@@ -162,9 +175,9 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     isHurt() {
-            let timepassed = new Date().getTime() - this.lastHit;
-            timepassed = timepassed / 1000;
-            return timepassed < 2;
+        let timepassed = new Date().getTime() - this.lastHit;
+        timepassed = timepassed / 1000;
+        return timepassed < 2;
     }
 
     isDead() {
@@ -206,5 +219,22 @@ class MovableObject extends DrawableObject {
 
     jump() {
         this.speedY = 30;
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
     }
 }

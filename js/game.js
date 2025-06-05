@@ -11,6 +11,7 @@ let showMobileAboutMenuVar = false;  // diese Variable wird benötigt, um den To
 let testIfLevel2 = false;
 let deviceWasTurned = false;
 let buttonBoardShown = true;
+let level1Test;
 
 /**
  * 
@@ -36,13 +37,51 @@ function init() {
 }
 
 function startLevel1() {
-    level = level1;
+    level = new Level1();
+    //world = new World(canvas, keyboard, level1);
+    //world.level = level1;
 }
 
 function startLevel2() {
+    level = new Level2();
+    //world = new World(canvas, keyboard, level1);
+    //world.level = level1;
+}
+
+function playLevel1() {
+    testIfLevel2 = false;
+    startLevel1();
+    startCanvas();
+    resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
+    //world.initWorld();
+}
+
+function playLevel2() {
+    testIfLevel2 = true;
+    startLevel2();
+    startCanvas();
+    resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
+    //world.initWorld();
+}
+
+/**
+ * This function reactivates all the prevoiusly deactivated buttons 
+ */
+function resetGameBtns() {
+    if (mobileWindow == false) {
+        toggleBtn('pauseGameBtn', false);   // die parameter true und false dürfen nicht in Anführungszeichen stehen, da die aufgerufene Funktion diese nicht als String, sondern als Booleiische Variable braucht!
+        toggleBtn('resumeGameBtn', false);  // aktiviert den zuvor deaktivierten "play-Button" der Desktop Ansicht
+    } else if (mobileWindow == true) {
+        toggleBtn('pauseGameBtnMobile', false);   // die parameter true und false dürfen nicht in Anführungszeichen stehen, da die aufgerufene Funktion diese nicht als String, sondern als Booleiische Variable braucht!
+        toggleBtn('resumeGameBtnMobile', false);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
+    }
+}
+
+/*
+function startLevel2() {
     level = level2;
     testIfLevel2 = true;
-}
+} */
 
 function showLevelSelection() {
     setTimeout(() => {
@@ -65,6 +104,13 @@ function shrinkStartImage() {
     setTimeout(() => {
         document.getElementById('startGameBtn').classList.remove('d-none');
     }, 2400);
+}
+
+function resetIntervals() {
+    world.gameIntervals = [];
+    console.log(world.gameIntervals);
+    
+    
 }
 
 /**
@@ -110,7 +156,7 @@ function startGame() {
  * @returns {void}
  */
 function playBackgroundMusic() {
-    setInterval(() => {
+    const interval = setInterval(() => {
         const mutedSetting = localStorage.getItem('isMuted');  //-- testen, ob der Sound an oder aus sein sollte
         if (mutedSetting === 'false') {
             world.background_sound.play();
@@ -119,6 +165,7 @@ function playBackgroundMusic() {
             world.background_sound.playbackRate = 1;
         }
     }, 200);
+    this.addIntervalToIntervalArray(interval); 
 }
 
 /**
@@ -140,7 +187,6 @@ function changeSondSettings() {
         localStorage.setItem('isMuted', 'false'); // speichern
     }
 }
-
 
 /**
  * This function loads the sound settings from the local storage.
@@ -197,7 +243,7 @@ function showMutedImg() {
 
 function startCanvas() {
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
+    world = new World(canvas, keyboard, level1Test);
 }
 
 /**
@@ -479,7 +525,7 @@ function bindBtnsPressEvents() {
  * @returns {void}
  */
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
-    setInterval(() => {
+    const interval = setInterval(() => {
         const mediaQuery = window.matchMedia('(max-width: 1200px)');
 
         //-- Mobile View
@@ -514,6 +560,7 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
         }
 
     }, 200);
+    this.addIntervalToIntervalArray(interval); 
 }
 
 function initMobileView() {
@@ -683,14 +730,14 @@ function initSmallVertikal() {
  * 
  */
 function fullScreenMobile() {
-    setInterval(() => {
+    const interval = setInterval(() => {
         if (mobileWindow && deviceVertical) {
             document.getElementById('canvas').classList.add('canvasMaxHeight');
             document.getElementById('fullscreen').classList.add('fullscreenMobile');
             document.getElementById('startImg').classList.add('startImgMobile');
         }
 
-        if (mobileWindow === false /*&& deviceVertical*/) {
+        if (mobileWindow === false) {
             document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
             document.getElementById('startImg').classList.remove('startImgMobileVertical');
             document.getElementById('canvas').classList.remove('canvasMaxHeight');  //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
@@ -698,6 +745,7 @@ function fullScreenMobile() {
             hideShowContent('nav', 'remove');
         }
     }, 200);
+    this.addIntervalToIntervalArray(interval); 
 }
 
 function soundBtnMobile() {
@@ -741,6 +789,23 @@ function hideShowContentAndMenu() {
     showMobileAboutMenu();
     hideShowContent('mobileAboutDiv', 'add');
     hideShowContent('greyBgrDiv', 'add');
+}
+
+/**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+function addIntervalToIntervalArray(param) {
+    if (typeof world !== 'undefined' && world?.gameIntervals) {
+        world.gameIntervals.push(param);
+        console.log(world.gameIntervals);
+    } else {
+        // Wiederholt die Prüfung 100ms später
+        setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+    }
 }
 
 

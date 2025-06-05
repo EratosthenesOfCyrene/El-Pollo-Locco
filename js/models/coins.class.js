@@ -45,7 +45,7 @@ class Coin extends MovableObject {
      */
     correctPositionOfEachCoin() {
         const interval = setInterval(() => {
-            level.coins.forEach(coin => {
+            world.level.coins.forEach(coin => {
                 //-- Level 1
                 if (world?.testIfLevel2 === false) {
                     coin.x = 300 + Math.random() * 4900;  //-- platziert die Coins entlang der X-Achse
@@ -58,12 +58,31 @@ class Coin extends MovableObject {
                 }
             });
         }, 200);
+         this.addIntervalToIntervalArray(interval);  
     }
 
     animate() {
-        setInterval(() => {
+        const interval = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
         }, 700);
+         this.addIntervalToIntervalArray(interval);  
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
     }
 
 

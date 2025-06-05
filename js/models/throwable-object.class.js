@@ -103,6 +103,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimationIntervalID = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW);
         }, 50);
+        this.addIntervalToIntervalArray(this.playAnimationIntervalID);  
     }
 
     /**
@@ -113,13 +114,13 @@ class ThrowableObject extends MovableObject {
      */
     checkForCollissions() {
         this.checkForCollissionIntervalID = setInterval(() => {  // Checking for collisions of thrown bottles whith enemies (Chickens)
-            level.enemies.forEach((enemy, indexOfEnemy) => {
+            world.level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
                     this.testIfChickenOrEndbossIsHit(indexOfEnemy);
                     this.bottleCollides = true;
                 }
             });
-            //}
+            this.addIntervalToIntervalArray(this.checkForCollissionIntervalID);  
         }, 200);
     }
 
@@ -139,18 +140,21 @@ class ThrowableObject extends MovableObject {
                 world.character.enemyHit_sound.play();
             }
         }, 25);
+        this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);  
     }
 
     throwBottleLeft() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x -= 10;
         }, 25);
+        this.addIntervalToIntervalArray(this.throwBottleIntervalID);  
     }
 
     throwBottleRight() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x += 10;
         }, 25);
+        this.addIntervalToIntervalArray(this.throwBottleIntervalID);  
     }
 
     /**
@@ -189,21 +193,21 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     testIfChickenOrEndbossIsHit(indexOfEnemy) {
-        let indexOfEndboss = level.enemies.length - 1;
+        let indexOfEndboss = world.level.enemies.length - 1;
         if (indexOfEnemy != indexOfEndboss) {   // prüft anhand des Index, ob es sich bei dem getroffenen Objekt um den Endboss handelt
             this.playDeadChickenAnimation(indexOfEnemy);
         } else if (indexOfEnemy == indexOfEndboss) {
-            level.enemies[indexOfEndboss].endbossHit = true;
-            level.enemies[indexOfEndboss].playHurtAnimation = false;
-            level.enemies[indexOfEndboss].endbossLife -= 20;
+            world.level.enemies[indexOfEndboss].endbossHit = true;
+            world.level.enemies[indexOfEndboss].playHurtAnimation = false;
+            world.level.enemies[indexOfEndboss].endbossLife -= 20;
             this.deleteEndboss(indexOfEndboss);
         }
     }
 
     deleteEndboss(indexOfEndboss) {
-        if (level.enemies[indexOfEndboss].endbossLife < 20) {
+        if (world.level.enemies[indexOfEndboss].endbossLife < 20) {
             setTimeout(() => {
-                level.enemies.splice(indexOfEndboss, 1);
+                world.level.enemies.splice(indexOfEndboss, 1);
             }, 9000);
         }
     }
@@ -216,7 +220,7 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     playDeadChickenAnimation(indexOfEnemy) {
-        let enemy = level.enemies[indexOfEnemy];
+        let enemy = world.level.enemies[indexOfEnemy];
         const deadChickenIntervalID = setInterval(() => {
             if (enemy.chickenBig == true) {   // diese Abfrage prüft, ob es sich um ein großes oder ein kleines Ckicken handelt, damit im Folgenden das richtige Bild des toten Chicken geladen werden kann
                 enemy.loadImage(enemy.IMAGE_DEAD);
@@ -231,10 +235,11 @@ class ThrowableObject extends MovableObject {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(indexOfEnemy);
         }, 1500);
+        this.addIntervalToIntervalArray(deadChickenIntervalID);  
     }
 
     deleteHitEnemy(indexOfEnemy) {  // deletes the hit enemy
-        level.enemies.splice(indexOfEnemy, 1);
+        world.level.enemies.splice(indexOfEnemy, 1);
         world.character.regainLife();  // erhöht das Leben des Characters, wenn ein enemy getötet wurde
         this.playRegainHealthSound();
         world.killedEnemies++;   // erhöht den Counter der getöteten Enemies, damit die Zahl der getöteten Enemies im Camnvas aktualisiert werden kann
@@ -251,6 +256,22 @@ class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
+    }
 
 
 

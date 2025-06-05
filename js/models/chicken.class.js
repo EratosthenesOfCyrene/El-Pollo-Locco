@@ -60,23 +60,24 @@ class Chicken extends MovableObject {
      */
     correctSpeedOfEachChicken() {    //-- diese Funktion wird oben in World (Z. 58) aufgerufen
         const interval = setInterval(() => {
-            level.enemies.forEach(enemy => {
+            world.level.enemies.forEach(enemy => {
                 //-- Level
                 if (world?.testIfLevel2 === false) {
                     this.correctSpeedOfEachChickenLevel1(enemy);
-                    level.enemies[11].x = 5300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
-                    level.enemies[11].speed = 0;
+                    world.level.enemies[11].x = 5300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
+                    world.level.enemies[11].speed = 0;
                     clearInterval(interval);
 
                     //-- Level 2
                 } if (world?.testIfLevel2 === true) {
                     this.correctSpeedOfEachChickenLevel2(enemy);
-                    level.enemies[21].x = 8300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
-                    level.enemies[21].speed = 0;
+                    world.level.enemies[21].x = 8300;   //-- weist dem Endboss seine Position zu, da diese sonst überschrieben worden ist
+                    world.level.enemies[21].speed = 0;
                     clearInterval(interval);
                 }
             });
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -175,13 +176,31 @@ class Chicken extends MovableObject {
      * @memberof Chicken
      */
     animate(images) {
-        setInterval(() => {
+        const interval1 = setInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
+        this.addIntervalToIntervalArray(interval1);
 
-        setInterval(() => {
+        const interval2 = setInterval(() => {
             this.playAnimation(images);
         }, 200);
+        this.addIntervalToIntervalArray(interval2);
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
     }
 
 

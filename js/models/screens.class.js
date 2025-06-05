@@ -48,7 +48,7 @@ class Screens extends DrawableObject {
                 this.gameLost();
                 world.gameOver = true;
             }
-            else if (level.enemies[level.enemies.length - 1].endbossLife <= 0) {
+            else if (world.level.enemies[world.level.enemies.length - 1].endbossLife <= 0) {
                 setTimeout(() => {
                     this.gameWon();
                     world.gameOver = true;
@@ -56,6 +56,7 @@ class Screens extends DrawableObject {
                 clearInterval(interval);
             }
         }, 200);
+        this.addIntervalToIntervalArray(interval);  
     }
 
     gameLost() {
@@ -72,6 +73,23 @@ class Screens extends DrawableObject {
         world.background_sound.pause();
         world.deleteAllEnemies();
     }
+
+   /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
+    } 
 
 
 }

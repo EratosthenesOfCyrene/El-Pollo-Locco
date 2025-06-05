@@ -46,7 +46,7 @@ class BottleOnFloor extends MovableObject {
      */
     correctPositionOfEachBottle() {
         const interval = setInterval(() => {
-            level.bottleOnFloor.forEach(bottle => {
+            world.level.bottleOnFloor.forEach(bottle => {
                 //-- Level 1
                 if (world?.testIfLevel2 === false) {
                     bottle.x = 300 + Math.random() * 4900;  //-- platziert die Coins entlang der X-Achse
@@ -59,6 +59,7 @@ class BottleOnFloor extends MovableObject {
                 }
             });
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -72,6 +73,22 @@ class BottleOnFloor extends MovableObject {
         BottleOnFloor.i++;
     }
 
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+    addIntervalToIntervalArray(interval) {
+        if (world?.gameIntervals) {
+            world.gameIntervals.push(interval);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(interval), 100);
+        }
+    }
 
 
 

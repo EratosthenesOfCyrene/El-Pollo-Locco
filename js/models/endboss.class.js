@@ -105,6 +105,7 @@ class Endboss extends MovableObject {
                 this.playImagesWalking = false;
             }
         }, 200);
+         this.addIntervalToIntervalArray(this.playAnimationIntervallID);  
     }
 
     /**
@@ -115,7 +116,7 @@ class Endboss extends MovableObject {
      * @memberof Endboss
      */
     checkForAttack() {
-        setInterval(() => {
+        const interval = setInterval(() => {
             // Hit 1
             if (this.endbossHit == true && this.endbossLife >= 80 && this.playImagesAttack == false) {
                this.hit1();
@@ -137,6 +138,7 @@ class Endboss extends MovableObject {
                 this.hit5();
             }
         }, 200);
+         this.addIntervalToIntervalArray(interval);  
     }
 
     /**
@@ -228,6 +230,23 @@ class Endboss extends MovableObject {
     endbossMoveLeft() {
         clearInterval(this.playAnimationIntervallID);
         this.x -= this.endBossSpeed;
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+          if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }          
     }
 
 

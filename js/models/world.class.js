@@ -29,59 +29,72 @@
  * @property {boolean} gameOver - Indicates whether the game is over. Defaults to false.
  * @property {boolean} isMuted - Indicates whether the sound is muted. Defaults to false.
  * @property {HTMLAudioElement} background_sound - Background music audio element.
+ * @property {Array<Object>} gameIntervals - The array into which all intervalls are pushed for easier handling during game restart.
  *  
  * @class World
  */
 
 class World {
 
-    character = new Character();
-    gameStarted = false;
-    testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
-    canvas;
-    ctx;
-    keyboard;
-    gamePaused = false;
-    camera_x = 0;  // diese Variable wird verwendet, um die Kamera auf der x-achse zu verschieben
-    statusBar = new StatusBar();
-    bottleOnFloor = [];
-    collectedThrowableObjects = [];
-    booooottles = [];
-    statusBarBottles = new StatusBarBottles();
-    statusBarCoins = new StatusBarCoins();
-    statusKilledEnemies = new StatusKilledEnemies();
-    bottleInAir = false;   // diese Variable gibt an, ob sich gerade eine Flasche in der Luft befindet. Diese Variable wird gebraucht, um in der Funktion "checkThrowObjects()" zu überprüfen, ob sich bereits eine Flasche in der Luft befindet, damit nicht mehrere Flaschen auf einmal geworfen werden können
-    screens = new Screens();
-    indexOfCurrentEnemy;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
-    canCheckJumpingOnEnemy = true;
-    canExecuteCollisionCheck = false;
-    coin = [];
-    killedEnemies = 0;
-    gameOver = false;
-    isMuted = false;
-    background_sound = new Audio('audio/background-music.mp3');
 
 
 
 
     constructor(canvas, keyboard) {
+        this.initWorld();
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.draw();
         this.keyboard = keyboard;
         this.setWorld();  // Diese Funkrion verknüft alle Variablen, die in der Klasse World drin sind mit der Klasse Character; bzw. man könnte sagen, diese Funktion übergibt sämliche Variablen, die in der Klasse "World" vorhanden sind, an die Klasse "Chararcter"
         this.runIntervals();
-        level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        level.coins[0].correctPositionOfEachCoin();    //-- ruft diese Funktion hier beim Erzeugen des ersten Coins auf, da man sie nicht in der Klasse "Coin" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Coin aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        level.bottleOnFloor[0].correctPositionOfEachBottle();
+        this.level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
+        this.level.coins[0].correctPositionOfEachCoin();    //-- ruft diese Funktion hier beim Erzeugen des ersten Coins auf, da man sie nicht in der Klasse "Coin" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Coin aufgerufen werden würde und dies zu viel rechenarbeit führen würde
+        this.level.bottleOnFloor[0].correctPositionOfEachBottle();
         this.adjustLevelEnd();
     }
 
+    initWorld() {
+        this.character = new Character();
+        this.gameStarted = false;
+        this.testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
+        this.canvas;
+        this.ctx;
+        this.keyboard;
+        this.gamePaused = false;
+        this.camera_x = 0;  // diese Variable wird verwendet, um die Kamera auf der x-achse zu verschieben
+        this.statusBar = new StatusBar();
+        this.bottleOnFloor = [];
+        this.collectedThrowableObjects = [];
+        this.booooottles = [];
+        this.statusBarBottles = new StatusBarBottles();
+        this.statusBarCoins = new StatusBarCoins();
+        this.statusKilledEnemies = new StatusKilledEnemies();
+        this.bottleInAir = false;   // diese Variable gibt an, ob sich gerade eine Flasche in der Luft befindet. Diese Variable wird gebraucht, um in der Funktion "checkThrowObjects()" zu überprüfen, ob sich bereits eine Flasche in der Luft befindet, damit nicht mehrere Flaschen auf einmal geworfen werden können
+        this.screens = new Screens();
+        this.indexOfCurrentEnemy;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
+        this.canCheckJumpingOnEnemy = true;
+        this.canExecuteCollisionCheck = false;
+        this.coin = [];
+        this.killedEnemies = 0;
+        this.gameOver = false;
+        this.isMuted = false;
+        this.background_sound = new Audio('audio/background-music.mp3');
+        this.gameIntervals = [];
+        //this.setLevel(new Level1());
+        this.level = level;
+
+    }
+
+    setLevel(level) {
+    this.level = level1;
+  }
+
     adjustLevelEnd() {
         if (this.testIfLevel2 === false) {
-            level.level_end_x = 5100
+            this.level.level_end_x = 5100
         } if (this.testIfLevel2 === true) {
-            level.level_end_x = 8100
+            this.level.level_end_x = 8100
         }
     }
 
@@ -119,9 +132,9 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);  // cleared bzw. löscht den Inhalt des Canvas vor jedem neuen Zeichnen
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(level.backgroundObjects);  // Background
+        this.addObjectsToMap(this.level.backgroundObjects);  // Background
         this.ctx.translate(-this.camera_x, 0); // verschiebt die Kamera vor den Zeichnen der StatusBar zurück
-        this.addObjectsToMap(level.clouds);  // Clouds
+        this.addObjectsToMap(this.level.clouds);  // Clouds
         this.addToMap(this.statusBar); // Status-Bar
         this.addToMap(this.statusBarBottles); // Status-Bar-Bottles
         this.addToMap(this.statusBarCoins); // Status-Bar-Coins
@@ -132,9 +145,9 @@ class World {
         this.addToMap(this.screens);
         this.ctx.translate(this.camera_x, 0); // schiebt die Kamera nach den Zeichnen der StatusBar wieder nach vorne -> durch diese beiden Schritte läuft die StatusBar nicht aus den Bild, wenn der Character bewegt wird
         this.addToMap(this.character);  // Character
-        this.addObjectsToMap(level.enemies);  // Enemies
-        this.addObjectsToMap(level.bottleOnFloor);  // Bottle on Floor ready to collect
-        this.addObjectsToMap(level.coins);  // Coins
+        this.addObjectsToMap(this.level.bottleOnFloor);  // Bottle on Floor ready to collect
+        this.addObjectsToMap(this.level.enemies);  // Enemies
+        this.addObjectsToMap(this.level.coins);  // Coins
         this.addObjectsToMap(this.collectedThrowableObjects);
         this.ctx.translate(-this.camera_x, 0);
 
@@ -217,14 +230,15 @@ class World {
      * @memberof World
      */
     checkForCollisionsWhithEnemies() {
-        setInterval(() => {   // Checking for Collisions whith Enemies
-            level.enemies.forEach((enemy) => {
+        const interval = setInterval(() => {   // Checking for Collisions whith Enemies
+            this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDead) {
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
                 }
             });
         }, 20);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -234,8 +248,8 @@ class World {
      * @memberof World
      */
     checkIfCharacterJumpsOnEnemy() {
-        setInterval(() => {   // Checking if Character jumps on Enemy
-            level.enemies.forEach((enemy, indexOfEnemy) => {
+        const interval = setInterval(() => {   // Checking if Character jumps on Enemy
+            this.level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (this.character.isJumpingOnEnemy(enemy)) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
                     enemy.isDead = true;
@@ -244,6 +258,7 @@ class World {
                 }
             });
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -253,18 +268,19 @@ class World {
      * @memberof World
      */
     checkForCollisionsWhithThrowableObjects() {
-        setInterval(() => {   // Checking for Collisions whith Bottles/ThrowableObjects
-            level.bottleOnFloor.forEach((bottleOnFloor, indexOfBottle) => {
+        const interval = setInterval(() => {   // Checking for Collisions whith Bottles/ThrowableObjects
+            this.level.bottleOnFloor.forEach((bottleOnFloor, indexOfBottle) => {
                 if (this.character.isColliding(bottleOnFloor)) {
-                    level.collectedBottle = new ThrowableObject(-5000);
-                    this.collectedThrowableObjects.push(level.collectedBottle);
-                    level.bottleOnFloor.splice(indexOfBottle, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
+                    this.level.collectedBottle = new ThrowableObject(-5000);
+                    this.collectedThrowableObjects.push(this.level.collectedBottle);
+                    this.level.bottleOnFloor.splice(indexOfBottle, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarBottles.collectedBottles++;  // erhöht den Wert der gesammelten Flaschen für die Bottle-Status-Bar
                     this.statusBarBottles.setBottleNumber(this.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
                     this.character.bottleCollected_sound.play();
                 }
             });
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -274,16 +290,17 @@ class World {
      * @memberof World
      */
     checkForCollisionsWhithCoins() {
-        setInterval(() => {   // Checking for Collisions whith Coins
-            level.coins.forEach((coin, indexOfCoin) => {
+        const interval = setInterval(() => {   // Checking for Collisions whith Coins
+            this.level.coins.forEach((coin, indexOfCoin) => {
                 if (this.character.isColliding(coin)) {
-                    level.coins.splice(indexOfCoin, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
+                    this.level.coins.splice(indexOfCoin, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarCoins.collectedCoins++;  // erhöht den Wert der gesammelten Coins für die Coin-Status-Bar
                     this.statusBarCoins.setCoinNumber(this.statusBarCoins.collectedCoins);  // aktualisiert die Anzeige der Bottle-Status-Bar
                     this.character.coinCollected_sound.play();
                 }
             });
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -293,7 +310,7 @@ class World {
      * @memberof World
      */
     checkThrowObjects() {
-        setInterval(() => {
+        const interval = setInterval(() => {
             if (this.keyboard.letterD && this.collectedThrowableObjects.length > 0 && this.bottleInAir == false && this.gamePaused == false) {
                 this.collectedThrowableObjects[0].throw();
             }
@@ -301,6 +318,7 @@ class World {
                 //console.warn('NO BOTTLES COLLECTED!!!!');
             }
         }, 200);
+        this.addIntervalToIntervalArray(interval);
     }
 
     playDeadChickenAnimation(enemy) {
@@ -317,12 +335,13 @@ class World {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(enemy);
         }, 1500);
+        this.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
     deleteHitEnemy(enemy) {  // deletes the hit enemy
-        const indexOfEnemy = level.enemies.indexOf(enemy);
+        const indexOfEnemy = this.level.enemies.indexOf(enemy);
         if (indexOfEnemy !== -1) {
-            level.enemies.splice(indexOfEnemy, 1);
+            this.level.enemies.splice(indexOfEnemy, 1);
             this.killedEnemies++;
         }
     }
@@ -332,7 +351,7 @@ class World {
     }
 
     deleteAllEnemies() {
-        level.enemies.length = 0  //-- .length = 0 leert das Array
+        this.level.enemies.length = 0  //-- .length = 0 leert das Array
     }
 
     addObjectsToMap(objects) {
@@ -388,6 +407,23 @@ class World {
     flipImageBack(movingObject) {
         movingObject.x = movingObject.x * -1;
         this.ctx.restore();
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+    addIntervalToIntervalArray(param) {
+        if (typeof world !== 'undefined' && world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }
     }
 
 }

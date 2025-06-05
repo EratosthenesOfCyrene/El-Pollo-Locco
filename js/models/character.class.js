@@ -163,9 +163,9 @@ class Character extends MovableObject {
      * @memberof Character
      */
     runMovementInterval() {
-        setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
+        const interval = setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
             //--Rechts
-            if (this.world.keyboard.RIGHT && this.x < level.level_end_x && this.world.gamePaused == false) {
+            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {
                 this.moveCharacterRight();
             }
             //-- Links
@@ -183,6 +183,7 @@ class Character extends MovableObject {
             }
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
+        this.addIntervalToIntervalArray(interval);
     }
 
     moveCharacterRight() {
@@ -217,7 +218,7 @@ class Character extends MovableObject {
      * @memberof Character
      */
     runAnimationInterval() {
-        setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck einer Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
+        const interval = setInterval(() => {  // Dieses Intervall ruft die Animation/Abfolge der Bilder, die den Eindruck einer Bewegung des Character entstehen lässt, 20 mal pro sekunde auf
             if (this.world.gamePaused == false) {
                 if (this.isDead()) { //-- if the character is dead
                     if (this.imagesDeadPlayed === false) {
@@ -242,6 +243,7 @@ class Character extends MovableObject {
                 }
             }
         }, 50);
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -259,6 +261,7 @@ class Character extends MovableObject {
                 this.hurt_sound.pause();
             }
         }, 100);
+        this.addIntervalToIntervalArray(this.idleIntervalID);
     }
 
     /**
@@ -281,6 +284,7 @@ class Character extends MovableObject {
                 }
             }
         }, 800);
+        this.addIntervalToIntervalArray(this.counterInveralID);
     }
 
     resetIdleTimeout() {
@@ -288,6 +292,23 @@ class Character extends MovableObject {
         clearInterval(this.counterInveralID);
         this.counter = 0;
         this.world.background_sound.playbackRate = 1;
+    }
+
+    /**
+     * This function pushes the interval into the array gameIntervals in world.class.
+     * It tries it as often as needed until it can push the respective interval into the
+     * gameInterval array
+     * 
+     * @param {number} param - The ID of the interval 
+     */
+     addIntervalToIntervalArray(param) {
+        if (world?.gameIntervals) {
+            world.gameIntervals.push(param);
+            console.log(world.gameIntervals);
+        } else {
+            // Wiederholt die Prüfung 100ms später
+            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
+        }
     }
 
 

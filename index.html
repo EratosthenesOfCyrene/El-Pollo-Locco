@@ -150,12 +150,15 @@
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
         <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
-            <div onclick="hideMobileLevelSelectionDiv(), window.location.href = window.location.pathname + '?level=2'" class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
-            <div onclick="hideMobileLevelSelectionDiv(), window.location.href = window.location.pathname + '?level=1'" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
+            <div onclick="hideMobileLevelSelectionDiv(),playLevel2(), resetIntervals() " class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
+            <div onclick="hideMobileLevelSelectionDiv(), playLevel1(), resetIntervals()" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
         </div>
         <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">Cancel</div>
     </div>
 
+    <!-- , window.location.href = window.location.pathname + '?level=1' 
+        window.location.href = window.location.pathname + '?level=2'
+    -->
 
 
     <div id="regelnDiv" class="regelnDiv d-none">
