@@ -101,6 +101,13 @@ class MovableObject extends DrawableObject {
             this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
 
+    isCollidingJumpingOnEnemy(movingObject) {
+         return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
+            this.y + this.height > movingObject.y -100 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
+            this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
+            this.y + 50 < movingObject.y - 50 + movingObject.height;
+    }
+
     /**
      * Checks whether a thrown bottle hits an enemy. If a chicken was hit, the corresponding code 
      * is adjusting the borders of the chiken image in order to improve collision animation.
@@ -137,7 +144,7 @@ class MovableObject extends DrawableObject {
      */
     isJumpingOnEnemy(movingObject) {
         world.indexOfCurrentEnemy = movingObject;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
-        if (this.isColliding(movingObject) &&
+        if (this.isCollidingJumpingOnEnemy(movingObject) &&
             this.speedY < 0) {
             this.jumpingOnEnemy = true;
             return true;
