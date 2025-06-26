@@ -46,12 +46,13 @@ class ThrowableObject extends MovableObject {
         './img_pollo_locco/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
 
-    constructor(x, y) {
+    constructor(x, world) {
         super().loadImage('img_pollo_locco/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
 
         this.loadImages(this.IMAGES_THROW);
         this.loadImages(this.IMAGES_SPLASH);
 
+        this.world = world; 
         this.speed = 0.40;
         this.height = 70;
         this.width = 65;
@@ -65,12 +66,12 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     throw() {
-        world.bottleInAir = true;  // gibt an, dass sich gerade eine Flasche in der Luft befindet
-        this.x = world.character.x + 100;
-        if (world.character.otherdirection == true) {   // Anpassen des x-Wertes der Flasche, wenn nach links geworfen wird
-            this.x = world.character.x
+        this.world.bottleInAir = true;  // gibt an, dass sich gerade eine Flasche in der Luft befindet
+        this.x = this.world.character.x + 100;
+        if (this.world.character.otherdirection == true) {   // Anpassen des x-Wertes der Flasche, wenn nach links geworfen wird
+            this.x = this.world.character.x
         };
-        this.y = world.character.y;
+        this.y = this.world.character.y;
         this.speedY = 30;
         this.applyGravity();
         this.testThrowDirection();
@@ -86,7 +87,7 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     testThrowDirection() {
-        if (world.character.otherdirection == true) {      // Diese Funktion prüft, ob der Character nach linkt oder nach rechts zeigt. Entsprechend wird die Funktion, die die Flasche nach links oder anch rechts wirft, ausgeführt.
+        if (this.world.character.otherdirection == true) {      // Diese Funktion prüft, ob der Character nach linkt oder nach rechts zeigt. Entsprechend wird die Funktion, die die Flasche nach links oder anch rechts wirft, ausgeführt.
             this.throwBottleLeft();
         } else {
             this.throwBottleRight();
@@ -114,8 +115,8 @@ class ThrowableObject extends MovableObject {
      */
     checkForCollissions() {
         this.checkForCollissionIntervalID = setInterval(() => {  // Checking for collisions of thrown bottles whith enemies (Chickens)
-            world.level.enemies.forEach((enemy, indexOfEnemy) => {
-                if (world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
+            this.world.level.enemies.forEach((enemy, indexOfEnemy) => {
+                if (this.world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
                     this.testIfChickenOrEndbossIsHit(indexOfEnemy);
                     this.bottleCollides = true;
                 }
@@ -133,11 +134,11 @@ class ThrowableObject extends MovableObject {
      */
     checkForYOrCollossion() {
         this.checkForYOrCollissionIntervalID = setInterval(() => {
-            world.character.enemyHit_sound.pause();
+            this.world.character.enemyHit_sound.pause();
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
-                world.character.enemyHit_sound.play();
+                this.world.character.enemyHit_sound.play();
             }
         }, 25);
         this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);  
@@ -175,13 +176,13 @@ class ThrowableObject extends MovableObject {
     playSplashAnimation() {
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteThrownBottle();
-        world.bottleInAir = false;   // zurückgeben, dass KEINE Flasche (mehr) in der Luft ist
+        this.world.bottleInAir = false;   // zurückgeben, dass KEINE Flasche (mehr) in der Luft ist
         return true;
     }
 
     deleteThrownBottle() {
         setTimeout(() => {
-            world.collectedThrowableObjects.splice(0, 1);
+            this.world.collectedThrowableObjects.splice(0, 1);
         }, 300);
     }
 
@@ -193,21 +194,21 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     testIfChickenOrEndbossIsHit(indexOfEnemy) {
-        let indexOfEndboss = world.level.enemies.length - 1;
+        let indexOfEndboss = this.world.level.enemies.length - 1;
         if (indexOfEnemy != indexOfEndboss) {   // prüft anhand des Index, ob es sich bei dem getroffenen Objekt um den Endboss handelt
             this.playDeadChickenAnimation(indexOfEnemy);
         } else if (indexOfEnemy == indexOfEndboss) {
-            world.level.enemies[indexOfEndboss].endbossHit = true;
-            world.level.enemies[indexOfEndboss].playHurtAnimation = false;
-            world.level.enemies[indexOfEndboss].endbossLife -= 20;
+            this.world.level.enemies[indexOfEndboss].endbossHit = true;
+            this.world.level.enemies[indexOfEndboss].playHurtAnimation = false;
+            this.world.level.enemies[indexOfEndboss].endbossLife -= 20;
             this.deleteEndboss(indexOfEndboss);
         }
     }
 
     deleteEndboss(indexOfEndboss) {
-        if (world.level.enemies[indexOfEndboss].endbossLife < 20) {
+        if (this.world.level.enemies[indexOfEndboss].endbossLife < 20) {
             setTimeout(() => {
-                world.level.enemies.splice(indexOfEndboss, 1);
+                this.world.level.enemies.splice(indexOfEndboss, 1);
             }, 9000);
         }
     }
@@ -220,7 +221,7 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     playDeadChickenAnimation(indexOfEnemy) {
-        let enemy = world.level.enemies[indexOfEnemy];
+        let enemy = this.world.level.enemies[indexOfEnemy];
         const deadChickenIntervalID = setInterval(() => {
             if (enemy.chickenBig == true) {   // diese Abfrage prüft, ob es sich um ein großes oder ein kleines Ckicken handelt, damit im Folgenden das richtige Bild des toten Chicken geladen werden kann
                 enemy.loadImage(enemy.IMAGE_DEAD);
@@ -228,7 +229,7 @@ class ThrowableObject extends MovableObject {
                 enemy.loadImage(enemy.IMAGE_DEAD_SMALL);
             }
             enemy.speed = 0;  //-- Stops the movement of the hit enemy
-            world.character.enemyDeleted_sound.play();
+            this.world.character.enemyDeleted_sound.play();
         }, 200);
 
         setTimeout(() => {
@@ -239,20 +240,20 @@ class ThrowableObject extends MovableObject {
     }
 
     deleteHitEnemy(indexOfEnemy) {  // deletes the hit enemy
-        world.level.enemies.splice(indexOfEnemy, 1);
-        world.character.regainLife();  // erhöht das Leben des Characters, wenn ein enemy getötet wurde
+        this.world.level.enemies.splice(indexOfEnemy, 1);
+        this.world.character.regainLife();  // erhöht das Leben des Characters, wenn ein enemy getötet wurde
         this.playRegainHealthSound();
-        world.killedEnemies++;   // erhöht den Counter der getöteten Enemies, damit die Zahl der getöteten Enemies im Camnvas aktualisiert werden kann
+        this.world.killedEnemies++;   // erhöht den Counter der getöteten Enemies, damit die Zahl der getöteten Enemies im Camnvas aktualisiert werden kann
     }
 
     actualizeBottlesBar() {
-        world.statusBarBottles.collectedBottles--;  // verringert den Wert der gesammelten Flaschen für die Bottle-Status-Bar
-        world.statusBarBottles.setBottleNumber(world.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
+        this.world.statusBarBottles.collectedBottles--;  // verringert den Wert der gesammelten Flaschen für die Bottle-Status-Bar
+        this.world.statusBarBottles.setBottleNumber(this.world.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
     }
 
     playRegainHealthSound() {
-        if (world.character.energy < 99) {
-            world.character.healthRecharge_sound.play();
+        if (this.world.character.energy < 99) {
+            this.world.character.healthRecharge_sound.play();
         }
     }
 
@@ -265,7 +266,7 @@ class ThrowableObject extends MovableObject {
      */
      addIntervalToIntervalArray(param) {
           if (typeof world !== 'undefined' && world?.gameIntervals) {
-            world.gameIntervals.push(param);
+            this.world.gameIntervals.push(param);
             console.log(world.gameIntervals);
         } else {
             // Wiederholt die Prüfung 100ms später

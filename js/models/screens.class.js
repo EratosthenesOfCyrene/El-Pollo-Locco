@@ -27,8 +27,9 @@ class Screens extends DrawableObject {
         'img_pollo_locco/img/9_intro_outro_screens/game_over/oh no you lost!.png',
     ];
 
-    constructor() {
+    constructor(world) {
         super();
+        this.world = world;
         this.x = 0;
         this.y = 0;
         this.width = 720;
@@ -44,14 +45,14 @@ class Screens extends DrawableObject {
      */
     showScreen() {
         const interval = setInterval(() => {
-            if (world.character.energy == 0 && !world.gameOver) {
+            if (this.world.character.energy == 0 && !this.world.gameOver) {
                 this.gameLost();
-                world.gameOver = true;
+                this.world.gameOver = true;
             }
-            else if (world.level.enemies[world.level.enemies.length - 1].endbossLife <= 0) {
+            else if (this.world.level.enemies[this.world.level.enemies.length - 1].endbossLife <= 0) {
                 setTimeout(() => {
                     this.gameWon();
-                    world.gameOver = true;
+                    this.world.gameOver = true;
                 }, 6000);
                 clearInterval(interval);
             }
@@ -63,15 +64,15 @@ class Screens extends DrawableObject {
         this.loadImage(this.IMAGE_LOSS);
         pauseGame();
         showLevelSelection();
-        world.background_sound.pause();
+        this.world.background_sound.pause();
     }
 
     gameWon() {
         this.loadImage(this.IMAGE_WON);
         pauseGame();
         showLevelSelection();
-        world.background_sound.pause();
-        world.deleteAllEnemies();
+        this.world.background_sound.pause();
+        this.world.deleteAllEnemies();
     }
 
    /**

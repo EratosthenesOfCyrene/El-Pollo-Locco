@@ -43,7 +43,7 @@ class Coin extends MovableObject {
      * @method correctPositionOfEachCoin
      * @memberof Coin
      */
-    correctPositionOfEachCoin() {
+    correctPositionOfEachCoin(world) {
         const interval = setInterval(() => {
             world.level.coins.forEach(coin => {
                 //-- Level 1

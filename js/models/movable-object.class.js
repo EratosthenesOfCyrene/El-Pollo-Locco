@@ -143,7 +143,7 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     isJumpingOnEnemy(movingObject) {
-        world.indexOfCurrentEnemy = movingObject;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
+        this.world.indexOfCurrentEnemy = movingObject;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
         if (this.isCollidingJumpingOnEnemy(movingObject) &&
             this.speedY < 0) {
             this.jumpingOnEnemy = true;
@@ -193,12 +193,12 @@ class MovableObject extends DrawableObject {
     }
 
     regainLife() {
-        if (world.character.energy > 0) {
-            world.character.energy += 25;
-            if (world.character.energy > 100) {
-                world.character.energy = 100
+        if (window.world.character.energy > 0) {
+            window.world.character.energy += 25;
+            if (window.world.character.energy > 100) {
+                window.world.character.energy = 100
             }
-            world.statusBar.setPercentage(world.character.energy)
+            window.world.statusBar.setPercentage(window.world.character.energy)
         }
     }
 

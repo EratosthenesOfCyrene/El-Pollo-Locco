@@ -57,7 +57,7 @@
         <img src="img_pollo_locco/sound_img/sound_on.svg" alt="" class="soundBtnImg" id="soundOnImg">
     </button>
 
-    <button onclick="startGame()" id="startGameBtn" class="btn start-game-btn d-none">Start Game</button>
+    <button onclick="startGame(), chooseLevel1()" id="startGameBtn" class="btn start-game-btn d-none">Start Game</button>
 
     <div id="pauseEndGameBtns" class=" d-none">
         <button onclick="pauseGame()" id="pauseGameBtn" class="btn">Pause Game</button>
@@ -150,8 +150,8 @@
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
         <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
-            <div onclick="hideMobileLevelSelectionDiv(),playLevel2(), resetIntervals() " class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
-            <div onclick="hideMobileLevelSelectionDiv(), playLevel1(), resetIntervals()" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
+            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel2(), resetIntervals() " class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
+            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel1(), resetIntervals()" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
         </div>
         <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">Cancel</div>
     </div>

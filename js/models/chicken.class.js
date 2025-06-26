@@ -42,8 +42,9 @@ class Chicken extends MovableObject {
     ];
 
 
-    constructor() {
+    constructor(world) {
         super();
+        this.world = world
         let randomNumber = Math.random();   //  erzeugt ene zufüllige Zahl zwischen 0 und 1, von deren Größe abhängt, ob ein großes oder kleines Chicken erzeugt wird
         if (randomNumber > 0.65) {
             this.loadPropertiesChickenBig();
@@ -52,13 +53,15 @@ class Chicken extends MovableObject {
         }
     }
 
+     
+
     /**
      * Calls the functions that place the chickens along the x-axis and attribute a value of speed to each one.
      * 
      * @method correctSpeedOfEachChicken
      * @memberof Chicken
      */
-    correctSpeedOfEachChicken() {    //-- diese Funktion wird oben in World (Z. 58) aufgerufen
+    static correctSpeedOfEachChicken(world) {    //-- diese Funktion wird oben in World (Z. 58) aufgerufen
         const interval = setInterval(() => {
             world.level.enemies.forEach(enemy => {
                 //-- Level
@@ -77,7 +80,7 @@ class Chicken extends MovableObject {
                 }
             });
         }, 200);
-        this.addIntervalToIntervalArray(interval);
+        //this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -89,7 +92,7 @@ class Chicken extends MovableObject {
      * @method correctSpeedOfEachChickenLevel1
      * @memberof Chicken
      */
-    correctSpeedOfEachChickenLevel1(enemy) {
+    static correctSpeedOfEachChickenLevel1(enemy) {
         if (enemy.chickenBig) {
             enemy.speed = 0.15 + Math.random() * 0.63;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
@@ -113,7 +116,7 @@ class Chicken extends MovableObject {
      * @method correctSpeedOfEachChickenLevel2
      * @memberof Chicken
      */
-    correctSpeedOfEachChickenLevel2(enemy) {
+    static correctSpeedOfEachChickenLevel2(enemy) {
         if (enemy.chickenBig) {
             enemy.speed = 0.3 + Math.random() * 0.8;  // randomisiert die Geschwindigkeit der einzelnen Hühner für Level 1                 
             enemy.currentspeed = enemy.speed;
@@ -141,6 +144,7 @@ class Chicken extends MovableObject {
         this.width = 70;
         this.height = 70;
         this.y = 360;
+        this.x = 800;
         this.loadImage('./img_pollo_locco/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
         this.animate(this.IMAGES_WALKING);
@@ -160,6 +164,7 @@ class Chicken extends MovableObject {
         this.width = 40;
         this.height = 50;
         this.y = 380;
+        this.x = 800;
         this.loadImage('./img_pollo_locco/img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.currentspeed = this.speed;
         this.loadImages(this.IMAGES_WALKING_SMALL);

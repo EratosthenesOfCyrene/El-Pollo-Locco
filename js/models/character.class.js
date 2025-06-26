@@ -123,8 +123,10 @@ class Character extends MovableObject {
     enemyDeleted_sound = new Audio('audio/mixkit-game-notification-wave-alarm-987.wav');
 
 
-    constructor() {
+    constructor(world) {
         super().loadImage('../img_pollo_locco/img/2_character_pepe/2_walk/W-21.png');
+
+        this.world = world
 
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -275,7 +277,7 @@ class Character extends MovableObject {
         this.loadImage('img_pollo_locco/img/2_character_pepe/1_idle/idle/I-1.png');  // dieses Bild wird geladen, sobald keine Taste gedrückt wird, damit der Character wieder zurück in eine neutrale Ausgangsposition kommt
         this.counterInveralID = setInterval(() => {
             this.counter++;
-            if (world.gameOver === false) {
+            if (this.world.gameOver === false) {
                 if (this.counter > 5 && this.counter <= 16) {
                     this.playAnimation(this.IMAGES_IDLE);
                 } else if (this.counter > 15) {
@@ -284,7 +286,7 @@ class Character extends MovableObject {
                 }
             }
         }, 800);
-        this.addIntervalToIntervalArray(this.counterInveralID);
+        //this.addIntervalToIntervalArray(this.counterInveralID);
     }
 
     resetIdleTimeout() {

@@ -44,7 +44,7 @@ class BottleOnFloor extends MovableObject {
      * @method correctPositionOfEachBottle
      * @memberof BottleOnFloor
      */
-    correctPositionOfEachBottle() {
+    correctPositionOfEachBottle(world) {
         const interval = setInterval(() => {
             world.level.bottleOnFloor.forEach(bottle => {
                 //-- Level 1

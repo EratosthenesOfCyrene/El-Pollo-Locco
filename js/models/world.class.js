@@ -40,22 +40,48 @@ class World {
 
 
 
-    constructor(canvas, keyboard) {
-        this.initWorld();
+    constructor(canvas, keyboard, selectedLevel = 1) {
+        this.selectedLevel = selectedLevel;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-        this.draw();
+
         this.keyboard = keyboard;
+        this.backgroundObjects = this.createInitialBackground();  // der Background wird bereits hier initialisiert und nicht in level1 bzw. level 2, da das Laden sonst zu lange dauert
+        this.initWorld();
+
         this.setWorld();  // Diese Funkrion verknüft alle Variablen, die in der Klasse World drin sind mit der Klasse Character; bzw. man könnte sagen, diese Funktion übergibt sämliche Variablen, die in der Klasse "World" vorhanden sind, an die Klasse "Chararcter"
         this.runIntervals();
-        this.level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        this.level.coins[0].correctPositionOfEachCoin();    //-- ruft diese Funktion hier beim Erzeugen des ersten Coins auf, da man sie nicht in der Klasse "Coin" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Coin aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        this.level.bottleOnFloor[0].correctPositionOfEachBottle();
+        this.draw();
+        //this.level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
+        console.log('Chicken ist:', Chicken);
+        console.log('Methode ist:', Chicken.correctSpeedOfEachChicken);
+        console.log('Typ:', typeof Chicken.correctSpeedOfEachChicken);
+        //Chicken.correctSpeedOfEachChicken(this);
+        /*setTimeout(() => {
+            Chicken.correctSpeedOfEachChicken(this);
+        }, 5000);*/
+        this.level.coins[0].correctPositionOfEachCoin(this);    //-- ruft diese Funktion hier beim Erzeugen des ersten Coins auf, da man sie nicht in der Klasse "Coin" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Coin aufgerufen werden würde und dies zu viel rechenarbeit führen würde
+        this.level.bottleOnFloor[0].correctPositionOfEachBottle(this);
         this.adjustLevelEnd();
     }
 
+    createInitialBackground() {
+        const bg = [];
+        for (let i = 0; i < 14; i++) {
+            const offset = i * 719;
+            bg.push(new BackgroundObject('./img_pollo_locco/img/5_background/layers/air.png', offset, 0));
+            bg.push(new BackgroundObject('./img_pollo_locco/img/5_background/layers/3_third_layer/' + ((i % 2) + 1) + '.png', offset, 0));
+            bg.push(new BackgroundObject('./img_pollo_locco/img/5_background/layers/2_second_layer/' + ((i % 2) + 1) + '.png', offset, 0));
+            bg.push(new BackgroundObject('./img_pollo_locco/img/5_background/layers/1_first_layer/' + ((i % 2) + 1) + '.png', offset, 0));
+        }
+        return bg;
+    }
+
     initWorld() {
-        this.character = new Character();
+        //this.level;
+        this.setLevel();
+        //this.level = new Level1(this);
+        this.character = new Character(this);
         this.gameStarted = false;
         this.testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
         this.canvas;
@@ -71,7 +97,7 @@ class World {
         this.statusBarCoins = new StatusBarCoins();
         this.statusKilledEnemies = new StatusKilledEnemies();
         this.bottleInAir = false;   // diese Variable gibt an, ob sich gerade eine Flasche in der Luft befindet. Diese Variable wird gebraucht, um in der Funktion "checkThrowObjects()" zu überprüfen, ob sich bereits eine Flasche in der Luft befindet, damit nicht mehrere Flaschen auf einmal geworfen werden können
-        this.screens = new Screens();
+        this.screens = new Screens(this);
         this.indexOfCurrentEnemy;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
         this.canCheckJumpingOnEnemy = true;
         this.canExecuteCollisionCheck = false;
@@ -81,14 +107,41 @@ class World {
         this.isMuted = false;
         this.background_sound = new Audio('audio/background-music.mp3');
         this.gameIntervals = [];
+        // Jetzt ist `this` = world → also an alle Chickens weiterreichen:
         //this.setLevel(new Level1());
-        this.level = level;
+        //this.level = level;
+
+        Cloud.animateCloudMovement(this);
+
+        setTimeout(() => {
+            Chicken.correctSpeedOfEachChicken(this);
+        }, 3000);
 
     }
 
-    setLevel(level) {
-    this.level = level1;
-  }
+    setLevel() {
+        if (this.selectedLevel === 1) {
+            //startLevel2();
+            console.log(this.selectedLevel);
+            this.level = new Level1(this);
+            testIfLevel2 = false;
+            testWindowWidth();
+        } else if (this.selectedLevel === 2) {
+            //startLevel1();
+            console.log(this.selectedLevel);
+            this.level = new Level2(this);
+            testIfLevel2 = true;
+            testWindowWidth();
+        }
+        else {  // standart if no level was chosen
+            console.log(this.selectedLevel);
+            this.level = new Level1(this);
+            testIfLevel2 = false;
+            testWindowWidth();
+        }
+
+        //this.level = level1;
+    }
 
     adjustLevelEnd() {
         if (this.testIfLevel2 === false) {
@@ -132,7 +185,8 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);  // cleared bzw. löscht den Inhalt des Canvas vor jedem neuen Zeichnen
         this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);  // Background
+        this.addObjectsToMap(this.backgroundObjects);  // Background
+        //this.addObjectsToMap(this.level.backgroundObjects);  // Background
         this.ctx.translate(-this.camera_x, 0); // verschiebt die Kamera vor den Zeichnen der StatusBar zurück
         this.addObjectsToMap(this.level.clouds);  // Clouds
         this.addToMap(this.statusBar); // Status-Bar
@@ -231,6 +285,8 @@ class World {
      */
     checkForCollisionsWhithEnemies() {
         const interval = setInterval(() => {   // Checking for Collisions whith Enemies
+            //console.log(this.gamePaused);
+
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDead) {
                     this.character.hit();
@@ -271,7 +327,7 @@ class World {
         const interval = setInterval(() => {   // Checking for Collisions whith Bottles/ThrowableObjects
             this.level.bottleOnFloor.forEach((bottleOnFloor, indexOfBottle) => {
                 if (this.character.isColliding(bottleOnFloor)) {
-                    this.level.collectedBottle = new ThrowableObject(-5000);
+                    this.level.collectedBottle = new ThrowableObject(-5000, this);
                     this.collectedThrowableObjects.push(this.level.collectedBottle);
                     this.level.bottleOnFloor.splice(indexOfBottle, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarBottles.collectedBottles++;  // erhöht den Wert der gesammelten Flaschen für die Bottle-Status-Bar

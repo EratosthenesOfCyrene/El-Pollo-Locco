@@ -15,33 +15,35 @@ const level2 = new Level(
 */
 
 class Level2 extends Level {
-    constructor() {
-        super(
+    constructor(world) {
+        
 
-            [new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Endboss(),
-            ],
+         const enemies = 
+            [new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Endboss(world),
+            ];
 
+            const clouds =
             [
                 new Cloud(),
                 new Cloud(),
@@ -49,8 +51,9 @@ class Level2 extends Level {
                 new Cloud(),
                 new Cloud(),
                 new Cloud(),
-            ],
+            ];
 
+            const bottlesOnfloor =
             [
                 new BottleOnFloor(),
                 new BottleOnFloor(),
@@ -62,10 +65,10 @@ class Level2 extends Level {
                 new BottleOnFloor(),
                 new BottleOnFloor(),
                 new BottleOnFloor(),
-            ],
+            ];
 
 
-
+            const coins = 
             [
                 new Coin(),
                 new Coin(),
@@ -81,9 +84,10 @@ class Level2 extends Level {
                 new Coin(),
                 new Coin(),
                 new Coin(),
-            ],
+            ];
 
-
+            /*
+            const backgroundObjects =
             [
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/air.png', 0, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/3_third_layer/1.png', 0, 0),
@@ -147,11 +151,11 @@ class Level2 extends Level {
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/3_third_layer/2.png', 719 * 13, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/2_second_layer/2.png', 719 * 13, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/1_first_layer/2.png', 719 * 13, 0),
-            ],
+            ];
+            */
 
+            super(enemies, clouds, bottlesOnfloor, coins,/* backgroundObjects*/);
 
-
-        );
     }
 }
 

@@ -15,62 +15,64 @@ const level1 = new Level(
 */
 
 class Level1 extends Level {
-    constructor() {
-        super(
-
-            [new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Chicken(),
-            new Endboss(),
-            ],
-
-            [
-                new Cloud(),
-                new Cloud(),
-                new Cloud(),
-                new Cloud(),
-                new Cloud(),
-                new Cloud(),
-            ],
-
-            [
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-                new BottleOnFloor(),
-            ],
-
-            [
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-                new Coin(),
-            ],
+    constructor(world) {
 
 
-            [
+        const enemies =
+            [new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Chicken(world),
+            new Endboss(world),
+            ];
+
+
+        const clouds = [
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
+        ];
+
+            const bottlesOnfloor = [
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+                new BottleOnFloor(),
+            ];
+
+            const coins = [
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+                new Coin(),
+            ];
+
+/*
+            const backgroundObjects = [
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/air.png', 0, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/3_third_layer/1.png', 0, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/2_second_layer/1.png', 0, 0),
@@ -106,11 +108,10 @@ class Level1 extends Level {
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/3_third_layer/2.png', 719 * 7, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/2_second_layer/2.png', 719 * 7, 0),
                 new BackgroundObject('./img_pollo_locco/img/5_background/layers/1_first_layer/2.png', 719 * 7, 0),
-            ],
+            ];  */
 
+            super(enemies, clouds, bottlesOnfloor, coins,/* backgroundObjects*/);
 
-
-        );
     }
 }
 

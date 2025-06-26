@@ -25,25 +25,46 @@ function init() {
     shrinkStartImage();
     bindBtnsPressEvents();
     fullScreenMobile();
+    //initCanvasAndWorld();
 
     const urlParams = new URLSearchParams(window.location.search);
     const level = urlParams.get('level') || '1'; // Standardmäßig Level 1
 
     if (level === '2') {
-        startLevel2();
+        //startLevel2();
     } else {
-        startLevel1();
+        //startLevel1();
     }
 }
 
+function chooseLevel1() {
+    canvas = document.getElementById('canvas');
+    window.world = new World(canvas, keyboard, 1);
+    //world.level = 1;
+    console.log('level 1 chosen!!', window.world.level);
+}
+
+function chooseLevel2() {
+    canvas = document.getElementById('canvas');
+    window.world = new World(canvas, keyboard, 2);
+    //world.level = 2;
+    console.log('level 2 chosen!!', window.world.level);
+
+}
+
+function initCanvasAndWorld() {
+    canvas = document.getElementById('canvas');
+    world = new World(canvas, keyboard);
+}
+
 function startLevel1() {
-    level = new Level1();
+    //level = new Level1();
     //world = new World(canvas, keyboard, level1);
     //world.level = level1;
 }
 
 function startLevel2() {
-    level = new Level2();
+    //level = new Level2();
     //world = new World(canvas, keyboard, level1);
     //world.level = level1;
 }
@@ -51,17 +72,17 @@ function startLevel2() {
 function playLevel1() {
     testIfLevel2 = false;
     startLevel1();
-    startCanvas();
+    //startCanvas();
     resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
-    //world.initWorld();
+    world.initWorld();
 }
 
 function playLevel2() {
     testIfLevel2 = true;
     startLevel2();
-    startCanvas();
+    //startCanvas();
     resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
-    //world.initWorld();
+    world.initWorld();
 }
 
 /**
@@ -107,10 +128,12 @@ function shrinkStartImage() {
 }
 
 function resetIntervals() {
+
     world.gameIntervals = [];
     console.log(world.gameIntervals);
-    
-    
+
+
+
 }
 
 /**
@@ -139,10 +162,19 @@ function startGame() {
     document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
     document.getElementById('soundBtn').classList.remove('d-none');
     document.getElementById('soundBtn').classList.add('soundBtn');
-    startCanvas();
+    //startCanvas();
+    //testLevel();
     loadSoundSettings();
     playBackgroundMusic();
     gameStarted = true;
+}
+
+function testLevel() {
+    if (level === '2') {
+        startLevel2();
+    } else {
+        startLevel1();
+    }
 }
 
 /**
@@ -165,7 +197,7 @@ function playBackgroundMusic() {
             world.background_sound.playbackRate = 1;
         }
     }, 200);
-    this.addIntervalToIntervalArray(interval); 
+    this.addIntervalToIntervalArray(interval);
 }
 
 /**
@@ -194,6 +226,29 @@ function changeSondSettings() {
  * @function loadSoundSettings
  */
 function loadSoundSettings() {
+    const checkWorldInterval = setInterval(() => {
+        if (typeof window.world !== 'undefined') {
+            // Sobald world existiert – führe den Code einmal aus:
+            const mutedSetting = localStorage.getItem('isMuted');
+
+            if (mutedSetting === 'true') {
+                window.world.isMuted = true;
+                showMutedImg();
+                muteSound();
+            } else {
+                window.world.isMuted = false;
+                showSoundImg();
+                amplifySound();
+            }
+
+            clearInterval(checkWorldInterval); // stopt das Intervall – nur einmal ausführen!
+        }
+    }, 100); // alle 100ms prüfen, ob world existiert
+}
+/*function loadSoundSettings() {
+    if (world === !undefined) {
+        
+    }
     const mutedSetting = localStorage.getItem('isMuted');
     if (mutedSetting === 'true') {
         world.isMuted = true;
@@ -204,31 +259,31 @@ function loadSoundSettings() {
         showSoundImg();
         amplifySound();
     }
-}
+}*/
 
 function muteSound() {
-    world.character.walking_sound.volume = 0;
-    world.character.spinJump_sound.volume = 0;
-    world.character.hurt_sound.volume = 0;
-    world.character.healthRecharge_sound.volume = 0;
-    world.background_sound.volume = 0;
-    world.character.bottleCollected_sound.volume = 0;
-    world.character.enemyHit_sound.volume = 0;
-    world.character.coinCollected_sound.volume = 0;
-    world.character.enemyDeleted_sound.volume = 0;
+    window.world.character.walking_sound.volume = 0;
+    window.world.character.spinJump_sound.volume = 0;
+    window.world.character.hurt_sound.volume = 0;
+    window.world.character.healthRecharge_sound.volume = 0;
+    window.world.background_sound.volume = 0;
+    window.world.character.bottleCollected_sound.volume = 0;
+    window.world.character.enemyHit_sound.volume = 0;
+    window.world.character.coinCollected_sound.volume = 0;
+    window.world.character.enemyDeleted_sound.volume = 0;
 }
 
 function amplifySound() {
-    world.character.walking_sound.volume = 1;
-    world.character.spinJump_sound.volume = 1;
-    world.character.hurt_sound.volume = 1;
-    world.character.healthRecharge_sound.volume = 1;
-    world.character.bottleCollected_sound.volume = 1;
-    world.background_sound.volume = 0.18;
-    world.character.bottleCollected_sound.volume = 1;
-    world.character.enemyHit_sound.volume = 1;
-    world.character.coinCollected_sound.volume = 1;
-    world.character.enemyDeleted_sound.volume = 1;
+    window.world.character.walking_sound.volume = 1;
+    window.world.character.spinJump_sound.volume = 1;
+    window.world.character.hurt_sound.volume = 1;
+    window.world.character.healthRecharge_sound.volume = 1;
+    window.world.character.bottleCollected_sound.volume = 1;
+    window.world.background_sound.volume = 0.18;
+    window.world.character.bottleCollected_sound.volume = 1;
+    window.world.character.enemyHit_sound.volume = 1;
+    window.world.character.coinCollected_sound.volume = 1;
+    window.world.character.enemyDeleted_sound.volume = 1;
 }
 
 function showSoundImg() {
@@ -242,8 +297,8 @@ function showMutedImg() {
 }
 
 function startCanvas() {
-    canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard, level1Test);
+    //canvas = document.getElementById('canvas');
+    //world = new World(canvas, keyboard, level1Test);
 }
 
 /**
@@ -264,17 +319,21 @@ function pauseGame() {
     } else if (mobileWindow == true) {
         toggleBtn('pauseGameBtnMobile', true);   // die parameter true und false dürfen nicht in Anführungszeichen stehen, da die aufgerufene Funktion diese nicht als String, sondern als Booleiische Variable braucht!
         toggleBtn('resumeGameBtnMobile', false);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
+        toggleBtn('mobileBtnLeft', true);
+        toggleBtn('mobileBtnRight', true);
     }
 
-    if (!world.gameOver) {
-        world.gamePaused = true;
+    if (!window.world.gameOver) {
+        window.world.gamePaused = true;
         pauseChicken();
     }
 }
 
 function pauseChicken() {
-    level.enemies.forEach((enemy, indexOfEnemy) => {
-        level.enemies[indexOfEnemy].speed = 0;
+    window.world.level.enemies.forEach((enemy, indexOfEnemy) => {
+        //console.log('Aktuelles Level:', world.level instanceof Level1 ? 'Level1' : 'Level2');
+        window.world.level.enemies[indexOfEnemy].speed = 0;
+        //console.log("Zugriff auf enemies:", world.level?.enemies);
     });
 }
 
@@ -293,7 +352,7 @@ function toggleBtn(param1, param2) {
  */
 function resumeGame() {
     restartChicken();
-    world.gamePaused = false;
+    window.world.gamePaused = false;
     if (mobileWindow == false) {
         toggleBtn('resumeGameBtn', true);    // deaktiviert den "Play-Button" der Desktop Ansicht
         toggleBtn('pauseGameBtn', false);    // reaktiviert den zuvor deaktivierten "Pause-Button" der Desktop Ansicht
@@ -304,8 +363,8 @@ function resumeGame() {
 }
 
 function restartChicken() {
-    level.enemies.forEach((enemy, indexOfEnemy) => {
-        level.enemies[indexOfEnemy].speed = level.enemies[indexOfEnemy].currentspeed;
+    window.world.level.enemies.forEach((enemy, indexOfEnemy) => {
+        window.world.level.enemies[indexOfEnemy].speed = window.world.level.enemies[indexOfEnemy].currentspeed;
     });
 }
 
@@ -527,6 +586,7 @@ function bindBtnsPressEvents() {
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     const interval = setInterval(() => {
         const mediaQuery = window.matchMedia('(max-width: 1200px)');
+        console.log(gameStarted);
 
         //-- Mobile View
         if (mediaQuery.matches) {
@@ -560,7 +620,7 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
         }
 
     }, 200);
-    this.addIntervalToIntervalArray(interval); 
+    this.addIntervalToIntervalArray(interval);
 }
 
 function initMobileView() {
@@ -745,7 +805,7 @@ function fullScreenMobile() {
             hideShowContent('nav', 'remove');
         }
     }, 200);
-    this.addIntervalToIntervalArray(interval); 
+    this.addIntervalToIntervalArray(interval);
 }
 
 function soundBtnMobile() {
