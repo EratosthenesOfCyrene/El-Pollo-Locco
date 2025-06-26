@@ -128,9 +128,8 @@ function shrinkStartImage() {
 }
 
 function resetIntervals() {
-
-    world.gameIntervals = [];
-    console.log(world.gameIntervals);
+    window.world.gameIntervals = [];
+    console.log(window.world.gameIntervals);
 
 
 

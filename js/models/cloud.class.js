@@ -31,7 +31,7 @@ class Cloud extends MovableObject {
      * @method animateMovement
      * @memberof Cloud
      */
-    static animateCloudMovement(world) {
+    animateCloudMovement(world) {
         const interval = setInterval(() => {
            if (typeof gameStarted !== 'undefined' && gameStarted == true && world.keyboard.RIGHT && !world.gamePaused) {  //-- "typeof gameStarted !== 'undefined'" prüft, ob gameStarted geladen wurd, da es sonst eiinen Fehler gäbe
                 this.speedCloud = 0.5;

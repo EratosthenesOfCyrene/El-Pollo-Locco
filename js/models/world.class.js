@@ -111,12 +111,23 @@ class World {
         //this.setLevel(new Level1());
         //this.level = level;
 
-        Cloud.animateCloudMovement(this);
+        //Cloud.animateCloudMovement(this);
+        //this.clouds.forEach(cloud => cloud.animateCloudMovement(this));
+        this.initializeCloudMovement();
 
         setTimeout(() => {
             Chicken.correctSpeedOfEachChicken(this);
         }, 3000);
 
+    }
+
+    initializeCloudMovement() {
+        const checkCloudsInterval = setInterval(() => {
+            if (window.world && Array.isArray(window.world.level.clouds)) {
+                window.world.level.clouds.forEach(cloud => cloud.animateCloudMovement(window.world));
+                clearInterval(checkCloudsInterval); // Intervall beenden, sobald es einmal erfolgreich war
+            }
+        }, 100);
     }
 
     setLevel() {

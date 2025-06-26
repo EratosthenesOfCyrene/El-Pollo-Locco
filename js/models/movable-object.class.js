@@ -103,7 +103,7 @@ class MovableObject extends DrawableObject {
 
     isCollidingJumpingOnEnemy(movingObject) {
          return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
-            this.y + this.height > movingObject.y -100 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
+            this.y + this.height > movingObject.y -12 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
             this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
             this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
