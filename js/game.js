@@ -25,6 +25,9 @@ function init() {
     shrinkStartImage();
     bindBtnsPressEvents();
     fullScreenMobile();
+    if (!window.world) {  // prüft, ob bereits eine level ausgewählt wurde; wenn nicht, dann wirdd level 1 initialisiert
+        chooseLevel1();
+    }
     //initCanvasAndWorld();
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -50,6 +53,13 @@ function chooseLevel2() {
     //world.level = 2;
     console.log('level 2 chosen!!', window.world.level);
 
+}
+
+function noLevelChosen() {
+    canvas = document.getElementById('canvas');
+    window.world = new World(canvas, keyboard, 3);
+    //world.level = 2;
+    console.log('no level chosen!!', window.world.level);
 }
 
 function initCanvasAndWorld() {
@@ -105,10 +115,10 @@ function startLevel2() {
 } */
 
 function showLevelSelection() {
-    setTimeout(() => {
-        document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
-        document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
-    }, 10000);
+    //setTimeout(() => {
+    document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
+    document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
+    //}, 100);
 }
 
 function showLevelSelectionFast() {
@@ -601,7 +611,10 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
                 initMobileGameView();  //-- blendet UI-content ein
             } if (window.innerWidth < 700) {
                 hideShowContent('pauseEndGameBtns', 'add');
-                hideShowContent('about-btns', 'add');
+                //hideShowContent('about-btns', 'add');
+                document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
+                    hideShowContent('pauseEndGameBtns', 'add');
+                });
             }
         } else {
             mobileWindow = false;

@@ -168,7 +168,7 @@ class Endboss extends MovableObject {
     hit2() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
-            world.background_sound.playbackRate = 1.2;
+            window.world.background_sound.playbackRate = 1.2;
         }
         this.timeoutHit2IntervalID = setTimeout(() => {
             if (this.playHurtAnimationTest == false) {
@@ -183,7 +183,7 @@ class Endboss extends MovableObject {
     hit3() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
-            world.background_sound.playbackRate = 1.4;
+            window.world.background_sound.playbackRate = 1.4;
         }
         this.timeoutHit3IntervalID = setTimeout(() => {
             if (this.playHurtAnimationTest2 == false) {
@@ -198,7 +198,7 @@ class Endboss extends MovableObject {
     hit4() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
-            world.background_sound.playbackRate = 1.7;
+            window.world.background_sound.playbackRate = 1.7;
         }
         this.timeoutHit4IntervalID = setTimeout(() => {
             if (this.playHurtAnimationTest3 == false) {
@@ -213,7 +213,7 @@ class Endboss extends MovableObject {
     hit5() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
-            world.background_sound.playbackRate = 2;
+            window.world.background_sound.playbackRate = 2;
         }
         if (this.endbossLife <= 0) {
             this.endBossSpeed = 0;

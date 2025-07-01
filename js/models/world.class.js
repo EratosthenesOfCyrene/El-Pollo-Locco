@@ -107,6 +107,9 @@ class World {
         this.isMuted = false;
         this.background_sound = new Audio('audio/background-music.mp3');
         this.gameIntervals = [];
+        this.adjustToggleBtnsForStart();
+
+
         // Jetzt ist `this` = world → also an alle Chickens weiterreichen:
         //this.setLevel(new Level1());
         //this.level = level;
@@ -160,6 +163,13 @@ class World {
         } if (this.testIfLevel2 === true) {
             this.level.level_end_x = 8100
         }
+    }
+
+    adjustToggleBtnsForStart() {
+        toggleBtn('resumeGameBtn', true);  // deaktiviert den zuvor deaktivierten "play-Button" der Desktop Ansicht
+        toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
+        toggleBtn('pauseGameBtn', false);    // reaktiviert den zuvor deaktivierten "Pause-Button" der Desktop Ansicht
+        toggleBtn('pauseGameBtnMobile', false);    // reaktiviert den zuvor deaktivierten "Pause-Button" der mobilen Ansicht
     }
 
     /**
