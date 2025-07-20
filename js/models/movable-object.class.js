@@ -134,6 +134,13 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    isCollidingBottleCharacter(movingObject) {
+        return this.x + this.width > (movingObject.x) &&
+                this.y + this.height > movingObject.y &&
+                this.x < movingObject.x + movingObject.width &&
+                this.y < movingObject.y + movingObject.height;
+    }
+
     /**
      * Chicks if the Character is jumping onto an enemy.
      * 
@@ -164,6 +171,17 @@ class MovableObject extends DrawableObject {
      */
     hit() {
         this.energy -= 0.25;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
+        }
+    }
+
+    hitByBottle() {
+        console.log('Hiiiiiittttt');
+        
+        this.energy -= 15;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
@@ -214,6 +232,22 @@ class MovableObject extends DrawableObject {
         let path = images[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+
+        this.moveEndossLeft(path);
+    }
+
+    moveEndossLeft(path) {
+        if (path.includes('G18.png') && this instanceof Endboss) {
+            if (this.testHit2 === true && (this.oldX - 800) < this.x) {
+                this.x -= this.endBossSpeed;
+            } if (this.testHit3 === true && (this.oldX - 800 - 1100) < this.x) {
+                this.x -= (this.endBossSpeed + 50);
+                this.endbossThrowBottle();
+            } if (this.testHit4 === true && (this.oldX - 800 - 1100 - 1400) < this.x) {
+                this.x -= (this.endBossSpeed + 100);
+            }
+        //this.x -= this.endBossSpeed;
+    }
     }
 
     moveRight() {
@@ -244,4 +278,12 @@ class MovableObject extends DrawableObject {
             setTimeout(() => this.addIntervalToIntervalArray(param), 100);
         }          
     }
+
+     /**
+     * Optionaler "Hook" – kann in Unterklassen überschrieben werden
+     */
+    maybeThrowBottle() {
+        // leer in der Basisklasse
+    }
+
 }

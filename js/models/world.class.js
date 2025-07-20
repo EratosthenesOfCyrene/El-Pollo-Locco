@@ -224,6 +224,11 @@ class World {
         this.addObjectsToMap(this.level.enemies);  // Enemies
         this.addObjectsToMap(this.level.coins);  // Coins
         this.addObjectsToMap(this.collectedThrowableObjects);
+        //this.addObjectsToMap(this.level.enemies[11].bottles);
+        const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+        if (endboss && endboss.bottles) {
+            this.addObjectsToMap(endboss.bottles);
+        }
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;

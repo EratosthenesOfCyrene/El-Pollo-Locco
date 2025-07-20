@@ -52,7 +52,7 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.IMAGES_THROW);
         this.loadImages(this.IMAGES_SPLASH);
 
-        this.world = world; 
+        this.world = world;
         this.speed = 0.40;
         this.height = 70;
         this.width = 65;
@@ -104,7 +104,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimationIntervalID = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW);
         }, 50);
-        this.addIntervalToIntervalArray(this.playAnimationIntervalID);  
+        this.addIntervalToIntervalArray(this.playAnimationIntervalID);
     }
 
     /**
@@ -121,7 +121,7 @@ class ThrowableObject extends MovableObject {
                     this.bottleCollides = true;
                 }
             });
-            this.addIntervalToIntervalArray(this.checkForCollissionIntervalID);  
+            this.addIntervalToIntervalArray(this.checkForCollissionIntervalID);
         }, 200);
     }
 
@@ -141,21 +141,21 @@ class ThrowableObject extends MovableObject {
                 this.world.character.enemyHit_sound.play();
             }
         }, 25);
-        this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);  
+        this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
     }
 
     throwBottleLeft() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x -= 10;
         }, 25);
-        this.addIntervalToIntervalArray(this.throwBottleIntervalID);  
+        this.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }
 
     throwBottleRight() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x += 10;
         }, 25);
-        this.addIntervalToIntervalArray(this.throwBottleIntervalID);  
+        this.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }
 
     /**
@@ -236,7 +236,7 @@ class ThrowableObject extends MovableObject {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(indexOfEnemy);
         }, 1500);
-        this.addIntervalToIntervalArray(deadChickenIntervalID);  
+        this.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
     deleteHitEnemy(indexOfEnemy) {  // deletes the hit enemy
@@ -264,18 +264,97 @@ class ThrowableObject extends MovableObject {
      * 
      * @param {number} param - The ID of the interval 
      */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
+    addIntervalToIntervalArray(param) {
+        if (typeof world !== 'undefined' && world?.gameIntervals) {
             this.world.gameIntervals.push(param);
             console.log(world.gameIntervals);
         } else {
             // Wiederholt die Prüfung 100ms später
             setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
+        }
+    }
+
+    throwEndboss() {
+        //this.world.bottleInAir = true;  // gibt an, dass sich gerade eine Flasche in der Luft befindet
+        //this.x = this.world.endboss.x + 100;
+        /*if (this.world.character.otherdirection == true) {   // Anpassen des x-Wertes der Flasche, wenn nach links geworfen wird
+            this.x = this.world.character.x
+        };*/
+        //this.y = this.world.endboss.y;
+        //this.speedY = -30;
+        //this.applyGravity();
+        //this.testThrowDirection();
+        this.collidedWithCharacter = false;
+        console.log(this, this.bottles, this.bottle);
+        this.x -= 10;
+        console.log('bottle-X:', this.x, 'Endboss-X:', this.endboss.x);
+        this.playAnimationImgThrow();
+        this.endbossThrows();
+        this.checkForCollissionEndbossThrownBottleWithCharacter();
+        //this.checkForCollissions();
+        //this.checkForYOrCollossion();
+    }
+    speedX = 15;
+throwEndbossInterval;
+    endbossThrows() {
+        this.throwEndbossInterval = setInterval(() => {
+            this.x -= this.speedX;
+        }, 25);
+    }
+checkCollisionInterval;
+    collidedWithCharacter = false;
+    checkForCollissionEndbossThrownBottleWithCharacter() {
+        this.checkCollisionInterval = setInterval(() => {
+
+
+            if (!this.collidedWithCharacter && this.isCollidingBottleCharacter(window.world.character)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...  // enemy, indexOfEnemy
+                clearInterval(this.throwEndbossInterval);
+                console.log('Collossion!!!!!! Autsch, Leben:', window.world.character.energy);
+                window.world.character.hitByBottle();
+                window.world.statusBar.setPercentage(window.world.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
+                console.log('Leben:', window.world.character.energy);
+                this.collidedWithCharacter = true;
+                clearInterval(this.playAnimationIntervalID);
+
+                //clearInterval(this.throwEndbossInterval);             // Stoppe Bewegung
+                //clearInterval(this.checkCollisionInterval);    // Stoppe Kollisionscheck
+                this.speedX = 0;
+                this.speedY = 0;
+                this.playEdbossSplashAnimation();
+            }
+        }, 50);
+
+    }
+
+    playEdbossSplashAnimation() {
+        this.playAnimation(this.IMAGES_SPLASH);
+        this.deleteEndbossThrownBottle();
+    }
+
+    deleteEndbossThrownBottle() {
+         setTimeout(() => {
+           const index = this.endboss.bottles.indexOf(this);
+        if (index > -1) {
+            this.endboss.bottles.splice(index, 1);
+        }
+        }, 300);
     }
 
 
 
 
 
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

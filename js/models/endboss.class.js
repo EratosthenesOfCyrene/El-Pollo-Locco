@@ -25,7 +25,7 @@ class Endboss extends MovableObject {
     width = 250;
     y = 60;
     x = 5300;
-    endBossSpeed = 20;
+    endBossSpeed = 100;
     endbossLife = 100;
     endbossHit = false;
     playImagesAttack = false;
@@ -40,6 +40,11 @@ class Endboss extends MovableObject {
     timeoutHit2IntervalID;
     timeoutHit3IntervalID;
     timeoutHit4IntervalID;
+    oldX = this.x;
+    testHit2 = false;
+    testHit3 = false;
+    testHit4 = false;
+
 
     IMAGES_WALKING = [
         './img_pollo_locco/img/4_enemie_boss_chicken/1_walk/G1.png',
@@ -93,6 +98,36 @@ class Endboss extends MovableObject {
         this.playImagesWalking = false;
         this.animate();
         this.checkForAttack();
+        //setTimeout(() => {
+            this.bottles = this.createBottles(17);  // creates 17 bottles
+            this.bottleIndex = 0;
+        //}, 4000);
+    }
+
+    createBottles(count) {
+        const bottles = [];
+        for (let i = 0; i < count; i++) {
+            const bottle = new ThrowableObject(this.x, this.world);  // Position und world mitgeben
+            bottle.endboss = this; // jeder Bottle die Daten des Endboss mitgeben, damit später bei bedarf darauf zugegriffen werden kann
+            bottle.visible = false;  // bottles werden erst sichtbar, wenn sie geworfen wurden
+            bottles.push(bottle);
+            //console.log(bottles);
+            
+        }
+        return bottles;
+    }
+
+    endbossThrowBottle() {
+        if (this.bottleIndex < this.bottles.length) {  // if-Abfrage, damit man nicht versucht, auf eine nicht vorhandene Flasche zuzugreifen
+            const bottle = this.bottles[this.bottleIndex];
+            bottle.x = this.x - 20;  // Setze aktuelle Position
+            bottle.y = this.y + 240;
+            bottle.visible = true;
+            //console.log(this.bottles);
+            bottle.throwEndboss();  // Optional: eigene Methode im ThrowableObject für Animation / Bewegung
+            //this.world.collectedThrowableObjects.push(bottle);
+            this.bottleIndex++;
+        }
     }
 
     animate() {
@@ -105,7 +140,7 @@ class Endboss extends MovableObject {
                 this.playImagesWalking = false;
             }
         }, 200);
-         this.addIntervalToIntervalArray(this.playAnimationIntervallID);  
+        this.addIntervalToIntervalArray(this.playAnimationIntervallID);
     }
 
     /**
@@ -119,15 +154,15 @@ class Endboss extends MovableObject {
         const interval = setInterval(() => {
             // Hit 1
             if (this.endbossHit == true && this.endbossLife >= 80 && this.playImagesAttack == false) {
-               this.hit1();
+                this.hit1();
 
                 //  Hit 2
             } else if (this.endbossHit == true && this.endbossLife < 80 && this.endbossLife >= 60) {
-               this.hit2();
+                this.hit2();
 
                 //  Hit 3
             } else if (this.endbossHit == true && this.endbossLife < 60 && this.endbossLife >= 40) {
-              this.hit3();
+                this.hit3();
 
                 //  Hit 4
             } else if (this.endbossHit == true && this.endbossLife < 40 && this.endbossLife >= 20) {
@@ -138,7 +173,7 @@ class Endboss extends MovableObject {
                 this.hit5();
             }
         }, 200);
-         this.addIntervalToIntervalArray(interval);  
+        this.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -176,7 +211,9 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            this.endbossMoveLeft();
+            this.testHit2 = true;
+            //this.endbossMoveLeftHit2();
+            //this.moveEndboss();
         }, 1000);
     }
 
@@ -191,7 +228,9 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest2 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            this.endbossMoveLeft();
+            //this.endbossMoveLeft();
+            this.testHit3 = true;
+            //this.moveEndboss();
         }, 2000);
     }
 
@@ -206,7 +245,8 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest3 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            this.endbossMoveLeft();
+            this.testHit4 = true;
+            //this.endbossMoveLeft();
         }, 4000);
     }
 
@@ -232,6 +272,34 @@ class Endboss extends MovableObject {
         this.x -= this.endBossSpeed;
     }
 
+    endbossMoveLeftHit2() {
+        //clearInterval(this.playAnimationIntervallID);
+        console.log(this.x, this.endBossSpeed);
+        if ((this.oldX - 300) < this.x) {
+            this.x -= this.endBossSpeed;
+        }
+    }
+
+
+
+
+
+    moveEndboss() {
+        if (this.otherDirection) {
+            this.x -= this.endBossSpeed;
+
+            if (this.x - window.world.camera_x <= 100) {
+                this.otherDirection = false; // Drehen
+            }
+        } else {
+            this.x += this.endBossSpeed;
+
+            if (this.x - window.world.camera_x >= canvas.width - 100) {
+                this.otherDirection = true; // Drehen
+            }
+        }
+    }
+
     /**
      * This function pushes the interval into the array gameIntervals in world.class.
      * It tries it as often as needed until it can push the respective interval into the
@@ -239,14 +307,14 @@ class Endboss extends MovableObject {
      * 
      * @param {number} param - The ID of the interval 
      */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
+    addIntervalToIntervalArray(param) {
+        if (typeof world !== 'undefined' && world?.gameIntervals) {
             world.gameIntervals.push(param);
             console.log(world.gameIntervals);
         } else {
             // Wiederholt die Prüfung 100ms später
             setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
+        }
     }
 
 
