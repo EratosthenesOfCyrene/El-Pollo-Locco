@@ -312,9 +312,9 @@ class World {
     checkForCollisionsWhithEnemies() {
         const interval = setInterval(() => {   // Checking for Collisions whith Enemies
             //console.log(this.gamePaused);
-
+            //console.log(this.level.enemies[11].isDeadChicken /*instanceof Endboss, this.level.enemies.isDeadChicken*/);
             this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDead) {
+                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
                 }
@@ -334,7 +334,7 @@ class World {
             this.level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (this.character.isJumpingOnEnemy(enemy)) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
-                    enemy.isDead = true;
+                    enemy.isDeadChicken = true;
                     //this.collectedThrowableObjects[0].enemyDeleted_sound.play();    // spielt den Sound ab, dass ein enemy getötet wurde
                     this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
                 }

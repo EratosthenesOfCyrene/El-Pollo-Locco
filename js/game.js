@@ -595,7 +595,7 @@ function bindBtnsPressEvents() {
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     const interval = setInterval(() => {
         const mediaQuery = window.matchMedia('(max-width: 1200px)');
-        console.log(gameStarted);
+        //console.log(gameStarted);
 
         //-- Mobile View
         if (mediaQuery.matches) {

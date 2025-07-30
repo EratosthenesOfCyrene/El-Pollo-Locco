@@ -137,7 +137,7 @@ class MovableObject extends DrawableObject {
     isCollidingBottleCharacter(movingObject) {
         return this.x + this.width > (movingObject.x) &&
                 this.y + this.height > movingObject.y &&
-                this.x < movingObject.x + movingObject.width &&
+                this.x < (movingObject.x - 15) + movingObject.width &&
                 this.y < movingObject.y + movingObject.height;
     }
 
@@ -240,7 +240,7 @@ class MovableObject extends DrawableObject {
         if (path.includes('G18.png') && this instanceof Endboss) {
             if (this.testHit2 === true && (this.oldX - 800) < this.x) {
                 this.x -= this.endBossSpeed;
-            } if (this.testHit3 === true && (this.oldX - 800 - 1100) < this.x) {
+            } if (this.testHit3 === true && (this.oldX - 800 - 1100) < this.x && window.world.character.energy > 0) {
                 this.x -= (this.endBossSpeed + 50);
                 this.endbossThrowBottle();
             } if (this.testHit4 === true && (this.oldX - 800 - 1100 - 1400) < this.x) {

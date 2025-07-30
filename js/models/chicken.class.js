@@ -16,7 +16,7 @@ class Chicken extends MovableObject {
 
     chickenBig;
     chickenSmall;
-    isDead = false;
+    isDeadChicken = false;
 
     //  Images BIG Chicken
     IMAGES_WALKING = [

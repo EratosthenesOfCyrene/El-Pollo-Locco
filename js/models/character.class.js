@@ -227,7 +227,9 @@ class Character extends MovableObject {
                         this.playAnimation(this.IMAGES_DEAD);
                     }
                     setTimeout(() => {
-                        this.playAnimation(this.IMAGES_SKELETON);
+                        setInterval(() => {
+                           this.playAnimation(this.IMAGES_SKELETON); 
+                        }, 200);
                         this.imagesDeadPlayed = true;
                     }, 7100);
                 } else if (this.isHurt()) { //-- if the character is hurt
@@ -278,7 +280,7 @@ class Character extends MovableObject {
         this.counterInveralID = setInterval(() => {
             this.counter++;
             if (this.world.gameOver === false) {
-                if (this.counter > 5 && this.counter <= 16) {
+                if (this.counter > 0 && this.counter <= 16) {
                     this.playAnimation(this.IMAGES_IDLE);
                 } else if (this.counter > 15) {
                     this.playAnimation(this.IMAGES_LONGIDLE);

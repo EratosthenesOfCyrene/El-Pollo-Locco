@@ -61,8 +61,12 @@ class Screens extends DrawableObject {
     }
 
     gameLost() {
-        this.loadImage(this.IMAGE_LOSS);
+        //setInterval(() => {
+            this.loadImage(this.IMAGE_LOSS); 
+        //}, 200);
+        //this.loadImage(this.IMAGE_LOSS);
         pauseGame();
+        toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         showLevelSelection();
         this.world.background_sound.pause();
     }
@@ -70,6 +74,7 @@ class Screens extends DrawableObject {
     gameWon() {
         this.loadImage(this.IMAGE_WON);
         pauseGame();
+        toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         showLevelSelection();
         this.world.background_sound.pause();
         this.world.deleteAllEnemies();
