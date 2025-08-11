@@ -69,10 +69,16 @@
 
     <div class="menu-board" id="menuBoard">
         <h2>Menü</h2>
-        <button onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu()" class="menu-button">📝 Spielregeln</button>
-        <button onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="menu-button">🎮 Levelauswahl</button>
-        <button  onclick="hideShowContentAndMenu(), window.open('https://jean-marie-mayer.developerakademie.net/JM_Developments/index.html')" class="menu-button">ℹ️ Über uns</button>
+        <button
+            onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu(), pauseGame()"
+            class="menu-button">📝 Spielregeln</button>
+        <button onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="menu-button">🎮
+            Levelauswahl</button>
+        <button onclick="hideShowContentAndMenu(), hideShowContent('impressumDivId', 'remove'), pauseGame()"
+            class="menu-button">ℹ️
+            Über uns</button>
     </div>
+    <!-- window.open('https://jean-marie-mayer.developerakademie.net/JM_Developments/index.html') -->
 
     <div class="button-board" id="buttonBoard">
         <h2>Tastenbelegung</h2>
@@ -82,10 +88,12 @@
             <p>C-Taste: Pepe springt</p>
             <p>D-Taste: Pepe wirft eine Flasche</p>
         </div>
-        <button  onclick="hideShowContent('buttonBoard', 'add'), adjustButtonBoardFlag('false')" class="menu-button">Verstanden</button>
+        <button onclick="hideShowContent('buttonBoard', 'add'), adjustButtonBoardFlag('false')"
+            class="menu-button">Verstanden</button>
     </div>
 
-    <div onclick="showMobileAboutMenu(), hideMobileLevelSelectionDiv()" id="mobileAboutMenu" class="mobileAboutMenu d-none">
+    <div onclick="showMobileAboutMenu(), hideMobileLevelSelectionDiv()" id="mobileAboutMenu"
+        class="mobileAboutMenu d-none">
         <svg id="mobileAboutMenuBurgerImg" width="50" height="50" viewBox="0 0 50 50"
             xmlns="http://www.w3.org/2000/svg">
             <rect y="8" width="50" height="8" rx="4" fill="white" />
@@ -101,14 +109,15 @@
     </div>
 
     <div id="mobileAboutDiv" class="mobileAboutDiv d-none">
-        <div onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu()"
+        <div onclick="hideShowContent2('mobileAboutMenu', 'add'), showAboutPanel(), hideShowContentAndMenu(), pauseGame()"
             class="mobileAboutDivBtn">Spielregeln</div>
-            <div onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="mobileAboutDivBtn">Levelauswahl</div>
+        <div onclick="showLevelSelectionFast(), hideShowContentAndMenu()" class="mobileAboutDivBtn">Levelauswahl</div>
         <div class="mobileAboutDivBtn"
-            onclick="hideShowContentAndMenu(), window.open('https://jean-marie-mayer.developerakademie.net/JM_Developments/index.html')"
+            onclick="hideShowContentAndMenu(), hideShowContent('impressumDivIdMobile', 'remove'), pauseGame()"
             class="mobileAboutDivBtn">Über uns
         </div>
     </div>
+    <!-- window.open('https://jean-marie-mayer.developerakademie.net/JM_Developments/index.html') -->
 
 
     <div id="mobileMenu" class="mobileMenu d-none">
@@ -150,10 +159,13 @@
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
         <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
-            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel2(), resetIntervals() " class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
-            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel1(), resetIntervals()" class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
+            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel2(), resetIntervals() "
+                class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
+            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel1(), resetIntervals()"
+                class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
         </div>
-        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">Cancel</div>
+        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">
+            Cancel</div>
     </div>
 
     <!-- , window.location.href = window.location.pathname + '?level=1' 
@@ -214,7 +226,62 @@
 
 
     <!-- Impressum Div -->
-    <div class="impressumDiv">
+    <div id="impressumDivId" class="impressumDiv d-none">
+        <div class="impressumTxtDiv">
+            <h2>Impressum</h2>
+            <h4>Mayer Developments</h4>
+            <h5>We make your game come true!</h5>
+            <br>
+            <br>
+            Mayer Developments <br>
+            Spatzenweg 1 <br>
+            89073 Ulm <br>
+            Germany <br>
+            <br>
+            Tel. 01543/452751 <br>
+            Mail: mayer-developments@gmx.de <br>
+            <div class="impressumBtnDiv">
+                <button onclick="hideShowContent('impressumDivId', 'add')" class="rulesBtn ">
+                    Back
+                </button>
+            </div>
+        </div>
+        <div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Impressum Div Mobile -->
+    <div id="impressumDivIdMobile" class="impressumDiv d-none">
+        <div class="impressumTxtDivMobile">
+            <div class="impressumMobileDiv">
+                <div class="impressum-h2">
+                    <h2>Impressum</h2>
+                </div>
+                <div class="h4-h5">
+                    <h4>Mayer Developments</h4>
+                    <h5>We make your game come true!</h5>
+                </div>
+            </div>
+            <div class="impressumTxtNormal">
+                Mayer Developments <br>
+                Spatzenweg 1 <br>
+                89073 Ulm <br>
+                Germany <br>
+                <br>
+                Tel. 01543/452751 <br>
+                Mail: mayer-developments@gmx.de <br>
+            </div>
+        </div>
+        <div class="impressumBtnDiv">
+            <button onclick="hideShowContent('impressumDivIdMobile', 'add')" class="rulesBtn">
+                Back
+            </button>
+        </div>
+
 
     </div>
 

@@ -517,8 +517,74 @@ body.no-scroll {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: aqua;
+    background-color: rgb(1, 90, 173);
     z-index: 5000;
+    font-family: calibri;
+}
+
+.impressumTxtDiv {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    right: 50px;
+    bottom: 100px;
+    padding-left: 30px;
+    padding-top: 10px;
+    background-color: rgb(0, 105, 128);
+}
+
+.impressumBtnDiv {
+    position: absolute;
+    bottom: 40px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+.impressumBtn {
+    left: 40%;
+    bottom: 40px;
+    position: absolute;
+}
+*/
+ 
+.impressumTxtDivMobile {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    right: 20px;
+    bottom: 30px;
+    padding-left: 70px;
+    padding-right: 60px;
+    padding-top: 10px;
+    background-color: rgb(0, 105, 128);
+    display: flex;
+    justify-content: space-between;
+}
+
+.impressum-h2 {
+    font-size: 21px;
+}
+
+.h4-h5 {
+    padding-top:38px;
+}
+
+ .impressumTxtNormal {
+    padding-top: 76px;
+ }
+
+.impressumBtnDiv {
+    bottom: 40px;
+    position: absolute;
+    width: 100%;
+    /*background-color: blueviolet;*/
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -693,7 +759,7 @@ body.no-scroll {
     .rulesDiv {
         top: 120px;
         left: 50px;
-        width: 90vw;
+        /*width: 90vw;*/
     }
 
     h3 {
@@ -706,7 +772,7 @@ body.no-scroll {
     }
 
     .regelnDiv {
-        height: 195vh;
+        height: 240vh;
     }
 
     .fullscreen {
@@ -729,6 +795,10 @@ body.no-scroll {
         height: auto;
     }
 
+    .impressumBtn {
+        left: 30%;
+    }
+
 
 
 }
@@ -749,6 +819,7 @@ body.no-scroll {
 
 @media (max-width: 500px) {
     .rulesDiv {
+        margin-left: 0px;
         width: 85vw;
         left: 40px;
     }
@@ -759,5 +830,10 @@ body.no-scroll {
 
     .rulesImg {
         display: none;
+    }
+
+    .impressumTxtDivMobile {
+        flex-direction: column;
+        justify-content: flex-start;
     }
 }

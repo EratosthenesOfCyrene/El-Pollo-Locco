@@ -595,7 +595,7 @@ function bindBtnsPressEvents() {
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     const interval = setInterval(() => {
         const mediaQuery = window.matchMedia('(max-width: 1200px)');
-        //console.log(gameStarted);
+        console.log(mobileWindow);
 
         //-- Mobile View
         if (mediaQuery.matches) {
@@ -617,7 +617,11 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
                 });
             }
         } else {
-            mobileWindow = false;
+            if (!mediaQuery.matches) {
+                mobileWindow = false;
+            } else if (mediaQuery.matches) {
+                mobileWindow = true;
+            }
             hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
             if (gameStarted == true) {
                 hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
@@ -640,6 +644,7 @@ function initMobileView() {
     hideShowContent('menuBoard', 'add'); //blendet das Menu der Desktop-Ansicht aus
     hideShowContent('buttonBoard', 'add'); //blendet das buttonBoard der Desktop-Ansicht aus
 }
+
 /**
  * This function Shows or hides everything necessary for mobile widescreen view,
  * i.e. hiding the control buttons of the desktop view.
