@@ -593,7 +593,7 @@ function bindBtnsPressEvents() {
  * @returns {void}
  */
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
-    const interval = setInterval(() => {
+    //const interval = setInterval(() => {
         const mediaQuery = window.matchMedia('(max-width: 1200px)');
         console.log(mobileWindow);
 
@@ -635,8 +635,8 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
             initDesktopView();
         }
 
-    }, 200);
-    this.addIntervalToIntervalArray(interval);
+    //}, 200);
+    //this.addIntervalToIntervalArray(interval);
 }
 
 function initMobileView() {

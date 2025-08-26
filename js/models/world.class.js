@@ -108,6 +108,7 @@ class World {
         this.background_sound = new Audio('audio/background-music.mp3');
         this.gameIntervals = [];
         this.adjustToggleBtnsForStart();
+        window.addEventListener("resize", testWindowWidth);
 
 
         // Jetzt ist `this` = world → also an alle Chickens weiterreichen:
