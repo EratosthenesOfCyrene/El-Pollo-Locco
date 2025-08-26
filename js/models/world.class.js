@@ -339,7 +339,7 @@ class World {
                     this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
                 }
             });
-        }, 200);
+        }, 20);
         this.addIntervalToIntervalArray(interval);
     }
 
@@ -386,7 +386,7 @@ class World {
     }
 
     /**
-     * This function checks for throwable bottles
+     * This function checks if bottles are currently in the air and initializes the throw of the next bottle
      * 
      * @method checkThrowObjects
      * @memberof World
