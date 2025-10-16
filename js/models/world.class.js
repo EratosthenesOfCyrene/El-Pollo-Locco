@@ -104,8 +104,10 @@ class World {
         this.coin = [];
         this.killedEnemies = 0;
         this.gameOver = false;
+        this.allSounds = [];
         this.isMuted = false;
         this.background_sound = new Audio('audio/background-music.mp3');
+        this.allSounds.push(this.background_sound);
         this.gameIntervals = [];
         this.adjustToggleBtnsForStart();
         window.addEventListener("resize", testWindowWidth);
@@ -318,6 +320,7 @@ class World {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
+                    console.log('Leben Character:', this.character.energy);
                 }
             });
         }, 20);

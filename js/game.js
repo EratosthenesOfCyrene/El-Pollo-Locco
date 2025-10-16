@@ -44,6 +44,7 @@ function chooseLevel1() {
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 1);
     //world.level = 1;
+    amplifySound();
     console.log('level 1 chosen!!', window.world.level);
 }
 
@@ -51,6 +52,7 @@ function chooseLevel2() {
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 2);
     //world.level = 2;
+    amplifySound();
     console.log('level 2 chosen!!', window.world.level);
 
 }
@@ -165,6 +167,9 @@ function resetIntervals() {
  * @function startGame
  */
 function startGame() {
+    console.log(window.world.gameStarted);
+    
+    if (!window.world.gameStarted) {
     document.getElementById('startImg').classList.add('d-none');
     document.getElementById('startGameBtn').classList.add('d-none');
     document.getElementById('pauseEndGameBtns').classList.remove('d-none');
@@ -177,6 +182,7 @@ function startGame() {
     playBackgroundMusic();
     gameStarted = true;
     testWindowWidth();
+    }
 }
 
 function testLevel() {
@@ -198,18 +204,24 @@ function testLevel() {
  * @returns {void}
  */
 function playBackgroundMusic() {
-    const interval = setInterval(() => {
+    //amplifySound();
+    const backgroundMusicInterval = setInterval(() => {
         const mutedSetting = localStorage.getItem('isMuted');  //-- testen, ob der Sound an oder aus sein sollte
-        if (mutedSetting === 'false') {
+        if (mutedSetting === 'false' /*&& !window.world.gameOver*/) {
             window.world.background_sound.play();
             window.world.background_sound.loop = true;
             window.world.background_sound.volume = 0.18;
             window.world.background_sound.playbackRate = 1;
+            console.log('play background music');
+            clearInterval(backgroundMusicInterval);
         }
     }, 200);
-    this.addIntervalToIntervalArray(interval);
+    //this.addIntervalToIntervalArray(interval);
 }
 
+function stopBackgroundMusic() {
+    window.world.background_sound.pause();
+}
 /**
  * This function changes the volume of the sound and stores it in 
  * the browser.
@@ -297,12 +309,12 @@ function amplifySound() {
     window.world.character.spinJump_sound.volume = 0.3;
     window.world.character.hurt_sound.volume = 0.1;
     window.world.character.healthRecharge_sound.volume = 0.6;
-//window.world.character.bottleCollected_sound.volume = 1;
-    window.world.background_sound.volume = 0.9;
+    //window.world.character.bottleCollected_sound.volume = 1;
+    window.world.background_sound.volume = 0.18;
     window.world.character.bottleCollected_sound.volume = 0.1;
     window.world.character.enemyHit_sound.volume = 1;
     window.world.character.coinCollected_sound.volume = 0.1;
-    window.world.character.enemyDeleted_sound.volume = 1;
+    window.world.character.enemyDeleted_sound.volume = 0.21;
 }
 
 function showSoundImg() {

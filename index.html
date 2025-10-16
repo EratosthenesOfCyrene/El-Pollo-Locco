@@ -155,13 +155,14 @@
         <h3>Please turn Your device to play...</h3>
     </div>
 
+     <!-- Levelselection Panel Mobile -->
     <div id="outerMobileLevelSelectionDiv" class="outerMobileLevelSelectionDiv d-none">
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
         <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
-            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel2(), resetIntervals() "
+            <div onclick="hideMobileLevelSelectionDiv(), stopBackgroundMusic(), pauseGame(), chooseLevel2(), resetIntervals(), startGame() "
                 class="mobileAboutDivBtn levelSelectionBtn">Play Level 2</div>
-            <div onclick="hideMobileLevelSelectionDiv(), chooseLevel1(), resetIntervals()"
+            <div onclick="hideMobileLevelSelectionDiv(), stopBackgroundMusic(), pauseGame(), chooseLevel1(), resetIntervals(), startGame() "
                 class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
         </div>
         <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add')" class="mobileAboutDivBtn cancelLevelBtn">

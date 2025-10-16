@@ -57,18 +57,19 @@ class Screens extends DrawableObject {
                 clearInterval(interval);
             }
         }, 200);
-        this.addIntervalToIntervalArray(interval);  
+        this.addIntervalToIntervalArray(interval);
     }
 
     gameLost() {
         //setInterval(() => {
-            this.loadImage(this.IMAGE_LOSS); 
+        this.loadImage(this.IMAGE_LOSS);
         //}, 200);
         //this.loadImage(this.IMAGE_LOSS);
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         showLevelSelection();
-        this.world.background_sound.pause();
+        //window.world.background_sound.pause();
+        this.stopSound();
     }
 
     gameWon() {
@@ -80,22 +81,31 @@ class Screens extends DrawableObject {
         this.world.deleteAllEnemies();
     }
 
-   /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
+    stopSound() {
+        console.log(window.world.allSounds);
+        console.log(window.world.allSounds[0] instanceof Audio);
+        for (let i = 0; i < window.world.allSounds.length; i++) {
+            const sound = window.world.allSounds[i];
+            sound.pause();
+            sound.currentTime = 0;
+        }
+    }
+    /**
+      * This function pushes the interval into the array gameIntervals in world.class.
+      * It tries it as often as needed until it can push the respective interval into the
+      * gameInterval array
+      * 
+      * @param {number} param - The ID of the interval 
+      */
+    addIntervalToIntervalArray(param) {
+        if (typeof world !== 'undefined' && world?.gameIntervals) {
             world.gameIntervals.push(param);
             console.log(world.gameIntervals);
         } else {
             // Wiederholt die Prüfung 100ms später
             setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
-    } 
+        }
+    }
 
 
 }
