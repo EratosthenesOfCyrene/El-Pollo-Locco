@@ -201,6 +201,17 @@ class Character extends MovableObject {
         }
     }
 
+    testWalkSound() {
+        setInterval(() => {
+            if (!this.walking_sound.paused) {
+                console.log('WALK!!! ✅');
+            } else {
+                console.log('Sound ist pausiert oder gestoppt ⏸️');
+            }
+
+        }, 900);
+    }
+
     moveCharacterLeft() {
         this.moveLeft();
         this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
@@ -229,7 +240,7 @@ class Character extends MovableObject {
                     }
                     setTimeout(() => {
                         setInterval(() => {
-                           this.playAnimation(this.IMAGES_SKELETON); 
+                            this.playAnimation(this.IMAGES_SKELETON);
                         }, 200);
                         this.imagesDeadPlayed = true;
                     }, 7100);
@@ -306,7 +317,7 @@ class Character extends MovableObject {
      * 
      * @param {number} param - The ID of the interval 
      */
-     addIntervalToIntervalArray(param) {
+    addIntervalToIntervalArray(param) {
         if (world?.gameIntervals) {
             world.gameIntervals.push(param);
             console.log(world.gameIntervals);
