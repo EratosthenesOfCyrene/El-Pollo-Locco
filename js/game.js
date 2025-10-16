@@ -176,6 +176,7 @@ function startGame() {
     loadSoundSettings();
     playBackgroundMusic();
     gameStarted = true;
+    testWindowWidth();
 }
 
 function testLevel() {
@@ -200,10 +201,10 @@ function playBackgroundMusic() {
     const interval = setInterval(() => {
         const mutedSetting = localStorage.getItem('isMuted');  //-- testen, ob der Sound an oder aus sein sollte
         if (mutedSetting === 'false') {
-            world.background_sound.play();
-            world.background_sound.loop = true;
-            world.background_sound.volume = 0.18;
-            world.background_sound.playbackRate = 1;
+            window.world.background_sound.play();
+            window.world.background_sound.loop = true;
+            window.world.background_sound.volume = 0.18;
+            window.world.background_sound.playbackRate = 1;
         }
     }, 200);
     this.addIntervalToIntervalArray(interval);
@@ -216,13 +217,13 @@ function playBackgroundMusic() {
  * @function changeSondSettings
  */
 function changeSondSettings() {
-    if (world.isMuted == false) {
-        world.isMuted = true;
+    if (this.world.isMuted == false) {
+        this.world.isMuted = true;
         showMutedImg();
         muteSound();
         localStorage.setItem('isMuted', 'true'); // speichern
-    } else if (world.isMuted == true) {
-        world.isMuted = false;
+    } else if (this.world.isMuted == true) {
+        this.world.isMuted = false;
         showSoundImg();
         amplifySound();
         localStorage.setItem('isMuted', 'false'); // speichern
@@ -268,6 +269,15 @@ function loadSoundSettings() {
         showSoundImg();
         amplifySound();
     }
+}*/
+
+/* Testblock*/
+/*
+function TestSound() {
+    setInterval(() => {
+
+    }, 200);
+
 }*/
 
 function muteSound() {
@@ -594,46 +604,46 @@ function bindBtnsPressEvents() {
  */
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     //const interval = setInterval(() => {
-        const mediaQuery = window.matchMedia('(max-width: 1200px)');
-        console.log(mobileWindow);
+    const mediaQuery = window.matchMedia('(max-width: 1200px)');
+    console.log(mobileWindow);
 
-        //-- Mobile View
-        if (mediaQuery.matches) {
-            testIfDeviceIsVertivalOrHorizontal();
-            initMobileView();
-        }
+    //-- Mobile View
+    if (mediaQuery.matches) {
+        testIfDeviceIsVertivalOrHorizontal();
+        initMobileView();
+    }
 
-        if (mediaQuery.matches && window.innerWidth > window.innerHeight) {
-            mobileWindow = true;
-            initMobileLandscapeView();  //-- blendet alles Notwendige für mobile Breitbildansicht ein bzw. aus
+    if (mediaQuery.matches && window.innerWidth > window.innerHeight) {
+        mobileWindow = true;
+        initMobileLandscapeView();  //-- blendet alles Notwendige für mobile Breitbildansicht ein bzw. aus
 
-            if (gameStarted == true) {
-                initMobileGameView();  //-- blendet UI-content ein
-            } if (window.innerWidth < 700) {
+        if (gameStarted == true) {
+            initMobileGameView();  //-- blendet UI-content ein
+        } if (window.innerWidth < 700) {
+            hideShowContent('pauseEndGameBtns', 'add');
+            //hideShowContent('about-btns', 'add');
+            document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
                 hideShowContent('pauseEndGameBtns', 'add');
-                //hideShowContent('about-btns', 'add');
-                document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
-                    hideShowContent('pauseEndGameBtns', 'add');
-                });
-            }
-        } else {
-            if (!mediaQuery.matches) {
-                mobileWindow = false;
-            } else if (mediaQuery.matches) {
-                mobileWindow = true;
-            }
-            hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
-            if (gameStarted == true) {
-                hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
-            } if (gameStarted == true && window.innerWidth > 700) {
-                hideShowContent('pauseEndGameBtns', 'remove');
-            }
+            });
         }
-
-        //-- Desktop-View
+    } else {
         if (!mediaQuery.matches) {
-            initDesktopView();
+            mobileWindow = false;
+        } else if (mediaQuery.matches) {
+            mobileWindow = true;
         }
+        hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
+        if (gameStarted == true) {
+            hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
+        } if (gameStarted == true && window.innerWidth > 700) {
+            hideShowContent('pauseEndGameBtns', 'remove');
+        }
+    }
+
+    //-- Desktop-View
+    if (!mediaQuery.matches) {
+        initDesktopView();
+    }
 
     //}, 200);
     //this.addIntervalToIntervalArray(interval);
@@ -662,7 +672,7 @@ function initMobileView() {
 function initMobileLandscapeView() {
     hideShowContent('pauseEndGameBtns', 'add');
     hideShowContent('nav', 'add');
-    soundBtnMobile();
+    soundBtnMobile(); // bringt den SoundBtn an die linke Seite
     document.getElementById('startImg').classList.add('startImgMobileHorizontal');
     document.getElementById('startImg').classList.remove('startImgMobileVertical');
     document.getElementById('canvas').style.height = '100vh';
@@ -681,6 +691,7 @@ function initDesktopView() {
     hideShowContent('menuBoard', 'remove'); //zeigt das Menu der Desktop-Ansicht an
     hideMobileGameUI();
     testIfButtonBoardMustBeShown();
+    soundBtnDesktop(); //bringt den SoundBtn wieder an die rechte Seite
 }
 
 function hideMobileGameUI() {
