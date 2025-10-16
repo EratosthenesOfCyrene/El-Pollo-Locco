@@ -284,14 +284,14 @@ function muteSound() {
 
 function amplifySound() {
     window.world.character.walking_sound.volume = 1;
-    window.world.character.spinJump_sound.volume = 1;
-    window.world.character.hurt_sound.volume = 1;
-    window.world.character.healthRecharge_sound.volume = 1;
-    window.world.character.bottleCollected_sound.volume = 1;
-    window.world.background_sound.volume = 0.18;
-    window.world.character.bottleCollected_sound.volume = 1;
+    window.world.character.spinJump_sound.volume = 0.3;
+    window.world.character.hurt_sound.volume = 0.1;
+    window.world.character.healthRecharge_sound.volume = 0.6;
+//window.world.character.bottleCollected_sound.volume = 1;
+    window.world.background_sound.volume = 0.9;
+    window.world.character.bottleCollected_sound.volume = 0.1;
     window.world.character.enemyHit_sound.volume = 1;
-    window.world.character.coinCollected_sound.volume = 1;
+    window.world.character.coinCollected_sound.volume = 0.1;
     window.world.character.enemyDeleted_sound.volume = 1;
 }
 

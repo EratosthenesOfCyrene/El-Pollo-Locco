@@ -113,7 +113,7 @@ class Character extends MovableObject {
     ];
 
     world;
-    walking_sound = new Audio('audio/walking_desert.mp3');
+    walking_sound = new Audio('audio/walking_desert_cut.mp3');
     spinJump_sound = new Audio('audio/spinJump_sound_cut2.mp3');
     hurt_sound = new Audio('audio/hurt_sound.mp3');
     healthRecharge_sound = new Audio('audio/healthRecharge_sound.wav');
@@ -138,6 +138,7 @@ class Character extends MovableObject {
         this.animate();
         this.applyGravity();
         this.speedYtoZero();
+        this.walking_sound.playbackRate = 1.5; // passt die Abspielgeschwindigkeit an
     }
 
     /**
