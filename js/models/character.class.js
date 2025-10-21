@@ -168,22 +168,27 @@ class Character extends MovableObject {
      */
     runMovementInterval() {
         const interval = setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
-            //--Rechts
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {
-                this.moveCharacterRight();
-            }
-            //-- Links
-            if (this.world.keyboard.LEFT && this.x > 100 && this.world.gamePaused == false) {
-                this.moveCharacterLeft();
-            }
-            //-- Springen
-            if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
-                this.speedY = 30;
-                this.spinJump_sound.play();
-            }
-            //-- Idle/Schlafen beenden
-            if (this.world.keyboard.SPACE || this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.letterD) {   // wenn irgendweine Taste gedrückt wird, wird der Idle-TimeOut zurückgesetzt und die üverprüfung, ob nichts gedrückt wird, beginnt von neuem
-                this.resetIdleTimeout();
+            console.log(gameStarted, window.world.gameStarted);
+            if (gameStarted) {  //make sure that the game has already started before moving the character or producing sounds.
+
+
+                //--Rechts
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {
+                    this.moveCharacterRight();
+                }
+                //-- Links
+                if (this.world.keyboard.LEFT && this.x > 100 && this.world.gamePaused == false) {
+                    this.moveCharacterLeft();
+                }
+                //-- Springen
+                if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
+                    this.speedY = 30;
+                    this.spinJump_sound.play();
+                }
+                //-- Idle/Schlafen beenden
+                if (this.world.keyboard.SPACE || this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.letterD) {   // wenn irgendweine Taste gedrückt wird, wird der Idle-TimeOut zurückgesetzt und die üverprüfung, ob nichts gedrückt wird, beginnt von neuem
+                    this.resetIdleTimeout();
+                }
             }
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
