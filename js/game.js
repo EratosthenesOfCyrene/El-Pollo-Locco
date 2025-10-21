@@ -45,7 +45,7 @@ function chooseLevel1() {
     window.world = new World(canvas, keyboard, 1);
     //world.level = 1;
     amplifySound();
-    console.log('level 1 chosen!!', window.world.level);
+    //console.log('level 1 chosen!!', window.world.level);
 }
 
 function chooseLevel2() {
@@ -167,7 +167,7 @@ function resetIntervals() {
  * @function startGame
  */
 function startGame() {
-    console.log(window.world.gameStarted);
+    //console.log(window.world.gameStarted);
     
     if (!window.world.gameStarted) {
     document.getElementById('startImg').classList.add('d-none');
@@ -617,7 +617,7 @@ function bindBtnsPressEvents() {
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     //const interval = setInterval(() => {
     const mediaQuery = window.matchMedia('(max-width: 1200px)');
-    console.log(mobileWindow);
+    //console.log(mobileWindow);
 
     //-- Mobile View
     if (mediaQuery.matches) {

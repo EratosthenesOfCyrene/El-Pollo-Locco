@@ -320,7 +320,7 @@ class World {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
-                    console.log('Leben Character:', this.character.energy);
+                    //console.log('Leben Character:', this.character.energy);
                 }
             });
         }, 20);
@@ -395,15 +395,16 @@ class World {
      * @method checkThrowObjects
      * @memberof World
      */
-    checkThrowObjects() {
+    checkThrowObjects() {        
         const interval = setInterval(() => {
+            //console.log('bottle in air:',this.bottleInAir);
             if (this.keyboard.letterD && this.collectedThrowableObjects.length > 0 && this.bottleInAir == false && this.gamePaused == false) {
                 this.collectedThrowableObjects[0].throw();
             }
             else if (this.collectedThrowableObjects.length < 1) {
                 //console.warn('NO BOTTLES COLLECTED!!!!');
             }
-        }, 200);
+        }, 100);
         this.addIntervalToIntervalArray(interval);
     }
 

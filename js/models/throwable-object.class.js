@@ -67,6 +67,8 @@ class ThrowableObject extends MovableObject {
      */
     throw() {
         this.world.bottleInAir = true;  // gibt an, dass sich gerade eine Flasche in der Luft befindet
+        //console.log('bottle in air  - throw():', this.world.bottleInAir);
+        
         this.x = this.world.character.x + 100;
         if (this.world.character.otherdirection == true) {   // Anpassen des x-Wertes der Flasche, wenn nach links geworfen wird
             this.x = this.world.character.x
@@ -176,7 +178,10 @@ class ThrowableObject extends MovableObject {
     playSplashAnimation() {
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteThrownBottle();
-        this.world.bottleInAir = false;   // zurückgeben, dass KEINE Flasche (mehr) in der Luft ist
+        setTimeout(() => {   // das Timeout entspricht den 300ms bis in deleteThrownBottle() das timeout verstrichen ist und die Flasche gelöscht wird. Wenn nämlich bottleInAir zu früh auf false zurückgesetzt wird, kann zu schnell eine neue Flasche geworfen werden, während die alte noch im Spiel ist. Dann käme es zu Fehlern.
+             this.world.bottleInAir = false;   // zurückgeben, dass KEINE Flasche (mehr) in der Luft ist
+        }, 300);
+       
         return true;
     }
 
