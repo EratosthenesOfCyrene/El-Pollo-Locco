@@ -19,7 +19,6 @@
 
 class ThrowableObject extends MovableObject {
 
-
     throwBottleIntervalID;
     playAnimationIntervalID;
     checkForCollissionIntervalID;
@@ -141,8 +140,9 @@ class ThrowableObject extends MovableObject {
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
-                this.world.character.enemyHit_sound.pause(); // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
-                this.world.character.enemyHit_sound.currentTime = 0;
+                this.world.stopSound(this.world.character.enemyHit_sound);
+                //this.world.character.enemyHit_sound.pause(); // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
+                //this.world.character.enemyHit_sound.currentTime = 0;
                 this.world.character.enemyHit_sound.play();
                 this.bottleThrownStanding = false;
             }
