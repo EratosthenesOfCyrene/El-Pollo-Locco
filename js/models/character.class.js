@@ -168,7 +168,7 @@ class Character extends MovableObject {
      */
     runMovementInterval() {
         const interval = setInterval(() => {   // Dieses Interval ruft die Bewegung ENTLANG der X-Achse 60 mal pro Sekunde auf
-            console.log(gameStarted, window.world.gameStarted);
+            //console.log(gameStarted, window.world.gameStarted);
             if (gameStarted) {  //make sure that the game has already started before moving the character or producing sounds.
 
 

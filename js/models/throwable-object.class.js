@@ -25,6 +25,7 @@ class ThrowableObject extends MovableObject {
     checkForCollissionIntervalID;
     checkForYOrCollissionIntervalID;
     bottleCollides = false;
+    bottleThrownStanding = false;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand.
 
     //enemyHurt_sound = new Audio('audio/chickenKilled_sound.mp3');
     //enemyDeleted_sound = new Audio('audio/mixkit-game-notification-wave-alarm-987.wav');
@@ -140,7 +141,10 @@ class ThrowableObject extends MovableObject {
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
+                this.world.character.enemyHit_sound.pause(); // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
+                this.world.character.enemyHit_sound.currentTime = 0;
                 this.world.character.enemyHit_sound.play();
+                this.bottleThrownStanding = false;
             }
         }, 25);
         this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
@@ -155,7 +159,12 @@ class ThrowableObject extends MovableObject {
 
     throwBottleRight() {
         this.throwBottleIntervalID = setInterval(() => {
+            if (this.bottleThrownStanding == false && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {  // diese Abfrage prüft, ob der Character gerade läuft, wenn eine Flasche geworfen wird. Wenn ja, wird die Geschwindigkeit des Characters zur x-Geschwindigkeit der Flasche hinuaddiert, da der character sons unter der Flasche durch rennt;
+                this.x += 10 + this.world.character.speed + 4; // character.speed = 10. Man könnte auch einfach this.x += 24;.
+            } else {
             this.x += 10;
+            this.bottleThrownStanding = true;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand. Ohne diese Abfrage kann es passieren, dass wenn eine Flasche geworfen wird und der character erst danach bewegt wird, dass die Flasche sich vom Character und von dem Ort, an dem Sie den Boden berühren soll, entfernt und man sein Ziel verfehlt.
+            }
         }, 25);
         this.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }

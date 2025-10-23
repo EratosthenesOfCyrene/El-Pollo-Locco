@@ -53,9 +53,9 @@ class World {
         this.runIntervals();
         this.draw();
         //this.level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        console.log('Chicken ist:', Chicken);
-        console.log('Methode ist:', Chicken.correctSpeedOfEachChicken);
-        console.log('Typ:', typeof Chicken.correctSpeedOfEachChicken);
+        //console.log('Chicken ist:', Chicken);
+        //console.log('Methode ist:', Chicken.correctSpeedOfEachChicken);
+        //console.log('Typ:', typeof Chicken.correctSpeedOfEachChicken);
         //Chicken.correctSpeedOfEachChicken(this);
         /*setTimeout(() => {
             Chicken.correctSpeedOfEachChicken(this);
@@ -340,6 +340,9 @@ class World {
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
                     enemy.isDeadChicken = true;
                     //this.collectedThrowableObjects[0].enemyDeleted_sound.play();    // spielt den Sound ab, dass ein enemy getötet wurde
+                    //window.screens.stopSound();
+                    this.character.enemyDeleted_sound.pause();  // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
+                    this.character.enemyDeleted_sound.currentTime = 0;
                     this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
                 }
             });
