@@ -125,6 +125,8 @@ class World {
             Chicken.correctSpeedOfEachChicken(this);
         }, 3000);
 
+        this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
+        this.defineEndboss();
     }
 
     initializeCloudMovement() {
@@ -134,6 +136,14 @@ class World {
                 clearInterval(checkCloudsInterval); // Intervall beenden, sobald es einmal erfolgreich war
             }
         }, 100);
+    }
+
+    defineEndboss() {
+        if (this.selectedLevel === 1) {
+            this.definedEndboss = this.level.enemies[11];
+        } else if (this.selectedLevel === 2) {
+            this.definedEndboss = this.level.enemies[21];
+        }
     }
 
     setLevel() {
@@ -156,8 +166,6 @@ class World {
             testIfLevel2 = false;
             testWindowWidth();
         }
-
-        //this.level = level1;
     }
 
     adjustLevelEnd() {
@@ -336,7 +344,7 @@ class World {
     checkIfCharacterJumpsOnEnemy() {
         const interval = setInterval(() => {   // Checking if Character jumps on Enemy
             this.level.enemies.forEach((enemy, indexOfEnemy) => {
-                if (this.character.isJumpingOnEnemy(enemy)) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
+                if (this.character.isJumpingOnEnemy(enemy) && enemy != this.definedEndboss) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
                     enemy.isDeadChicken = true;
                     //this.collectedThrowableObjects[0].enemyDeleted_sound.play();    // spielt den Sound ab, dass ein enemy getötet wurde
