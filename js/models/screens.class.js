@@ -69,7 +69,7 @@ class Screens extends DrawableObject {
         toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         showLevelSelection();
         //window.world.background_sound.pause();
-        this.stopSound();
+        this.stopAllSounds();
     }
 
     gameWon() {
@@ -81,7 +81,7 @@ class Screens extends DrawableObject {
         this.world.deleteAllEnemies();
     }
 
-    stopSound() {
+    stopAllSounds() {
         console.log(window.world.allSounds);
         console.log(window.world.allSounds[0] instanceof Audio);
         for (let i = 0; i < window.world.allSounds.length; i++) {

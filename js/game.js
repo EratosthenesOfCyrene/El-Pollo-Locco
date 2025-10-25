@@ -6,6 +6,7 @@ let pauseGameBtn = document.getElementById('pauseGameBtn');
 let gameStarted = false;  // diese Variable wird benötigt, um, wenn die "pause-game-btns" wieder angezeigt werden sollen, um zu überprüfen, ob das Spiel bereits gestartet wurde, da sie sonst direkt zum Start des Spiels angezeigt werden würden. 
 let gamePaused = false;
 let mobileWindow;
+let fullscreenDesktop = false;
 let deviceVertical;
 let showMobileAboutMenuVar = false;  // diese Variable wird benötigt, um den Toggle-Button des Hamburger-Menus bzw. das "X" zum Schließen in der Funktion "showMobileAboutMenu()" zu regeln
 let testIfLevel2 = false;
@@ -419,6 +420,7 @@ function fullScreen() {
  * @param {HTMLElement} element - The element to display the fullscreen mode
  */
 function enterFullscreen(element) {
+    fullscreenDesktop = true;
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if (element.msRequestFullscreen) {      // for IE11 (remove June 15, 2022)
@@ -665,6 +667,7 @@ function initMobileView() {
     hideShowContent('mobileAboutMenu', 'remove'); //zeigt das Hamburger-Menu an
     hideShowContent('menuBoard', 'add'); //blendet das Menu der Desktop-Ansicht aus
     hideShowContent('buttonBoard', 'add'); //blendet das buttonBoard der Desktop-Ansicht aus
+    fullscreenDesktop = false;
 }
 
 /**
@@ -837,11 +840,11 @@ function fullScreenMobile() {
             document.getElementById('startImg').classList.add('startImgMobile');
         }
 
-        if (mobileWindow === false) {
+        if (mobileWindow === false && !fullscreenDesktop) {
             document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
             document.getElementById('startImg').classList.remove('startImgMobileVertical');
             document.getElementById('canvas').classList.remove('canvasMaxHeight');  //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
-            document.getElementById('canvas').style.height = '480px';    //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
+            /* !!!! diese Zeile überschreibt den Wert der Höhe des canvas in der desktop-fullscreen-Ansicht */ document.getElementById('canvas').style.height = '480px';    //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
             hideShowContent('nav', 'remove');
         }
     }, 200);
