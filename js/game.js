@@ -70,6 +70,32 @@ function initCanvasAndWorld() {
     world = new World(canvas, keyboard);
 }
 
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        // Fullscreen verlassen
+        resizeCanvasBackToNormal();
+    } else {
+        // Fullscreen betreten
+        resizeCanvasToFullscreen();
+    }
+});
+
+function resizeCanvasToFullscreen() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+}
+
+function resizeCanvasBackToNormal() {
+    canvas.width = 720;
+    canvas.height = 480;
+
+    canvas.style.width = "720px";
+    canvas.style.height = "480px";
+}
+
 function startLevel1() {
     //level = new Level1();
     //world = new World(canvas, keyboard, level1);
