@@ -63,22 +63,43 @@ class Screens extends DrawableObject {
     gameLost() {
         //setInterval(() => {
         this.loadImage(this.IMAGE_LOSS);
+        this.hanndleGameLostSounds();
         //}, 200);
         //this.loadImage(this.IMAGE_LOSS);
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
-        showLevelSelection();
+        setTimeout(() => {
+            showLevelSelection();
+        }, 4600);
         //window.world.background_sound.pause();
         this.stopAllSounds();
     }
 
     gameWon() {
         this.loadImage(this.IMAGE_WON);
+        this.handleGameWonSounds();
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
-        showLevelSelection();
+        setTimeout(() => {
+            showLevelSelection();
+        }, 3600);
         this.world.background_sound.pause();
         this.world.deleteAllEnemies();
+    }
+
+    hanndleGameLostSounds() {
+        window.world.character.characterDead_sound.play();
+        setTimeout(() => {
+            window.world.character.characterDeadDrums_sound.play();
+        }, 3000);
+    }
+ 
+    handleGameWonSounds() {
+        window.world.character.characterYeah_sound.play();
+        setTimeout(() => {
+            window.world.character.gameWon_sound.volume = 0.7;
+            window.world.character.gameWon_sound.play();
+        }, 1000);
     }
 
     stopAllSounds() {

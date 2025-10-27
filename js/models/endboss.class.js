@@ -218,6 +218,7 @@ class Endboss extends MovableObject {
     }
 
     hit3() {
+        this.testHit3 = true;
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
             window.world.background_sound.playbackRate = 1.4;
@@ -229,7 +230,6 @@ class Endboss extends MovableObject {
             }
             this.playAnimation(this.IMAGES_ATTACK);
             //this.endbossMoveLeft();
-            this.testHit3 = true;
             //this.moveEndboss();
         }, 2000);
     }
@@ -245,7 +245,8 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest3 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            this.testHit4 = true;
+            //this.testHit3 = true;
+              window.world.character.testEndbossHit_4 = true;
             //this.endbossMoveLeft();
         }, 4000);
     }
@@ -254,6 +255,7 @@ class Endboss extends MovableObject {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
             window.world.background_sound.playbackRate = 2;
+            this.testHit3 = false;
         }
         if (this.endbossLife <= 0) {
             this.endBossSpeed = 0;

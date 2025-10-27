@@ -44,6 +44,7 @@ class Character extends MovableObject {
     counter = 0;
     idleAnimation = false;
     imagesDeadPlayed = false;
+    testEndbossHit_4 = false;
 
     IMAGES_WALKING = [
         './img_pollo_locco/img/2_character_pepe/2_walk/W-21.png',
@@ -121,6 +122,10 @@ class Character extends MovableObject {
     coinCollected_sound = new Audio('audio/mixkit-winning-a-coin-video-game-2069.wav');
     enemyHit_sound = new Audio('audio/chickenKilled_sound.mp3');
     enemyDeleted_sound = new Audio('audio/mixkit-game-notification-wave-alarm-987.wav');
+    gameWon_sound = new Audio('audio/mixkit-video-game-win-2016.wav');
+    characterYeah_sound = new Audio('audio/mixkit-male-voice-cheer-victory-2011.wav');
+    characterDead_sound = new Audio('audio/mixkit-horror-lose-2028.wav');
+    characterDeadDrums_sound = new Audio('audio/mixkit-losing-drums-2023.wav');
 
 
     constructor(world) {
@@ -183,6 +188,7 @@ class Character extends MovableObject {
                 //-- Springen
                 if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
                     this.speedY = 30;
+                    window.world.stopSound(this.spinJump_sound);
                     this.spinJump_sound.play();
                 }
                 //-- Idle/Schlafen beenden
