@@ -61,17 +61,13 @@ class Screens extends DrawableObject {
     }
 
     gameLost() {
-        //setInterval(() => {
         this.loadImage(this.IMAGE_LOSS);
         this.hanndleGameLostSounds();
-        //}, 200);
-        //this.loadImage(this.IMAGE_LOSS);
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         setTimeout(() => {
             showLevelSelection();
         }, 4600);
-        //window.world.background_sound.pause();
         this.stopAllSounds();
     }
 

@@ -329,6 +329,10 @@ function muteSound() {
     window.world.character.enemyHit_sound.volume = 0;
     window.world.character.coinCollected_sound.volume = 0;
     window.world.character.enemyDeleted_sound.volume = 0;
+    window.world.character.gameWon_sound.volume = 0;
+    window.world.character.characterYeah_sound.volume = 0;
+    window.world.character.characterDead_sound.volume = 0;
+    window.world.character. characterDeadDrums_sound.volume = 0;
 }
 
 function amplifySound() {
@@ -343,6 +347,9 @@ function amplifySound() {
     window.world.character.coinCollected_sound.volume = 0.1;
     window.world.character.enemyDeleted_sound.volume = 0.21;
     window.world.character.gameWon_sound.volume = 0.7;
+    window.world.character.characterYeah_sound.volume = 1;
+    window.world.character.characterDead_sound.volume = 1;
+    window.world.character. characterDeadDrums_sound.volume = 1;
 }
 
 function showSoundImg() {
