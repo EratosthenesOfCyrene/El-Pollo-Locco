@@ -62,7 +62,7 @@ class Screens extends DrawableObject {
 
     gameLost() {
         this.loadImage(this.IMAGE_LOSS);
-        this.hanndleGameLostSounds();
+        window.world.sounds.hanndleGameLostSounds();
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         setTimeout(() => {
@@ -73,7 +73,7 @@ class Screens extends DrawableObject {
 
     gameWon() {
         this.loadImage(this.IMAGE_WON);
-        this.handleGameWonSounds();
+        window.world.sounds.handleGameWonSounds();
         pauseGame();
         toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         setTimeout(() => {
@@ -81,21 +81,6 @@ class Screens extends DrawableObject {
         }, 3600);
         this.world.background_sound.pause();
         this.world.deleteAllEnemies();
-    }
-
-    hanndleGameLostSounds() {
-        window.world.character.characterDead_sound.play();
-        setTimeout(() => {
-            window.world.character.characterDeadDrums_sound.play();
-        }, 3000);
-    }
- 
-    handleGameWonSounds() {
-        window.world.character.characterYeah_sound.play();
-        setTimeout(() => {
-            window.world.character.gameWon_sound.volume = 0.7;
-            window.world.character.gameWon_sound.play();
-        }, 1000);
     }
 
     stopAllSounds() {
