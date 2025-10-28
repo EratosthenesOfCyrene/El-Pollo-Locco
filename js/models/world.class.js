@@ -82,6 +82,7 @@ class World {
         this.setLevel();
         //this.level = new Level1(this);
         this.character = new Character(this);
+        this.sounds = new Sounds(this);
         this.gameStarted = false;
         this.testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
         this.canvas;
@@ -350,20 +351,18 @@ class World {
                     //this.collectedThrowableObjects[0].enemyDeleted_sound.play();    // spielt den Sound ab, dass ein enemy getötet wurde
                     //window.screens.stopSound();
                     //this.screens.stopSound();
-                    this.stopSound(this.character.enemyDeleted_sound);
+                    this.sounds.stopSound(this.character.enemyDeleted_sound);
                     //this.character.enemyDeleted_sound.pause();  // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
                     //this.character.enemyDeleted_sound.currentTime = 0;
-                    this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
+                    //this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
+                    this.sounds.playSound(this.character.enemyDeleted_sound);  // spielt den Sound ab, dass ein enemy getötet wurde
                 }
             });
         }, 20);
         this.addIntervalToIntervalArray(interval);
     }
 
-    stopSound(sound) {
-        sound.pause();
-        sound.currentTime = 0;
-    }
+    
 
     /**
      * Checks for Collisions whith Bottles/ThrowableObjects.
@@ -380,8 +379,9 @@ class World {
                     this.level.bottleOnFloor.splice(indexOfBottle, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarBottles.collectedBottles++;  // erhöht den Wert der gesammelten Flaschen für die Bottle-Status-Bar
                     this.statusBarBottles.setBottleNumber(this.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
-                    this.stopSound(this.character.bottleCollected_sound);
-                    this.character.bottleCollected_sound.play();
+                    this.sounds.stopSound(this.character.bottleCollected_sound);
+                    //this.character.bottleCollected_sound.play();
+                    this.sounds.playSound(this.character.bottleCollected_sound); 
                 }
             });
         }, 200);
@@ -401,8 +401,9 @@ class World {
                     this.level.coins.splice(indexOfCoin, 1);  // löscht die Flasche, mit der der Character kollidiert ist anhand ihres index
                     this.statusBarCoins.collectedCoins++;  // erhöht den Wert der gesammelten Coins für die Coin-Status-Bar
                     this.statusBarCoins.setCoinNumber(this.statusBarCoins.collectedCoins);  // aktualisiert die Anzeige der Bottle-Status-Bar
-                    this.stopSound(this.character.coinCollected_sound);
-                    this.character.coinCollected_sound.play();
+                    this.sounds.stopSound(this.character.coinCollected_sound);
+                    //this.character.coinCollected_sound.play();
+                    this.sounds.playSound(this.character.coinCollected_sound);
                 }
             });
         }, 200);

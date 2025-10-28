@@ -140,10 +140,11 @@ class ThrowableObject extends MovableObject {
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
-                this.world.stopSound(this.world.character.enemyHit_sound);
+                this.world.sounds.stopSound(this.world.character.enemyHit_sound);
                 //this.world.character.enemyHit_sound.pause(); // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
                 //this.world.character.enemyHit_sound.currentTime = 0;
-                this.world.character.enemyHit_sound.play();
+                //this.world.character.enemyHit_sound.play();
+                window.world.sounds.playSound(this.world.character.enemyHit_sound);
                 this.bottleThrownStanding = false;
             }
         }, 25);
@@ -243,7 +244,8 @@ class ThrowableObject extends MovableObject {
                 enemy.loadImage(enemy.IMAGE_DEAD_SMALL);
             }
             enemy.speed = 0;  //-- Stops the movement of the hit enemy
-            this.world.character.enemyDeleted_sound.play();
+            //this.world.character.enemyDeleted_sound.play();
+            window.world.sounds.playSound(this.world.character.enemyDeleted_sound);
         }, 200);
 
         setTimeout(() => {
@@ -267,7 +269,8 @@ class ThrowableObject extends MovableObject {
 
     playRegainHealthSound() {
         if (this.world.character.energy < 99) {
-            this.world.character.healthRecharge_sound.play();
+            //this.world.character.healthRecharge_sound.play();
+            window.world.sounds.playSound(this.world.character.healthRecharge_sound);
         }
     }
 

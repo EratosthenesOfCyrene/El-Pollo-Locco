@@ -233,11 +233,12 @@ function testLevel() {
 function playBackgroundMusic() {
     //amplifySound();
     const backgroundMusicInterval = setInterval(() => {
+        //window.world.sounds.test();
         const mutedSetting = localStorage.getItem('isMuted');  //-- testen, ob der Sound an oder aus sein sollte
         if (mutedSetting === 'false' /*&& !window.world.gameOver*/) {
             window.world.background_sound.play();
             window.world.background_sound.loop = true;
-            window.world.background_sound.volume = 0.18;
+            window.world.background_sound.volume = 0.14;
             window.world.background_sound.playbackRate = 1;
             console.log('play background music');
             clearInterval(backgroundMusicInterval);

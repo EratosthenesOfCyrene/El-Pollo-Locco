@@ -188,8 +188,9 @@ class Character extends MovableObject {
                 //-- Springen
                 if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
                     this.speedY = 30;
-                    window.world.stopSound(this.spinJump_sound);
-                    this.spinJump_sound.play();
+                    window.world.sounds.stopSound(this.spinJump_sound);
+                    //this.spinJump_sound.play();
+                    window.world.sounds.playSound(this.spinJump_sound);
                 }
                 //-- Idle/Schlafen beenden
                 if (this.world.keyboard.SPACE || this.world.keyboard.RIGHT || this.world.keyboard.LEFT || this.world.keyboard.letterD) {   // wenn irgendweine Taste gedrückt wird, wird der Idle-TimeOut zurückgesetzt und die üverprüfung, ob nichts gedrückt wird, beginnt von neuem
@@ -205,10 +206,12 @@ class Character extends MovableObject {
         this.moveRight();
         this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
         if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-            this.walking_sound.play();
+            //this.walking_sound.play();
+            window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            this.spinJump_sound.play();
+            //this.spinJump_sound.play();
+            window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
     }
@@ -228,10 +231,12 @@ class Character extends MovableObject {
         this.moveLeft();
         this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
         if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-            this.walking_sound.play();
+            //this.walking_sound.play();
+            window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            this.spinJump_sound.play();
+            //this.spinJump_sound.play();
+            window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
     }
@@ -258,7 +263,8 @@ class Character extends MovableObject {
                     }, 7100);
                 } else if (this.isHurt()) { //-- if the character is hurt
                     this.playAnimation(this.IMAGES_HURT);
-                    this.hurt_sound.play();
+                    //this.hurt_sound.play();
+                    window.world.sounds.playSound(this.hurt_sound);
                 }
                 // Jump-Animation
                 else if (this.isAboveGround()) {
