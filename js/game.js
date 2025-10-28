@@ -13,6 +13,7 @@ let testIfLevel2 = false;
 let deviceWasTurned = false;
 let buttonBoardShown = true;
 let level1Test;
+let intervals = new Intervals();
 
 /**
  * 
@@ -26,7 +27,7 @@ function init() {
     shrinkStartImage();
     bindBtnsPressEvents();
     fullScreenMobile();
-    if (!window.world) {  // prüft, ob bereits eine level ausgewählt wurde; wenn nicht, dann wirdd level 1 initialisiert
+    if (!window.world) {  // prüft, ob bereits eine level ausgewählt wurde; wenn nicht, dann wird level 1 initialisiert
         chooseLevel1();
     }
     //initCanvasAndWorld();
@@ -42,8 +43,9 @@ function init() {
 }
 
 function chooseLevel1() {
+    intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
-    window.world = new World(canvas, keyboard, 1);
+    window.world = new World(canvas, keyboard, 1, intervals);
     //world.level = 1;
     amplifySound();
     //console.log('level 1 chosen!!', window.world.level);
@@ -51,7 +53,7 @@ function chooseLevel1() {
 
 function chooseLevel2() {
     canvas = document.getElementById('canvas');
-    window.world = new World(canvas, keyboard, 2);
+    window.world = new World(canvas, keyboard, 2, intervals);
     //world.level = 2;
     amplifySound();
     console.log('level 2 chosen!!', window.world.level);
@@ -60,7 +62,7 @@ function chooseLevel2() {
 
 function noLevelChosen() {
     canvas = document.getElementById('canvas');
-    window.world = new World(canvas, keyboard, 3);
+    window.world = new World(canvas, keyboard, 3, intervals);
     //world.level = 2;
     console.log('no level chosen!!', window.world.level);
 }

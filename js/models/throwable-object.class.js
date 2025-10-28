@@ -106,7 +106,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimationIntervalID = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW);
         }, 50);
-        this.addIntervalToIntervalArray(this.playAnimationIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(this.playAnimationIntervalID);
     }
 
     /**
@@ -123,7 +123,7 @@ class ThrowableObject extends MovableObject {
                     this.bottleCollides = true;
                 }
             });
-            this.addIntervalToIntervalArray(this.checkForCollissionIntervalID);
+            this.world.intervals.addIntervalToIntervalArray(this.checkForCollissionIntervalID);
         }, 200);
     }
 
@@ -148,14 +148,14 @@ class ThrowableObject extends MovableObject {
                 this.bottleThrownStanding = false;
             }
         }, 25);
-        this.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
     }
 
     throwBottleLeft() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x -= 10;
         }, 25);
-        this.addIntervalToIntervalArray(this.throwBottleIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }
 
     throwBottleRight() {
@@ -167,7 +167,7 @@ class ThrowableObject extends MovableObject {
             this.bottleThrownStanding = true;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand. Ohne diese Abfrage kann es passieren, dass wenn eine Flasche geworfen wird und der character erst danach bewegt wird, dass die Flasche sich vom Character und von dem Ort, an dem Sie den Boden berühren soll, entfernt und man sein Ziel verfehlt.
             }
         }, 25);
-        this.addIntervalToIntervalArray(this.throwBottleIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }
 
     /**
@@ -252,7 +252,7 @@ class ThrowableObject extends MovableObject {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(indexOfEnemy);
         }, 1500);
-        this.addIntervalToIntervalArray(deadChickenIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
     deleteHitEnemy(indexOfEnemy) {  // deletes the hit enemy
@@ -271,23 +271,6 @@ class ThrowableObject extends MovableObject {
         if (this.world.character.energy < 99) {
             //this.world.character.healthRecharge_sound.play();
             window.world.sounds.playSound(this.world.character.healthRecharge_sound);
-        }
-    }
-
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-    addIntervalToIntervalArray(param) {
-        if (typeof world !== 'undefined' && world?.gameIntervals) {
-            this.world.gameIntervals.push(param);
-            console.log(world.gameIntervals);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
         }
     }
 

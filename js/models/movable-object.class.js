@@ -58,9 +58,7 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     speedYtoZero() {    //-- Diese Funktion sorgt dafür, dass speedY des Characters nach dem Start auf null gesetzt  wird, da sonst nicht erkannt würde, ob er mit einem Huhn kollidiert oder auf dasselbe springt
-        const interval = setInterval(() => {
-            console.log('testHit 4:', window.world.character.testEndbossHit_4);
-            
+        const interval = setInterval(() => {            
             if (this.y >= 168) {
                 this.speedY = 0;
             }

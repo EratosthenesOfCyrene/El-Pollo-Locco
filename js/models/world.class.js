@@ -40,12 +40,13 @@ class World {
 
 
 
-    constructor(canvas, keyboard, selectedLevel = 1) {
+    constructor(canvas, keyboard, selectedLevel = 1, intervals) {
         this.selectedLevel = selectedLevel;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
 
         this.keyboard = keyboard;
+        this.intervals = intervals;
         this.backgroundObjects = this.createInitialBackground();  // der Background wird bereits hier initialisiert und nicht in level1 bzw. level 2, da das Laden sonst zu lange dauert
         this.initWorld();
 
@@ -83,6 +84,7 @@ class World {
         //this.level = new Level1(this);
         this.character = new Character(this);
         this.sounds = new Sounds(this);
+        //this.intervals = new Intervals(this);
         this.gameStarted = false;
         this.testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
         this.canvas;
@@ -109,7 +111,7 @@ class World {
         this.isMuted = false;
         this.background_sound = new Audio('audio/background-music.mp3');
         this.allSounds.push(this.background_sound);
-        this.gameIntervals = [];
+        //this.gameIntervals = [];
         this.adjustToggleBtnsForStart();
         window.addEventListener("resize", testWindowWidth);
 
@@ -333,7 +335,7 @@ class World {
                 }
             });
         }, 20);
-        this.addIntervalToIntervalArray(interval);
+        this.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -359,10 +361,8 @@ class World {
                 }
             });
         }, 20);
-        this.addIntervalToIntervalArray(interval);
+        this.intervals.addIntervalToIntervalArray(interval);
     }
-
-    
 
     /**
      * Checks for Collisions whith Bottles/ThrowableObjects.
@@ -385,7 +385,7 @@ class World {
                 }
             });
         }, 200);
-        this.addIntervalToIntervalArray(interval);
+        this.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -407,7 +407,7 @@ class World {
                 }
             });
         }, 200);
-        this.addIntervalToIntervalArray(interval);
+        this.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -426,7 +426,7 @@ class World {
                 //console.warn('NO BOTTLES COLLECTED!!!!');
             }
         }, 100);
-        this.addIntervalToIntervalArray(interval);
+        this.intervals.addIntervalToIntervalArray(interval);
     }
 
     playDeadChickenAnimation(enemy) {
@@ -443,7 +443,7 @@ class World {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(enemy);
         }, 1500);
-        this.addIntervalToIntervalArray(deadChickenIntervalID);
+        this.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
     deleteHitEnemy(enemy) {  // deletes the hit enemy
@@ -517,21 +517,6 @@ class World {
         this.ctx.restore();
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-    addIntervalToIntervalArray(param) {
-        if (typeof world !== 'undefined' && world?.gameIntervals) {
-            world.gameIntervals.push(param);
-            console.log(world.gameIntervals);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }
-    }
+    
 
 }

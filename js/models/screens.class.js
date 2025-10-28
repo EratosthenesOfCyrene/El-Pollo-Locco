@@ -68,7 +68,7 @@ class Screens extends DrawableObject {
         setTimeout(() => {
             showLevelSelection();
         }, 4600);
-        this.stopAllSounds();
+        window.world.sounds.stopAllSounds();
     }
 
     gameWon() {
@@ -83,15 +83,7 @@ class Screens extends DrawableObject {
         this.world.deleteAllEnemies();
     }
 
-    stopAllSounds() {
-        console.log(window.world.allSounds);
-        console.log(window.world.allSounds[0] instanceof Audio);
-        for (let i = 0; i < window.world.allSounds.length; i++) {
-            const sound = window.world.allSounds[i];
-            sound.pause();
-            sound.currentTime = 0;
-        }
-    }
+    
     /**
       * This function pushes the interval into the array gameIntervals in world.class.
       * It tries it as often as needed until it can push the respective interval into the
