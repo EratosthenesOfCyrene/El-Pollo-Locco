@@ -81,7 +81,7 @@ class Chicken extends MovableObject {
                 }
             });
         }, 200);
-        //this.addIntervalToIntervalArray(interval);
+        this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -194,29 +194,15 @@ class Chicken extends MovableObject {
         const interval1 = setInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
-        this.addIntervalToIntervalArray(interval1);
+        this.world.intervals.addIntervalToIntervalArray(interval1);
 
         const interval2 = setInterval(() => {
             this.playAnimation(images);
         }, 200);
-        this.addIntervalToIntervalArray(interval2);
+        this.world.intervals.addIntervalToIntervalArray(interval2);
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
-            world.gameIntervals.push(param);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
-    }
+
 
 
 
