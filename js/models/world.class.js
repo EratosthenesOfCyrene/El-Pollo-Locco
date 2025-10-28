@@ -149,13 +149,13 @@ class World {
 
     setLevel() {
         if (this.selectedLevel === 1) {
-            //startLevel2();
+            //startLevel1();
             console.log(this.selectedLevel);
             this.level = new Level1(this);
             testIfLevel2 = false;
             testWindowWidth();
         } else if (this.selectedLevel === 2) {
-            //startLevel1();
+            //startLevel2();
             console.log(this.selectedLevel);
             this.level = new Level2(this);
             testIfLevel2 = true;

@@ -208,6 +208,7 @@ function startGame() {
     loadSoundSettings();
     playBackgroundMusic();
     gameStarted = true;
+    window.world.gameStarted = true;
     testWindowWidth();
     }
 }

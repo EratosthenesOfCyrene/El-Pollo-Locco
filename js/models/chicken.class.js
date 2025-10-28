@@ -173,15 +173,24 @@ class Chicken extends MovableObject {
         this.loadImage(this.IMAGE_DEAD_SMALL);
     }
 
+    animate(images) {
+        const checkInterval = setInterval(() => {
+            if (window.world.gameStarted === true) {
+                this.animateChicken(images);
+                clearInterval(checkInterval);
+            }
+        }, 400);
+    }
+
     /**
      * Initiates Movement of the chicken and draws them onto the canvas
      * 
      * @param {Array} images - The images of the chickens that are to be drawn onto the canvas
      * 
-     * @method animate
+     * @method animateChicken
      * @memberof Chicken
      */
-    animate(images) {
+    animateChicken(images) {
         const interval1 = setInterval(() => {
             this.moveLeft();
         }, 1000 / 60);
