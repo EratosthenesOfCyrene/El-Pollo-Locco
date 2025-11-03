@@ -23,7 +23,7 @@ class Intervals {
 
         if (typeof window.world !== 'undefined' && this?.gameIntervals) {
             this.gameIntervals.push(param);
-            console.log(this.gameIntervals);
+            //console.log(this.gameIntervals);
             //clearInterval(checkInterval);
         } else {
             // Wiederholt die Prüfung 100ms später

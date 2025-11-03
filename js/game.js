@@ -52,6 +52,7 @@ function chooseLevel1() {
 }
 
 function chooseLevel2() {
+    intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 2, intervals);
     //world.level = 2;
@@ -199,21 +200,21 @@ function resetIntervals() {
  */
 function startGame() {
     //console.log(window.world.gameStarted);
-    
+
     if (!window.world.gameStarted) {
-    document.getElementById('startImg').classList.add('d-none');
-    document.getElementById('startGameBtn').classList.add('d-none');
-    document.getElementById('pauseEndGameBtns').classList.remove('d-none');
-    document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
-    document.getElementById('soundBtn').classList.remove('d-none');
-    document.getElementById('soundBtn').classList.add('soundBtn');
-    //startCanvas();
-    //testLevel();
-    loadSoundSettings();
-    playBackgroundMusic();
-    gameStarted = true;
-    window.world.gameStarted = true;
-    testWindowWidth();
+        document.getElementById('startImg').classList.add('d-none');
+        document.getElementById('startGameBtn').classList.add('d-none');
+        document.getElementById('pauseEndGameBtns').classList.remove('d-none');
+        document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
+        document.getElementById('soundBtn').classList.remove('d-none');
+        document.getElementById('soundBtn').classList.add('soundBtn');
+        //startCanvas();
+        //testLevel();
+        loadSoundSettings();
+        playBackgroundMusic();
+        gameStarted = true;
+        window.world.gameStarted = true;
+        testWindowWidth();
     }
 }
 
@@ -338,7 +339,7 @@ function muteSound() {
     window.world.character.gameWon_sound.volume = 0;
     window.world.character.characterYeah_sound.volume = 0;
     window.world.character.characterDead_sound.volume = 0;
-    window.world.character. characterDeadDrums_sound.volume = 0;
+    window.world.character.characterDeadDrums_sound.volume = 0;
 }
 
 function amplifySound() {
@@ -355,7 +356,7 @@ function amplifySound() {
     window.world.character.gameWon_sound.volume = 0.7;
     window.world.character.characterYeah_sound.volume = 1;
     window.world.character.characterDead_sound.volume = 1;
-    window.world.character. characterDeadDrums_sound.volume = 1;
+    window.world.character.characterDeadDrums_sound.volume = 1;
 }
 
 function showSoundImg() {
@@ -580,6 +581,7 @@ window.addEventListener("keyup", (event) => {
  * @param {KeyboardEvent} event - The keyup event object.
  */
 function bindBtnsPressEvents() {
+    // mobile touch of the buttons
     document.getElementById('mobileBtnRight').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RIGHT = true;
@@ -616,6 +618,47 @@ function bindBtnsPressEvents() {
     });
 
     document.getElementById('mobileBtnThrow').addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard.letterD = false;
+    });
+
+    // click on the buttons if mobile view is disabled
+    document.getElementById('mobileBtnRight').addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = true;
+    });
+
+    document.getElementById('mobileBtnRight').addEventListener('mouseup', (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = false;
+    });
+
+     document.getElementById('mobileBtnLeft').addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        keyboard.LEFT = true;
+    });
+
+    document.getElementById('mobileBtnLeft').addEventListener('mouseup', (event) => {
+        event.preventDefault();
+        keyboard.LEFT = false;
+    });
+
+     document.getElementById('mobileBtnJump').addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        keyboard.SPACE = true;
+    });
+
+    document.getElementById('mobileBtnJump').addEventListener('mouseup', (event) => {
+        event.preventDefault();
+        keyboard.SPACE = false;
+    });
+
+     document.getElementById('mobileBtnThrow').addEventListener('mousedown', (event) => {
+        event.preventDefault();
+        keyboard.letterD = true;
+    });
+
+    document.getElementById('mobileBtnThrow').addEventListener('mouseup', (event) => {
         event.preventDefault();
         keyboard.letterD = false;
     });
