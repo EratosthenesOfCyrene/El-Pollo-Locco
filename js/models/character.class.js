@@ -199,7 +199,7 @@ class Character extends MovableObject {
             }
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
-        this.addIntervalToIntervalArray(interval);
+        this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     moveCharacterRight() {
@@ -277,7 +277,7 @@ class Character extends MovableObject {
                 }
             }
         }, 50);
-        this.addIntervalToIntervalArray(interval);
+        this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -295,7 +295,7 @@ class Character extends MovableObject {
                 this.hurt_sound.pause();
             }
         }, 100);
-        this.addIntervalToIntervalArray(this.idleIntervalID);
+        this.world.intervals.addIntervalToIntervalArray(this.idleIntervalID);
     }
 
     /**
@@ -318,7 +318,7 @@ class Character extends MovableObject {
                 }
             }
         }, 800);
-        //this.addIntervalToIntervalArray(this.counterInveralID);
+        this.world.intervals.addIntervalToIntervalArray(this.counterInveralID);
     }
 
     resetIdleTimeout() {
@@ -328,22 +328,7 @@ class Character extends MovableObject {
         this.world.background_sound.playbackRate = 1;
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-    addIntervalToIntervalArray(param) {
-        if (world?.gameIntervals) {
-            world.gameIntervals.push(param);
-            console.log(world.gameIntervals);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }
-    }
+    
 
 
 

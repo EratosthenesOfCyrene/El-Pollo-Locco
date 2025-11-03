@@ -44,25 +44,10 @@ class Cloud extends MovableObject {
             }
             this.x = this.x - this.speedCloud;
         }, 20);
-              //this.addIntervalToIntervalArray(interval);  
+              world.intervals.addIntervalToIntervalArray(interval);  
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
-            world.gameIntervals.push(param);
-            console.log(world.gameIntervals);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
-    }
+  
 
    
 

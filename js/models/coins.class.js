@@ -17,7 +17,7 @@ class Coin extends MovableObject {
 
     id;
 
-    
+
 
     IMAGES_COIN = [
         './img_pollo_locco/img/8_coin/coin_1.png',
@@ -58,32 +58,25 @@ class Coin extends MovableObject {
                 }
             });
         }, 200);
-         this.addIntervalToIntervalArray(interval);  
+        this.tryAddInterval(interval);
     }
 
     animate() {
         const interval = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
         }, 700);
-         this.addIntervalToIntervalArray(interval);  
+        this.tryAddInterval(interval);
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-     addIntervalToIntervalArray(param) {
-          if (typeof world !== 'undefined' && world?.gameIntervals) {
-            world.gameIntervals.push(param);
-            console.log(world.gameIntervals);
+    tryAddInterval(interval) {  // falls class world noch nicht geladen hat wenn die Intervalle in clas coins  zum Intervalarray hinzugefügt werden sollen, prüft diese Funktion mit einer if/else-Abfrage, ob world bereits geladen hat.
+        if (window.world?.intervals) {
+            window.world.intervals.addIntervalToIntervalArray(interval);
         } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(param), 100);
-        }          
+            setTimeout(() => this.tryAddInterval(interval), 200);
+        }
     }
+
+
 
 
 

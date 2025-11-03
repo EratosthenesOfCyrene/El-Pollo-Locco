@@ -81,7 +81,7 @@ class Chicken extends MovableObject {
                 }
             });
         }, 200);
-        this.world.intervals.addIntervalToIntervalArray(interval);
+        world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**

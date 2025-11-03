@@ -41,6 +41,8 @@ class World {
 
 
     constructor(canvas, keyboard, selectedLevel = 1, intervals) {
+        console.log('world created');
+
         this.selectedLevel = selectedLevel;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -123,10 +125,15 @@ class World {
         //Cloud.animateCloudMovement(this);
         //this.clouds.forEach(cloud => cloud.animateCloudMovement(this));
         this.initializeCloudMovement();
-
-        setTimeout(() => {
+        this.correctChickenSpeed();
+        /*
+        const timeout = setTimeout(() => {
             Chicken.correctSpeedOfEachChicken(this);
-        }, 3000);
+        }, 400);
+        */
+
+
+        //this.intervals.addIntervalToIntervalArray(timeout);
 
         this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
         this.defineEndboss();
@@ -137,6 +144,15 @@ class World {
             if (window.world && Array.isArray(window.world.level.clouds)) {
                 window.world.level.clouds.forEach(cloud => cloud.animateCloudMovement(window.world));
                 clearInterval(checkCloudsInterval); // Intervall beenden, sobald es einmal erfolgreich war
+            }
+        }, 100);
+    }
+
+    correctChickenSpeed() {
+        const interval = setInterval(() => {
+            if (typeof Chicken !== 'undefined' && Chicken.correctSpeedOfEachChicken) {
+                Chicken.correctSpeedOfEachChicken(this);
+                clearInterval(interval); // Polling stoppen, wenn erfolgreich
             }
         }, 100);
     }
@@ -381,7 +397,7 @@ class World {
                     this.statusBarBottles.setBottleNumber(this.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
                     this.sounds.stopSound(this.character.bottleCollected_sound);
                     //this.character.bottleCollected_sound.play();
-                    this.sounds.playSound(this.character.bottleCollected_sound); 
+                    this.sounds.playSound(this.character.bottleCollected_sound);
                 }
             });
         }, 200);
@@ -416,7 +432,7 @@ class World {
      * @method checkThrowObjects
      * @memberof World
      */
-    checkThrowObjects() {        
+    checkThrowObjects() {
         const interval = setInterval(() => {
             //console.log('bottle in air:',this.bottleInAir);
             if (this.keyboard.letterD && this.collectedThrowableObjects.length > 0 && this.bottleInAir == false && this.gamePaused == false) {
@@ -517,6 +533,6 @@ class World {
         this.ctx.restore();
     }
 
-    
+
 
 }

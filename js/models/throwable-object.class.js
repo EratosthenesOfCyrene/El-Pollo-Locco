@@ -106,7 +106,7 @@ class ThrowableObject extends MovableObject {
         this.playAnimationIntervalID = setInterval(() => {
             this.playAnimation(this.IMAGES_THROW);
         }, 50);
-        this.world.intervals.addIntervalToIntervalArray(this.playAnimationIntervalID);
+        window.world.intervals.addIntervalToIntervalArray(this.playAnimationIntervalID);
     }
 
     /**

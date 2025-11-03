@@ -110,6 +110,7 @@ function startLevel2() {
     //world.level = level1;
 }
 
+/*
 function playLevel1() {
     testIfLevel2 = false;
     startLevel1();
@@ -125,6 +126,7 @@ function playLevel2() {
     resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
     world.initWorld();
 }
+    */
 
 /**
  * This function reactivates all the prevoiusly deactivated buttons 

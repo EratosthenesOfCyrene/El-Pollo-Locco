@@ -59,7 +59,7 @@ class BottleOnFloor extends MovableObject {
                 }
             });
         }, 200);
-        this.addIntervalToIntervalArray(interval);
+        world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -73,22 +73,7 @@ class BottleOnFloor extends MovableObject {
         BottleOnFloor.i++;
     }
 
-    /**
-     * This function pushes the interval into the array gameIntervals in world.class.
-     * It tries it as often as needed until it can push the respective interval into the
-     * gameInterval array
-     * 
-     * @param {number} param - The ID of the interval 
-     */
-    addIntervalToIntervalArray(interval) {
-        if (world?.gameIntervals) {
-            world.gameIntervals.push(interval);
-            console.log(world.gameIntervals);
-        } else {
-            // Wiederholt die Prüfung 100ms später
-            setTimeout(() => this.addIntervalToIntervalArray(interval), 100);
-        }
-    }
+   
 
 
 
