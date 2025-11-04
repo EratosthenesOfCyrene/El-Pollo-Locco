@@ -30,8 +30,6 @@ class Endboss extends MovableObject {
     endbossHit = false;
     playImagesAttack = false;
     playAnimationIntervallID;
-    //playAttackIntervalID;
-    //playHurtIntervalID;
     playHurtAnimation = false;
     playHurtAnimationTest = false;
     playHurtAnimationTest2 = false;
@@ -98,10 +96,8 @@ class Endboss extends MovableObject {
         this.playImagesWalking = false;
         this.animate();
         this.checkForAttack();
-        //setTimeout(() => {
             this.bottles = this.createBottles(17);  // creates 17 bottles
             this.bottleIndex = 0;
-        //}, 4000);
     }
 
     createBottles(count) {
@@ -110,9 +106,7 @@ class Endboss extends MovableObject {
             const bottle = new ThrowableObject(this.x, this.world);  // Position und world mitgeben
             bottle.endboss = this; // jeder Bottle die Daten des Endboss mitgeben, damit später bei bedarf darauf zugegriffen werden kann
             bottle.visible = false;  // bottles werden erst sichtbar, wenn sie geworfen wurden
-            bottles.push(bottle);
-            //console.log(bottles);
-            
+            bottles.push(bottle);            
         }
         return bottles;
     }
@@ -123,9 +117,7 @@ class Endboss extends MovableObject {
             bottle.x = this.x - 20;  // Setze aktuelle Position
             bottle.y = this.y + 240;
             bottle.visible = true;
-            //console.log(this.bottles);
             bottle.throwEndboss();  // Optional: eigene Methode im ThrowableObject für Animation / Bewegung
-            //this.world.collectedThrowableObjects.push(bottle);
             this.bottleIndex++;
         }
     }
@@ -212,8 +204,6 @@ class Endboss extends MovableObject {
             }
             this.playAnimation(this.IMAGES_ATTACK);
             this.testHit2 = true;
-            //this.endbossMoveLeftHit2();
-            //this.moveEndboss();
         }, 1000);
     }
 
@@ -229,8 +219,6 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest2 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            //this.endbossMoveLeft();
-            //this.moveEndboss();
         }, 2000);
     }
 
@@ -245,9 +233,7 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest3 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-            //this.testHit3 = true;
               window.world.character.testEndbossHit_4 = true;
-            //this.endbossMoveLeft();
         }, 4000);
     }
 
@@ -275,16 +261,11 @@ class Endboss extends MovableObject {
     }
 
     endbossMoveLeftHit2() {
-        //clearInterval(this.playAnimationIntervallID);
         console.log(this.x, this.endBossSpeed);
         if ((this.oldX - 300) < this.x) {
             this.x -= this.endBossSpeed;
         }
     }
-
-
-
-
 
     moveEndboss() {
         if (this.otherDirection) {

@@ -36,33 +36,17 @@
 
 class World {
 
-
-
-
-
     constructor(canvas, keyboard, selectedLevel = 1, intervals) {
-        console.log('world created');
-
         this.selectedLevel = selectedLevel;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
-
         this.keyboard = keyboard;
         this.intervals = intervals;
         this.backgroundObjects = this.createInitialBackground();  // der Background wird bereits hier initialisiert und nicht in level1 bzw. level 2, da das Laden sonst zu lange dauert
         this.initWorld();
-
         this.setWorld();  // Diese Funkrion verknüft alle Variablen, die in der Klasse World drin sind mit der Klasse Character; bzw. man könnte sagen, diese Funktion übergibt sämliche Variablen, die in der Klasse "World" vorhanden sind, an die Klasse "Chararcter"
         this.runIntervals();
         this.draw();
-        //this.level.enemies[0].correctSpeedOfEachChicken();   //-- ruft diese Funktion hier beim Erzeugen des ersten Huhns auf, da man sie nicht in der Klasse "Chicken" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Huhn aufgerufen werden würde und dies zu viel rechenarbeit führen würde
-        //console.log('Chicken ist:', Chicken);
-        //console.log('Methode ist:', Chicken.correctSpeedOfEachChicken);
-        //console.log('Typ:', typeof Chicken.correctSpeedOfEachChicken);
-        //Chicken.correctSpeedOfEachChicken(this);
-        /*setTimeout(() => {
-            Chicken.correctSpeedOfEachChicken(this);
-        }, 5000);*/
         this.level.coins[0].correctPositionOfEachCoin(this);    //-- ruft diese Funktion hier beim Erzeugen des ersten Coins auf, da man sie nicht in der Klasse "Coin" aufrufen sollte, da sie hier über den Konstruktor aufgerufen werden würde, sodass sie bei jedem neu erzeugten Coin aufgerufen werden würde und dies zu viel rechenarbeit führen würde
         this.level.bottleOnFloor[0].correctPositionOfEachBottle(this);
         this.adjustLevelEnd();
@@ -81,12 +65,9 @@ class World {
     }
 
     initWorld() {
-        //this.level;
         this.setLevel();
-        //this.level = new Level1(this);
         this.character = new Character(this);
         this.sounds = new Sounds(this);
-        //this.intervals = new Intervals(this);
         this.gameStarted = false;
         this.testIfLevel2 = testIfLevel2;   //-- importiert die Variable testIfLevel2 aus der datei game.js und macht deren Wert somit für die anderen Objekte im Spiel verfügbar
         this.canvas;
@@ -113,28 +94,10 @@ class World {
         this.isMuted = false;
         this.background_sound = new Audio('audio/background-music.mp3');
         this.allSounds.push(this.background_sound);
-        //this.gameIntervals = [];
         this.adjustToggleBtnsForStart();
         window.addEventListener("resize", testWindowWidth);
-
-
-        // Jetzt ist `this` = world → also an alle Chickens weiterreichen:
-        //this.setLevel(new Level1());
-        //this.level = level;
-
-        //Cloud.animateCloudMovement(this);
-        //this.clouds.forEach(cloud => cloud.animateCloudMovement(this));
         this.initializeCloudMovement();
-        this.correctChickenSpeed();
-        /*
-        const timeout = setTimeout(() => {
-            Chicken.correctSpeedOfEachChicken(this);
-        }, 400);
-        */
-
-
-        //this.intervals.addIntervalToIntervalArray(timeout);
-
+        this.correctChickenSpeed();        
         this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
         this.defineEndboss();
     }
@@ -152,7 +115,7 @@ class World {
         const interval = setInterval(() => {
             if (typeof Chicken !== 'undefined' && Chicken.correctSpeedOfEachChicken) {
                 Chicken.correctSpeedOfEachChicken(this);
-                clearInterval(interval); // Polling stoppen, wenn erfolgreich
+                clearInterval(interval); // prüfung stoppen, wenn erfolgreich
             }
         }, 100);
     }
@@ -168,19 +131,16 @@ class World {
     setLevel() {
         if (this.selectedLevel === 1) {
             //startLevel1();
-            console.log(this.selectedLevel);
             this.level = new Level1(this);
             testIfLevel2 = false;
             testWindowWidth();
         } else if (this.selectedLevel === 2) {
             //startLevel2();
-            console.log(this.selectedLevel);
             this.level = new Level2(this);
             testIfLevel2 = true;
             testWindowWidth();
         }
         else {  // standart if no level was chosen
-            console.log(this.selectedLevel);
             this.level = new Level1(this);
             testIfLevel2 = false;
             testWindowWidth();
@@ -237,7 +197,6 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);  // cleared bzw. löscht den Inhalt des Canvas vor jedem neuen Zeichnen
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.backgroundObjects);  // Background
-        //this.addObjectsToMap(this.level.backgroundObjects);  // Background
         this.ctx.translate(-this.camera_x, 0); // verschiebt die Kamera vor den Zeichnen der StatusBar zurück
         this.addObjectsToMap(this.level.clouds);  // Clouds
         this.addToMap(this.statusBar); // Status-Bar
@@ -254,7 +213,6 @@ class World {
         this.addObjectsToMap(this.level.enemies);  // Enemies
         this.addObjectsToMap(this.level.coins);  // Coins
         this.addObjectsToMap(this.collectedThrowableObjects);
-        //this.addObjectsToMap(this.level.enemies[11].bottles);
         const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
         if (endboss && endboss.bottles) {
             this.addObjectsToMap(endboss.bottles);
@@ -341,13 +299,10 @@ class World {
      */
     checkForCollisionsWhithEnemies() {
         const interval = setInterval(() => {   // Checking for Collisions whith Enemies
-            //console.log(this.gamePaused);
-            //console.log(this.level.enemies[11].isDeadChicken /*instanceof Endboss, this.level.enemies.isDeadChicken*/);
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
                     this.character.hit();
                     this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
-                    //console.log('Leben Character:', this.character.energy);
                 }
             });
         }, 20);
@@ -366,13 +321,7 @@ class World {
                 if (this.character.isJumpingOnEnemy(enemy) && enemy != this.definedEndboss) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
                     enemy.isDeadChicken = true;
-                    //this.collectedThrowableObjects[0].enemyDeleted_sound.play();    // spielt den Sound ab, dass ein enemy getötet wurde
-                    //window.screens.stopSound();
-                    //this.screens.stopSound();
                     this.sounds.stopSound(this.character.enemyDeleted_sound);
-                    //this.character.enemyDeleted_sound.pause();  // diese und d. nächste Zeile stoppen den sound, der gerade abgespielt wird und setzen ihn auf null zurück, da sonst wenn man rasch nacheinander auf zwei Hühner hüpft, das Ende des sounds abgespielt wird und er nicht wie beabsichtigt von vorne beginnt.
-                    //this.character.enemyDeleted_sound.currentTime = 0;
-                    //this.character.enemyDeleted_sound.play();  // spielt den Sound ab, dass ein enemy getötet wurde
                     this.sounds.playSound(this.character.enemyDeleted_sound);  // spielt den Sound ab, dass ein enemy getötet wurde
                 }
             });
@@ -396,7 +345,6 @@ class World {
                     this.statusBarBottles.collectedBottles++;  // erhöht den Wert der gesammelten Flaschen für die Bottle-Status-Bar
                     this.statusBarBottles.setBottleNumber(this.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
                     this.sounds.stopSound(this.character.bottleCollected_sound);
-                    //this.character.bottleCollected_sound.play();
                     this.sounds.playSound(this.character.bottleCollected_sound);
                 }
             });
@@ -418,7 +366,6 @@ class World {
                     this.statusBarCoins.collectedCoins++;  // erhöht den Wert der gesammelten Coins für die Coin-Status-Bar
                     this.statusBarCoins.setCoinNumber(this.statusBarCoins.collectedCoins);  // aktualisiert die Anzeige der Bottle-Status-Bar
                     this.sounds.stopSound(this.character.coinCollected_sound);
-                    //this.character.coinCollected_sound.play();
                     this.sounds.playSound(this.character.coinCollected_sound);
                 }
             });
@@ -434,7 +381,6 @@ class World {
      */
     checkThrowObjects() {
         const interval = setInterval(() => {
-            //console.log('bottle in air:',this.bottleInAir);
             if (this.keyboard.letterD && this.collectedThrowableObjects.length > 0 && this.bottleInAir == false && this.gamePaused == false) {
                 this.collectedThrowableObjects[0].throw();
             }

@@ -47,7 +47,6 @@ class DrawableObject {
             ctx.drawImage(movingObject.img, movingObject.x, movingObject.y, movingObject.width, movingObject.height);
         } catch (e) {
             //console.warn('Error loading Image', e);
-            //console.log('Could not load Image', this.img);
         }
     }
 

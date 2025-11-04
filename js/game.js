@@ -187,7 +187,6 @@ function playBackgroundMusic() {
             window.world.background_sound.loop = true;
             window.world.background_sound.volume = 0.14;
             window.world.background_sound.playbackRate = 1;
-            console.log('play background music');
             clearInterval(backgroundMusicInterval);
         }
     }, 200);

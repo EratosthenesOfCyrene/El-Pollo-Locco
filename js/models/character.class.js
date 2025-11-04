@@ -206,11 +206,9 @@ class Character extends MovableObject {
         this.moveRight();
         this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
         if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-            //this.walking_sound.play();
             window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            //this.spinJump_sound.play();
             window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
@@ -231,11 +229,9 @@ class Character extends MovableObject {
         this.moveLeft();
         this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
         if (!this.isAboveGround()) {   // prüft, ob der Character sich gerade am Boden befindet; denn nur dann soll das walk-Geräusch abgespielt werden
-            //this.walking_sound.play();
             window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            //this.spinJump_sound.play();
             window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
@@ -263,7 +259,6 @@ class Character extends MovableObject {
                     }, 7100);
                 } else if (this.isHurt()) { //-- if the character is hurt
                     this.playAnimation(this.IMAGES_HURT);
-                    //this.hurt_sound.play();
                     window.world.sounds.playSound(this.hurt_sound);
                 }
                 // Jump-Animation
@@ -271,7 +266,6 @@ class Character extends MovableObject {
                     this.playAnimation(this.IMAGES_JUMPING);
                 }
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {  // "||" ist ein logisches "oder" und hei?t, dass der Code in den geschweiften Klammern entweder ausgeführt wird, wenn die rechts- oder die links-Taste gedrückt wurde
-
                     // Walk-Animation
                     this.playAnimation(this.IMAGES_WALKING);
                 }

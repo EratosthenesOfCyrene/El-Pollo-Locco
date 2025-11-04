@@ -21,7 +21,6 @@ class MovableObject extends DrawableObject {
     otherdirection = false;
     speedY = 0;
     acceleration = 3;
-    //keyboardUp = false;
     energy = 100;
     lastHit = 0;
     characterIsAlive = true;
@@ -40,14 +39,12 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
-                //console.log('speedY:', this.speedY, 'acceleration:', this.acceleration);
-                
+
             } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
                 this.speedY = 0;
-                //console.log('speedY:', this.speedY, 'acceleration:', this.acceleration);
             }
         }, 1000 / 25);
-        this.world.intervals.addIntervalToIntervalArray(interval);  
+        this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -58,12 +55,12 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     speedYtoZero() {    //-- Diese Funktion sorgt dafür, dass speedY des Characters nach dem Start auf null gesetzt  wird, da sonst nicht erkannt würde, ob er mit einem Huhn kollidiert oder auf dasselbe springt
-        const interval = setInterval(() => {            
+        const interval = setInterval(() => {
             if (this.y >= 168) {
                 this.speedY = 0;
             }
         }, 200);
-        this.world.intervals.addIntervalToIntervalArray(interval);  
+        this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -105,8 +102,8 @@ class MovableObject extends DrawableObject {
     }
 
     isCollidingJumpingOnEnemy(movingObject) {
-         return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
-            this.y + this.height > movingObject.y -12 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
+        return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
+            this.y + this.height > movingObject.y - 12 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
             this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
             this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
@@ -139,9 +136,9 @@ class MovableObject extends DrawableObject {
 
     isCollidingBottleCharacter(movingObject) {
         return this.x + this.width > (movingObject.x) &&
-                this.y + this.height > movingObject.y &&
-                this.x < (movingObject.x - 15) + movingObject.width &&
-                this.y < movingObject.y + movingObject.height;
+            this.y + this.height > movingObject.y &&
+            this.x < (movingObject.x - 15) + movingObject.width &&
+            this.y < movingObject.y + movingObject.height;
     }
 
     /**
@@ -183,7 +180,7 @@ class MovableObject extends DrawableObject {
 
     hitByBottle() {
         console.log('Hiiiiiittttt');
-        
+
         this.energy -= 15;
         if (this.energy < 0) {
             this.energy = 0;
@@ -248,10 +245,8 @@ class MovableObject extends DrawableObject {
                 this.endbossThrowBottle();
             } if (this.testHit4 === true && (this.oldX - 800 - 1100 - 1400) < this.x) {
                 this.x -= (this.endBossSpeed + 100);
-                //this.testHit3 = false;
             }
-        //this.x -= this.endBossSpeed;
-    }
+        }
     }
 
     moveRight() {
@@ -266,13 +261,8 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 
-    
 
-     /**
-     * Optionaler "Hook" – kann in Unterklassen überschrieben werden
-     */
-    maybeThrowBottle() {
-        // leer in der Basisklasse
-    }
+
+    
 
 }
