@@ -30,32 +30,22 @@ function init() {
     if (!window.world) {  // prüft, ob bereits eine level ausgewählt wurde; wenn nicht, dann wird level 1 initialisiert
         chooseLevel1();
     }
-    //initCanvasAndWorld();
 
     const urlParams = new URLSearchParams(window.location.search);
     const level = urlParams.get('level') || '1'; // Standardmäßig Level 1
-
-    if (level === '2') {
-        //startLevel2();
-    } else {
-        //startLevel1();
-    }
 }
 
 function chooseLevel1() {
     intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 1, intervals);
-    //world.level = 1;
     amplifySound();
-    //console.log('level 1 chosen!!', window.world.level);
 }
 
 function chooseLevel2() {
     intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 2, intervals);
-    //world.level = 2;
     amplifySound();
     console.log('level 2 chosen!!', window.world.level);
 
@@ -64,8 +54,6 @@ function chooseLevel2() {
 function noLevelChosen() {
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 3, intervals);
-    //world.level = 2;
-    console.log('no level chosen!!', window.world.level);
 }
 
 function initCanvasAndWorld() {
@@ -99,36 +87,6 @@ function resizeCanvasBackToNormal() {
     canvas.style.height = "480px";
 }
 
-function startLevel1() {
-    //level = new Level1();
-    //world = new World(canvas, keyboard, level1);
-    //world.level = level1;
-}
-
-function startLevel2() {
-    //level = new Level2();
-    //world = new World(canvas, keyboard, level1);
-    //world.level = level1;
-}
-
-/*
-function playLevel1() {
-    testIfLevel2 = false;
-    startLevel1();
-    //startCanvas();
-    resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
-    world.initWorld();
-}
-
-function playLevel2() {
-    testIfLevel2 = true;
-    startLevel2();
-    //startCanvas();
-    resetGameBtns();  // aktiviert alle zuvor deaktivierten Buttons
-    world.initWorld();
-}
-    */
-
 /**
  * This function reactivates all the prevoiusly deactivated buttons 
  */
@@ -142,17 +100,9 @@ function resetGameBtns() {
     }
 }
 
-/*
-function startLevel2() {
-    level = level2;
-    testIfLevel2 = true;
-} */
-
 function showLevelSelection() {
-    //setTimeout(() => {
     document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
     document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
-    //}, 100);
 }
 
 function showLevelSelectionFast() {
@@ -174,9 +124,6 @@ function shrinkStartImage() {
 function resetIntervals() {
     window.world.gameIntervals = [];
     console.log(window.world.gameIntervals);
-
-
-
 }
 
 /**
@@ -199,8 +146,6 @@ function resetIntervals() {
  * @function startGame
  */
 function startGame() {
-    //console.log(window.world.gameStarted);
-
     if (!window.world.gameStarted) {
         document.getElementById('startImg').classList.add('d-none');
         document.getElementById('startGameBtn').classList.add('d-none');
@@ -208,8 +153,6 @@ function startGame() {
         document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
         document.getElementById('soundBtn').classList.remove('d-none');
         document.getElementById('soundBtn').classList.add('soundBtn');
-        //startCanvas();
-        //testLevel();
         loadSoundSettings();
         playBackgroundMusic();
         gameStarted = true;
@@ -237,9 +180,7 @@ function testLevel() {
  * @returns {void}
  */
 function playBackgroundMusic() {
-    //amplifySound();
     const backgroundMusicInterval = setInterval(() => {
-        //window.world.sounds.test();
         const mutedSetting = localStorage.getItem('isMuted');  //-- testen, ob der Sound an oder aus sein sollte
         if (mutedSetting === 'false' /*&& !window.world.gameOver*/) {
             window.world.background_sound.play();
@@ -301,30 +242,6 @@ function loadSoundSettings() {
         }
     }, 100); // alle 100ms prüfen, ob world existiert
 }
-/*function loadSoundSettings() {
-    if (world === !undefined) {
-        
-    }
-    const mutedSetting = localStorage.getItem('isMuted');
-    if (mutedSetting === 'true') {
-        world.isMuted = true;
-        showMutedImg();
-        muteSound();
-    } else {
-        world.isMuted = false;
-        showSoundImg();
-        amplifySound();
-    }
-}*/
-
-/* Testblock*/
-/*
-function TestSound() {
-    setInterval(() => {
-
-    }, 200);
-
-}*/
 
 function muteSound() {
     window.world.character.walking_sound.volume = 0;
@@ -347,7 +264,6 @@ function amplifySound() {
     window.world.character.spinJump_sound.volume = 0.3;
     window.world.character.hurt_sound.volume = 0.1;
     window.world.character.healthRecharge_sound.volume = 0.6;
-    //window.world.character.bottleCollected_sound.volume = 1;
     window.world.background_sound.volume = 0.18;
     window.world.character.bottleCollected_sound.volume = 0.1;
     window.world.character.enemyHit_sound.volume = 1;
@@ -367,11 +283,6 @@ function showSoundImg() {
 function showMutedImg() {
     document.getElementById('soundOffImg').classList.remove('d-none');
     document.getElementById('soundOnImg').classList.add('d-none');
-}
-
-function startCanvas() {
-    //canvas = document.getElementById('canvas');
-    //world = new World(canvas, keyboard, level1Test);
 }
 
 /**
@@ -521,7 +432,6 @@ window.addEventListener("keydown", (event) => {
     }
 });
 
-
 /**
  * Handles `keyup` events and updates the `keyboard` state object based on 
  * the key press is released. 
@@ -562,7 +472,6 @@ window.addEventListener("keyup", (event) => {
         keyboard.letterD = false;
     }
 });
-
 
 /**
  * This function binds touch event listeners to the mobile control buttons for gameplay interaction.
@@ -700,9 +609,7 @@ function bindBtnsPressEvents() {
  * @returns {void}
  */
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
-    //const interval = setInterval(() => {
     const mediaQuery = window.matchMedia('(max-width: 1200px)');
-    //console.log(mobileWindow);
 
     //-- Mobile View
     if (mediaQuery.matches) {
@@ -718,7 +625,6 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
             initMobileGameView();  //-- blendet UI-content ein
         } if (window.innerWidth < 700) {
             hideShowContent('pauseEndGameBtns', 'add');
-            //hideShowContent('about-btns', 'add');
             document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
                 hideShowContent('pauseEndGameBtns', 'add');
             });
@@ -741,9 +647,6 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     if (!mediaQuery.matches) {
         initDesktopView();
     }
-
-    //}, 200);
-    //this.addIntervalToIntervalArray(interval);
 }
 
 function initMobileView() {
