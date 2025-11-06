@@ -45,6 +45,7 @@ class Character extends MovableObject {
     idleAnimation = false;
     imagesDeadPlayed = false;
     testEndbossHit_4 = false;
+    totalSpeed;
 
     IMAGES_WALKING = [
         './img_pollo_locco/img/2_character_pepe/2_walk/W-21.png',
@@ -133,6 +134,9 @@ class Character extends MovableObject {
 
         this.world = world
         this.energy = 100;
+        this.clampedTime;
+        this.jumpingTime = null;
+        this.placeCharacterExecuted = false;
 
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -145,6 +149,22 @@ class Character extends MovableObject {
         this.applyGravity();
         this.speedYtoZero();
         this.walking_sound.playbackRate = 1.5; // passt die Abspielgeschwindigkeit an
+        this.placeCharacter();
+    }
+
+    /**
+     * This function checks if the character is not above ground, an places it at y = 160 px if it is placed too low on the y-axis.
+     * 
+     * @method placeCharacter
+     * @memberof Character
+     */
+    placeCharacter() {
+        setInterval(() => {
+            if (!this.isAboveGround() && !this.placeCharacterExecuted) {
+                this.y = 160;
+                this.placeCharacterExecuted = true;  // placeCharacterExecuted muss noch irgendwo wieder auf false gesetzt werden...
+            }
+        }, 4);
     }
 
     /**
@@ -187,7 +207,12 @@ class Character extends MovableObject {
                 }
                 //-- Springen
                 if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
-                    this.speedY = 30;
+
+                    //console.log(this.clampedTime);
+                    //this.speedY = 10 + this.clampedTime / 100 * 6;
+                    //console.log(this.totalSpeed, this.speedY);
+
+                    //this.speedY = 30;
                     window.world.sounds.stopSound(this.spinJump_sound);
                     //this.spinJump_sound.play();
                     window.world.sounds.playSound(this.spinJump_sound);
@@ -322,7 +347,7 @@ class Character extends MovableObject {
         this.world.background_sound.playbackRate = 1;
     }
 
-    
+
 
 
 

@@ -39,9 +39,13 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
+                console.log(this.speedY);
+                                
 
             } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
                 this.speedY = 0;
+                console.log(this.speedY);
+                
             }
         }, 1000 / 25);
         this.world.intervals.addIntervalToIntervalArray(interval);

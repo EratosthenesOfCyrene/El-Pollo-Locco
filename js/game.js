@@ -390,6 +390,10 @@ function resizeCanvasToFullscreen() {
     canvas.style.height = '100%';
 }
 
+let jumpsStartTime = null;
+let jumpingTime = null;
+let jumpStart = false;
+
 /**
  * Handles `keydown` events and updates the `keyboard` state object based on 
  * the key pressed. 
@@ -424,12 +428,45 @@ window.addEventListener("keydown", (event) => {
 
     if (event.keyCode == 67) {
         keyboard.SPACE = true;
+        //window.world.character.speedY = 100;
+        jumpsStartTime = Date.now();
+        testPressTimeJump();
+        /* if (jumpStart == false) {
+              jumpStartTime = Date.now();
+              jumpStart = true;
+         }*/
+
     }
 
     if (event.keyCode == 68) {
         keyboard.letterD = true;
     }
 });
+
+let jumpInterval;
+
+
+/**
+ * This function calculates the time of the keydown/press-event. 
+ * The function is checks if the intervall it intends to strt is already running AND 
+ * whether the character is NOT above ground, and only starts the interval if both conditions are negative.
+ * It also heightens the value of character.speedY by 24 every 20 miliseconds, 
+ * which allows the character to jump higher if the key is pressed longer.
+ *  
+ * @method testPressTimeJump 
+ */
+function testPressTimeJump() {
+    if (!jumpInterval && !window.world.character.isAboveGround()) {
+        jumpInterval = setInterval(() => {
+            jumpingTime = Date.now() - jumpsStartTime;
+            if (jumpingTime >= 300) {
+                jumpingTime = 300;
+                clearInterval(jumpInterval);
+            }
+            window.world.character.speedY = 24 //+ jumpingTime / 100 * 2;
+        }, 20);
+    }
+}
 
 /**
  * Handles `keyup` events and updates the `keyboard` state object based on 
@@ -465,6 +502,17 @@ window.addEventListener("keyup", (event) => {
 
     if (event.keyCode == 67) {
         keyboard.SPACE = false;
+        jumpStart = false;
+        //jumpingTime = null;
+        //window.world.character.speedY = 10 + jumpingTime / 100 * 6;
+        if (jumpInterval) {
+            clearInterval(jumpInterval);
+            jumpInterval = null;
+        }
+        /* let pressTime = Date.now() - jumpStartTime;
+         let maxPressTime = 400;
+         let clampedTimeGameJS = Math.min(pressTime, maxPressTime);
+         window.world.character.clampedTime = clampedTimeGameJS;  */
     }
 
     if (event.keyCode == 68) {
@@ -513,11 +561,18 @@ function bindBtnsPressEvents() {
     document.getElementById('mobileBtnJump').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
+        jumpsStartTime = Date.now();
+        testPressTimeJump();
     });
 
     document.getElementById('mobileBtnJump').addEventListener('touchend', (event) => {
         event.preventDefault();
         keyboard.SPACE = false;
+        jumpStart = false;
+        if (jumpInterval) {
+            clearInterval(jumpInterval);
+            jumpInterval = null;
+        }
     });
 
     document.getElementById('mobileBtnThrow').addEventListener('touchstart', (event) => {
@@ -541,7 +596,7 @@ function bindBtnsPressEvents() {
         keyboard.RIGHT = false;
     });
 
-     document.getElementById('mobileBtnLeft').addEventListener('mousedown', (event) => {
+    document.getElementById('mobileBtnLeft').addEventListener('mousedown', (event) => {
         event.preventDefault();
         keyboard.LEFT = true;
     });
@@ -551,7 +606,7 @@ function bindBtnsPressEvents() {
         keyboard.LEFT = false;
     });
 
-     document.getElementById('mobileBtnJump').addEventListener('mousedown', (event) => {
+    document.getElementById('mobileBtnJump').addEventListener('mousedown', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
     });
@@ -561,7 +616,7 @@ function bindBtnsPressEvents() {
         keyboard.SPACE = false;
     });
 
-     document.getElementById('mobileBtnThrow').addEventListener('mousedown', (event) => {
+    document.getElementById('mobileBtnThrow').addEventListener('mousedown', (event) => {
         event.preventDefault();
         keyboard.letterD = true;
     });
