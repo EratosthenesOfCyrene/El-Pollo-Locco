@@ -29,7 +29,7 @@ class MovableObject extends DrawableObject {
     applyGravityIntervalID;
 
     /**
-     * Creates the illusion of creativity
+     * Creates the illusion of creativity.
      * 
      * @method applyGravity
      * @memberof MovableObject
@@ -40,12 +40,12 @@ class MovableObject extends DrawableObject {
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
                 console.log(this.speedY, this.y);
-                                
+
 
             } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
                 this.speedY = 0;
                 console.log(this.speedY);
-                
+
             }
             this.resetYtoNormal();
         }, 1000 / 25);
@@ -53,8 +53,11 @@ class MovableObject extends DrawableObject {
     }
 
     /**
-     * This function checks if the y-coordinate of the character is not 168 AND if the character is NOT above the ground.
-     * If both conditions are correct, it sets the value of the character's position along the y-axis to this.y = 168.
+     * This function checks if the object is an instance of the Character (to make sure that the object is not a thrown bottle;
+     * the function applyGraviti where this function is called from is also used when a bottle is thrown and would therefore generate errors 
+     * and wrong behaviour for the thrown bottle) AND if the y-coordinate of the character is not 168 AND if the character 
+     * is NOT above the ground. If both conditions are correct, it sets the value of the character's position along the y-axis 
+     * to this.y = 168.
      * 
      * This is absolutely necessary because if the y-coordinate of the character would be != 168, 
      * the collission detection of the game would detect false collissions whith the character and the enemies
@@ -64,10 +67,10 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     resetYtoNormal() {
-        if (this.y != 168 && !this.isAboveGround()) {
+        if (this instanceof Character && this.y != 168 && !this.isAboveGround()) {
             this.y = 168;  // der y-wert des Characters muss auf 168 gesetzt werden, da sonst die collission-detection fälschlicherweise feststellt, dass der character auf das chicken hüpft und dieses somit gelöscht wird, anstatt dem character Schaden zu geben.
             console.log(this.speedY, this.y);
-            
+
         }
     }
 
@@ -158,6 +161,15 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Checks whether the character is colliding whith a bottle that was thrown by the endboss.
+     * 
+     * 
+     * @param {object} movingObject - The object (the character) the collission against is to be checked. 
+     * @param {object} this.x - the x-coordinate of the thrown bottle
+     * @returns {boolean} `true` if the character is colliding with the bottle, otherwise `false`.
+     * @returns 
+     */
     isCollidingBottleCharacter(movingObject) {
         return this.x + this.width > (movingObject.x) &&
             this.y + this.height > movingObject.y &&
@@ -287,6 +299,6 @@ class MovableObject extends DrawableObject {
 
 
 
-    
+
 
 }
