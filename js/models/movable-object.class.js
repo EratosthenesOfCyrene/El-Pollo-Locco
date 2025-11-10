@@ -39,7 +39,7 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
-                console.log(this.speedY);
+                console.log(this.speedY, this.y);
                                 
 
             } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
@@ -47,8 +47,28 @@ class MovableObject extends DrawableObject {
                 console.log(this.speedY);
                 
             }
+            this.resetYtoNormal();
         }, 1000 / 25);
         this.world.intervals.addIntervalToIntervalArray(interval);
+    }
+
+    /**
+     * This function checks if the y-coordinate of the character is not 168 AND if the character is NOT above the ground.
+     * If both conditions are correct, it sets the value of the character's position along the y-axis to this.y = 168.
+     * 
+     * This is absolutely necessary because if the y-coordinate of the character would be != 168, 
+     * the collission detection of the game would detect false collissions whith the character and the enemies
+     * in the case that the character only walks frontally into an enemy. In this case, the character must get hurt.
+     * 
+     * @method resetYtoNormal
+     * @memberof MovableObject
+     */
+    resetYtoNormal() {
+        if (this.y != 168 && !this.isAboveGround()) {
+            this.y = 168;  // der y-wert des Characters muss auf 168 gesetzt werden, da sonst die collission-detection fälschlicherweise feststellt, dass der character auf das chicken hüpft und dieses somit gelöscht wird, anstatt dem character Schaden zu geben.
+            console.log(this.speedY, this.y);
+            
+        }
     }
 
     /**
