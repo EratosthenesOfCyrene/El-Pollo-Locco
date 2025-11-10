@@ -68,6 +68,7 @@ document.addEventListener('fullscreenchange', () => {
     } else {
         // Fullscreen betreten
         resizeCanvasToFullscreen();
+         resizeCanvasToFullscreen2();
     }
 });
 
@@ -380,9 +381,10 @@ function enterFullscreen(element) {
         element.webkitRequestFullscreen();
     }
     resizeCanvasToFullscreen();
+     resizeCanvasToFullscreen2();
 }
 
-function resizeCanvasToFullscreen() {
+function resizeCanvasToFullscreen2() {
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth / 2;
     canvas.height = window.innerHeight / 1.53;
