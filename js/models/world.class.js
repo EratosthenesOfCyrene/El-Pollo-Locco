@@ -129,13 +129,11 @@ class World {
     }
 
     setLevel() {
-        if (this.selectedLevel === 1) {
-            //startLevel1();
+        if (this.selectedLevel === 1) {  //startLevel1
             this.level = new Level1(this);
             testIfLevel2 = false;
             testWindowWidth();
-        } else if (this.selectedLevel === 2) {
-            //startLevel2();
+        } else if (this.selectedLevel === 2) {   //startLevel2
             this.level = new Level2(this);
             testIfLevel2 = true;
             testWindowWidth();
@@ -147,6 +145,14 @@ class World {
         }
     }
 
+    /**
+     * Stops the character from moving too far to the right if the level end is reached. 
+     * The function tests if level 1 or level 2 is played and sets the end of the furthest rightwards movement
+     * of the character accordingly.
+     * 
+     * @method adjustLevelEnd
+     * @memberof world
+     */
     adjustLevelEnd() {
         if (this.testIfLevel2 === false) {
             this.level.level_end_x = 5100
@@ -155,6 +161,14 @@ class World {
         }
     }
 
+    /**
+     * Adjusts the toggle buttons for the start of the game.
+     * It deactivates the play button in both deskttop or mobile view and reactivates the pause
+     * button in both desktop or mobile view.
+     * 
+     * @method adjustToggleBtnsForStart
+     * @memberof world
+     */
     adjustToggleBtnsForStart() {
         toggleBtn('resumeGameBtn', true);  // deaktiviert den zuvor deaktivierten "play-Button" der Desktop Ansicht
         toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
@@ -253,6 +267,12 @@ class World {
         this.ctx.shadowBlur = 0;  // Schatteneffekt
     }
 
+    /**
+     * This function links the character it is in.
+     * 
+     * @method setWorld
+     * @memberof World
+     */
     setWorld() {
         this.character.world = this;
     }
@@ -391,6 +411,13 @@ class World {
         this.intervals.addIntervalToIntervalArray(interval);
     }
 
+    /**
+     * Checks whether a big or small chicken is dead and plays the animation of the dead chicken accordingly.
+     * 
+     * @param {Chicken|Endboss} enemy - The enemy object (chicken or endboss) whose death animation will be played.
+     * @method playDeadChickenAnimation 
+     * @memberof world
+     */
     playDeadChickenAnimation(enemy) {
         const deadChickenIntervalID = setInterval(() => {
             if (enemy.chickenBig == true) {   // diese Abfrage prüft, ob es sich um ein großes oder ein kleines Ckicken handelt, damit im Folgenden das richtige Bild des toten Chicken geladen werden kann
@@ -408,6 +435,13 @@ class World {
         this.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
+    /**
+     * Deletes the hit enemy.
+     * 
+     * @param {Chicken|Endboss} enemy - The enemy that will be deleted.
+     * @method deleteHitEnemy
+     * @memberof world
+     */
     deleteHitEnemy(enemy) {  // deletes the hit enemy
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         if (indexOfEnemy !== -1) {
@@ -416,14 +450,33 @@ class World {
         }
     }
 
+    /**
+     * Deletes a thrown bottle from the bottles array.
+     * 
+     * @method deleteThrownBottleFromArray
+     * @memberof world
+     */
     deleteThrownBottleFromArray() {
         this.collectedThrowableObjects.splice(1, 1);
     }
 
+    /**
+     * This function deletes all enemies.
+     * 
+     * @method deleteAllEnemies
+     * @memberof world
+     */
     deleteAllEnemies() {
         this.level.enemies.length = 0  //-- .length = 0 leert das Array
     }
 
+    /**
+     * Renders all the objects of the game onto the map.
+     * 
+     * @param {all objects} objects - all the abjects that are to be rendered to the map.
+     * @method addObjectsToMap
+     * @memberof world
+     */
     addObjectsToMap(objects) {
         objects.forEach(object => {
             this.addToMap(object);
@@ -474,6 +527,12 @@ class World {
         movingObject.x = movingObject.x * -1;
     }
 
+    /**
+     * Flips back the image of the object that is to be drawn.
+     * 
+     * @method flipImageBack
+     * @memberof world
+     */
     flipImageBack(movingObject) {
         movingObject.x = movingObject.x * -1;
         this.ctx.restore();

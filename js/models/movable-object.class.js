@@ -59,7 +59,7 @@ class MovableObject extends DrawableObject {
      * is NOT above the ground. If both conditions are correct, it sets the value of the character's position along the y-axis 
      * to this.y = 168.
      * 
-     * This is absolutely necessary because if the y-coordinate of the character would be != 168, 
+     * This is absolutely necessary because, if the y-coordinate of the character would be != 168, 
      * the collission detection of the game would detect false collissions whith the character and the enemies
      * in the case that the character only walks frontally into an enemy. In this case, the character must get hurt.
      * 
@@ -70,7 +70,6 @@ class MovableObject extends DrawableObject {
         if (this instanceof Character && this.y != 168 && !this.isAboveGround()) {
             this.y = 168;  // der y-wert des Characters muss auf 168 gesetzt werden, da sonst die collission-detection fälschlicherweise feststellt, dass der character auf das chicken hüpft und dieses somit gelöscht wird, anstatt dem character Schaden zu geben.
             console.log(this.speedY, this.y);
-
         }
     }
 

@@ -1,26 +1,131 @@
+/**
+ * Current level of the game.
+ * @type {Level}
+ */
 let level;
+
+/**
+ * Canvas element for the game.
+ * @type {HTMLCanvasElement}
+ */
 let canvas;
+
+/**
+ * Contains all game world data and logic.
+ * @type {World}
+ */
 let world;
+
+/**
+ * Keyboard input handler.
+ * @type {Keyboard}
+ */
 let keyboard = new Keyboard();
+
+/**
+ * Button to pause the game.
+ * @type {HTMLElement}
+ */
 let pauseGameBtn = document.getElementById('pauseGameBtn');
+
+/**
+ * Indicates whether the game has already started.
+ * Used to correctly display pause-game-btns buttons.
+ * @type {boolean}
+ */
 let gameStarted = false;  // diese Variable wird benötigt, um, wenn die "pause-game-btns" wieder angezeigt werden sollen, um zu überprüfen, ob das Spiel bereits gestartet wurde, da sie sonst direkt zum Start des Spiels angezeigt werden würden. 
+
+/**
+ * Indicates whether the game is currently paused.
+ * @type {boolean}
+ */
 let gamePaused = false;
+
+/**
+ * Indicates whether the game is screened onto a mobile screen.
+ * @type {Object}
+ */
 let mobileWindow;
+
+/**
+ * Indicates whether fullscreen mode is active on desktop.
+ * @type {boolean}
+ */
 let fullscreenDesktop = false;
+
+/**
+ * Indicates whether the device is being hold in vertical (portrait) orientation.
+ * @type {boolean}
+ */
 let deviceVertical;
+
+/**
+ * Controls the display of the mobile "About" menu (hamburger menu).
+ * @type {boolean}
+ */
 let showMobileAboutMenuVar = false;  // diese Variable wird benötigt, um den Toggle-Button des Hamburger-Menus bzw. das "X" zum Schließen in der Funktion "showMobileAboutMenu()" zu regeln
+
+/**
+ * Indicates if level 2 is active.
+ * @type {boolean}
+ */
 let testIfLevel2 = false;
+
+/**
+ * Indicates whether the device was turned/rotated the game.
+ * @type {boolean}
+ */
 let deviceWasTurned = false;
+
+/**
+ * Indicates whether the button bar is shown.
+ * @type {boolean}
+ */
 let buttonBoardShown = true;
+
+/**
+ * Test if level 1 is active.
+ * @type {Level}
+ */
 let level1Test;
+
+/**
+ * Contains all intervals for the game (e.g., game loop, animations).
+ * @type {Intervals}
+ */
 let intervals = new Intervals();
+
+/**
+ * Stores the interval for the jump mechanism.
+ * @type {number}
+ */
+let jumpInterval;
+
+/**
+ * Stores the exact date of when the keydown event of the jump key started.
+ * @type {number}
+ */
+let jumpsStartTime = null;
+
+/**
+ * Stores the time between the keydown event (the beginning of the jump) and the
+ * keyup event (the ending of the loading of the jump energy).
+ * @type {number}
+ */
+let jumpingTime = null;
+
+/**
+ * Indicates whether the jump has started.
+ * @type {boolean}
+ */
+let jumpStart = false;
 
 /**
  * 
  * This function initiates the page
  *  Shrinks the start image, checks button events, and enables fullscreen for mobile view.
  *
- * @function
+ * @function init
  * @returns {void}
  */
 function init() {
@@ -35,6 +140,13 @@ function init() {
     const level = urlParams.get('level') || '1'; // Standardmäßig Level 1
 }
 
+/**
+ * This function initiates level 1 if level 1 was chosen by the player.
+ * It clears the game-intervals and initiates the canvas and the world.
+ * Afterwards it calls amplifySound() to adjust the loudnes of the game-sounds
+ *
+ * @function chooseLevel1
+ */
 function chooseLevel1() {
     intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
@@ -42,6 +154,13 @@ function chooseLevel1() {
     amplifySound();
 }
 
+/**
+ * This function initiates level 2 if level 2 was chosen by the player.
+ * It clears the game-intervals and initiates the canvas and the world.
+ * Afterwards it calls amplifySound() to adjust the loudnes of the game-sounds
+ *
+ * @function chooseLevel2
+ */
 function chooseLevel2() {
     intervals.clearGameIntervals();
     canvas = document.getElementById('canvas');
@@ -51,16 +170,31 @@ function chooseLevel2() {
 
 }
 
+/**
+ * Is only called if no leel was chosen. It then initiates level 1 as default.
+ * 
+ * @function noLevelChosen
+ */
 function noLevelChosen() {
     canvas = document.getElementById('canvas');
     window.world = new World(canvas, keyboard, 3, intervals);
 }
 
+
+/**
+ * Inits canvas and the game world.
+ * 
+ * @function initCanvasAndWorld
+ */
 function initCanvasAndWorld() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 }
 
+/**
+ * Detects changes to the viewport size, and calls the functions that either 
+ * end or initiate the fullscreen.
+ */
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
         // Fullscreen verlassen
@@ -72,6 +206,11 @@ document.addEventListener('fullscreenchange', () => {
     }
 });
 
+/**
+ * Resizes the canvas to full screen dimensions
+ * 
+ * @function resizeCanvasToFullscreen
+ */
 function resizeCanvasToFullscreen() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -80,6 +219,11 @@ function resizeCanvasToFullscreen() {
     canvas.style.height = window.innerHeight + "px";
 }
 
+/**
+ * Resizes the canvas back to its standart size if the fullscreen mode is left.
+ * 
+ * @function resizeCanvasBackToNormal
+ */
 function resizeCanvasBackToNormal() {
     canvas.width = 720;
     canvas.height = 480;
@@ -90,6 +234,8 @@ function resizeCanvasBackToNormal() {
 
 /**
  * This function reactivates all the prevoiusly deactivated buttons 
+ * 
+ * @function resetGameBtns
  */
 function resetGameBtns() {
     if (mobileWindow == false) {
@@ -101,30 +247,54 @@ function resetGameBtns() {
     }
 }
 
+/**
+ * Shows the level selection panel.
+ * 
+ * @function showLevelSelection
+ */
 function showLevelSelection() {
     document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
     document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
 }
 
+/**
+ * Shows the levels selection panel if the "Levelauswahl"-button wasa clicked. 
+ * 
+ * @function showLevelSelectionFast
+ */
 function showLevelSelectionFast() {
     document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
     document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
 }
 
+/**
+ * This function hides the mobileSelectionDiv.
+ * 
+ * @function hideMobileLevelSelectionDiv
+ */
 function hideMobileLevelSelectionDiv() {
     document.getElementById('outerMobileLevelSelectionDiv').classList.add('d-none');
     document.getElementById('mobileLevelSelectionDiv').classList.add('d-none');
 }
 
+/**
+ * Adjusts the size of the startimage to the size of the canvas.
+ * 
+ * @function shrinkStartImage
+ */
 function shrinkStartImage() {
     setTimeout(() => {
         document.getElementById('startGameBtn').classList.remove('d-none');
     }, 2400);
 }
 
+/**
+ * Resets all the intervals of the game if the game starts from the beginning.
+ * 
+ * @function resetIntervals
+ */
 function resetIntervals() {
     window.world.gameIntervals = [];
-    console.log(window.world.gameIntervals);
 }
 
 /**
@@ -162,6 +332,11 @@ function startGame() {
     }
 }
 
+/**
+ * Tsts which level was chosen at the start of the game.
+ * 
+ * @function testLevel
+ */
 function testLevel() {
     if (level === '2') {
         startLevel2();
@@ -194,6 +369,11 @@ function playBackgroundMusic() {
     //this.addIntervalToIntervalArray(interval);
 }
 
+/**
+ * Stops the background music, if the game is paused for example.
+ * 
+ * @function stopBackgroundMusic
+ */
 function stopBackgroundMusic() {
     window.world.background_sound.pause();
 }
@@ -243,6 +423,12 @@ function loadSoundSettings() {
     }, 100); // alle 100ms prüfen, ob world existiert
 }
 
+
+/**
+ * Mutes all the sounds in the game.
+ * 
+ * @function muteSound
+ */
 function muteSound() {
     window.world.character.walking_sound.volume = 0;
     window.world.character.spinJump_sound.volume = 0;
@@ -259,6 +445,12 @@ function muteSound() {
     window.world.character.characterDeadDrums_sound.volume = 0;
 }
 
+/**
+ * Sets the correct volume for each sond individually;
+ * at the beginning of the game or if the silent mode is ended.
+ * 
+ * @function amplifySound
+ */
 function amplifySound() {
     window.world.character.walking_sound.volume = 1;
     window.world.character.spinJump_sound.volume = 0.3;
@@ -275,11 +467,21 @@ function amplifySound() {
     window.world.character.characterDeadDrums_sound.volume = 1;
 }
 
+/**
+ * Shows the svg-icon that sound is active for the sound-button.
+ * 
+ * @function showSoundImg
+ */
 function showSoundImg() {
     document.getElementById('soundOffImg').classList.add('d-none');
     document.getElementById('soundOnImg').classList.remove('d-none');
 }
 
+/**
+ * Shows the svg-icon that sound is paused for the sound-button.
+ * 
+ * @function showMutedImg
+ */
 function showMutedImg() {
     document.getElementById('soundOffImg').classList.remove('d-none');
     document.getElementById('soundOnImg').classList.add('d-none');
@@ -294,7 +496,7 @@ function showMutedImg() {
  * 
  * If the game is not over yet, the gamePaused variable will be set to true and the movement of the chickens will be paused.
  * 
- * @function
+ * @function pauseGame
  */
 function pauseGame() {
     if (mobileWindow == false) {
@@ -313,14 +515,24 @@ function pauseGame() {
     }
 }
 
+/**
+ * Iterates through the chicken array and sets the speed of each chicken to zero if the game is paused. 
+ * 
+ * @function pauseChicken
+ */
 function pauseChicken() {
     window.world.level.enemies.forEach((enemy, indexOfEnemy) => {
-        //console.log('Aktuelles Level:', world.level instanceof Level1 ? 'Level1' : 'Level2');
         window.world.level.enemies[indexOfEnemy].speed = 0;
-        //console.log("Zugriff auf enemies:", world.level?.enemies);
     });
 }
 
+/**
+ * Enables/disables toggle-btns
+ * 
+ * @function toggleBtn
+ * @param {string} param1 id - The ID of the button element
+ * @param {boolean} param2 enabled/disabled - Weter the button is to be enabled (true) or disabled (false).
+ */
 function toggleBtn(param1, param2) {
     document.getElementById(param1).disabled = param2;     // disable Pause-Game-Button
 }
@@ -332,7 +544,7 @@ function toggleBtn(param1, param2) {
  * If the game is in desktop mode (mobileWindow == false), the desktop "Resume" button
  * will be disabled and the "Pause" button will be enabled. The same logic applies to mobile mode (mobileWindow == true) and the corresponding buttons. 
  * 
- * @function
+ * @function resumeGame
  */
 function resumeGame() {
     restartChicken();
@@ -346,16 +558,30 @@ function resumeGame() {
     }
 }
 
+/**
+ * Iterates through the chicken/enemies array and sets the speed of each chicken 
+ * back to its previous value if the pause ends.
+ * 
+ * @function restartChicken 
+ */
 function restartChicken() {
     window.world.level.enemies.forEach((enemy, indexOfEnemy) => {
         window.world.level.enemies[indexOfEnemy].speed = window.world.level.enemies[indexOfEnemy].currentspeed;
     });
 }
 
+/**
+ * Sets the variable gamePaused in class world to true if the game is paused.
+ */
 pauseGameBtn.addEventListener('click', function () {
     world.gamePaused = true;
 });
 
+/**
+ * Initiates the fullscreen mode.
+ * 
+ * @function fullScreen
+ */
 function fullScreen() {
     let fullScreen = document.getElementById('fullscreen');
     enterFullscreen(fullScreen);
@@ -381,9 +607,20 @@ function enterFullscreen(element) {
         element.webkitRequestFullscreen();
     }
     resizeCanvasToFullscreen();
-     resizeCanvasToFullscreen2();
+    resizeCanvasToFullscreen2();
 }
 
+/**
+ * This function resizes the canvas-element to fullscreen.
+ * 
+ * The canvas width is set to half of the window's width, and the height is set
+ * to approximately 65% of the window's height (window.innerHeight / 1.53).
+ * Additionally, the CSS width and height are set to "100%" to make the canvas
+ * fill the available layout space.
+ * 
+ * Furthermore, this function modifies both the canvas attributes `width` and `height`
+ * as well as the CSS properties `style.width` and `style.height`.
+ */
 function resizeCanvasToFullscreen2() {
     const canvas = document.getElementById('canvas');
     canvas.width = window.innerWidth / 2;
@@ -392,13 +629,13 @@ function resizeCanvasToFullscreen2() {
     canvas.style.height = '100%';
 }
 
-let jumpsStartTime = null;
-let jumpingTime = null;
-let jumpStart = false;
+
 
 /**
  * Handles `keydown` events and updates the `keyboard` state object based on 
  * the key pressed. 
+ * This function also calls the function that checks the duration of the press of
+ * the throw-key.
  *
  * The following key codes are supported:
  * - 37: Arrow Left → `keyboard.LEFT = true`
@@ -430,23 +667,14 @@ window.addEventListener("keydown", (event) => {
 
     if (event.keyCode == 67) {
         keyboard.SPACE = true;
-        //window.world.character.speedY = 100;
         jumpsStartTime = Date.now();
         testPressTimeJump();
-        /* if (jumpStart == false) {
-              jumpStartTime = Date.now();
-              jumpStart = true;
-         }*/
-
     }
 
     if (event.keyCode == 68) {
         keyboard.letterD = true;
     }
 });
-
-let jumpInterval;
-
 
 /**
  * This function calculates the time of the keydown/press-event. 
@@ -455,7 +683,7 @@ let jumpInterval;
  * It also heightens the value of character.speedY by 24 every 20 miliseconds, 
  * which allows the character to jump higher if the key is pressed longer.
  *  
- * @method testPressTimeJump 
+ * @function testPressTimeJump 
  */
 function testPressTimeJump() {
     if (!jumpInterval && !window.world.character.isAboveGround()) {
@@ -505,16 +733,10 @@ window.addEventListener("keyup", (event) => {
     if (event.keyCode == 67) {
         keyboard.SPACE = false;
         jumpStart = false;
-        //jumpingTime = null;
-        //window.world.character.speedY = 10 + jumpingTime / 100 * 6;
         if (jumpInterval) {
             clearInterval(jumpInterval);
             jumpInterval = null;
         }
-        /* let pressTime = Date.now() - jumpStartTime;
-         let maxPressTime = 400;
-         let clampedTimeGameJS = Math.min(pressTime, maxPressTime);
-         window.world.character.clampedTime = clampedTimeGameJS;  */
     }
 
     if (event.keyCode == 68) {
@@ -630,7 +852,7 @@ function bindBtnsPressEvents() {
 }
 
 /**
- * this function checks continuously (every 200ms) the window width to determine
+ * this function checks the window width to determine
  * whether the application is being viewed on a mobile or desktop device, and
  * dynamically adjusts the UI accordingly.
  *
@@ -705,6 +927,10 @@ function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
     }
 }
 
+/**
+ * Initiates the mobile view. Shows the hamburger-menue, hides the desktop menue and hides the button bar of the desktop view.
+ * @function initMobileView
+ */
 function initMobileView() {
     hideShowContent('mobileAboutMenu', 'remove'); //zeigt das Hamburger-Menu an
     hideShowContent('menuBoard', 'add'); //blendet das Menu der Desktop-Ansicht aus
@@ -735,6 +961,11 @@ function initMobileLandscapeView() {
     document.getElementById('canvas').style.height = '100vh';
 }
 
+/**
+ * Starts the mobile view while playing the game.
+ * Shows the mobile setting buttons and removes the hamburger menu as well as the mobile about div.
+ * @function initMobileGameView 
+ */
 function initMobileGameView() {
     hideShowContent('mobileMenu', 'remove');     //zeigt die Einstellungsbuttons mit den Symbolen an
     hideShowContent('mobileCtrlBtnDiv1', 'remove');
@@ -743,6 +974,11 @@ function initMobileGameView() {
     hideShowContent('mobileAboutDiv', 'add'); //blenet die mobileAboutDiv aus
 }
 
+/**
+ * Starts the desktop view. Removes the hamburger menu and instead shows the menu of the desktop view. 
+ * It also places the sound-btn onto the right hand side.
+ * @function initDesktopView
+ */
 function initDesktopView() {
     hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
     hideShowContent('menuBoard', 'remove'); //zeigt das Menu der Desktop-Ansicht an
@@ -751,27 +987,51 @@ function initDesktopView() {
     soundBtnDesktop(); //bringt den SoundBtn wieder an die rechte Seite
 }
 
+/**
+ * Hides the mobile game UI
+ * @function hideMobileGameUI
+ */
 function hideMobileGameUI() {
     hideShowContent('mobileCtrlBtnDiv1', 'add');
     hideShowContent('mobileCtrlBtnDiv2', 'add');
 }
 
+/**
+ * Test whether the button board of the desktop view must be shown and handles it accordingly.
+ * @function testIfButtonBoardMustBeShown
+ */
 function testIfButtonBoardMustBeShown() {
     if (buttonBoardShown === true) {
         hideShowContent('buttonBoard', 'remove'); //zeigt das buttonBoard der Desktop-Ansicht an
     }
 }
 
+/**
+ * Adjusts the flag of the button board.
+ * @param {boolean} param - Can be true or false
+ * @function adjustButtonBoardFlag
+ */
 function adjustButtonBoardFlag(param) {
     buttonBoardShown = param;
 }
 
+/**
+ * Adjusts the position of the start image
+ * @param {boolean} isHorizontal - Can be true or false
+ * @function adjustStartImageOrientation
+ */
 function adjustStartImageOrientation(isHorizontal) {
     const img = document.getElementById('startImg');
     img.classList.toggle('startImgMobileHorizontal', isHorizontal);
     img.classList.toggle('startImgMobileVertical', !isHorizontal);
 }
 
+/**
+ * Hides or shows content (html-divs) according to the given paramters by adding/removng the css class d-none.
+ * 
+ * @param {string} param1 - The id of the html-div
+ * @param {boolean} param2 - Can be true or false
+ */
 function hideShowContent(param1, param2) {
     document.getElementById(param1).classList[param2]('d-none');
 }
@@ -824,16 +1084,28 @@ function testIfDeviceIsVertivalOrHorizontal() {
     }
 }
 
+/**
+ * Starts the horizontal view if the game has already started. It also hides the "Turn Your Device" notification.
+ * @function initHorizontalView
+ */
 function initHorizontalView() {
     hideShowContent('turnDeviceTxtDiv', 'add');  // div "Turn Your devide" ausblenden
     hideShowContent('fullscreen', 'remove');
 }
 
+/**
+ * Starts the game after the device has been rotated to horizontal view. 
+ * @function initGameStartedHorizontalView
+ */
 function initGameStartedHorizontalView() {
     resumeGame();              // reaktiviert das Spiel, nachdem das Smartphone in die horizontale Position gedreht wurde    
     toggleBtn('pauseGameBtnMobile', false);       // reaktiviert den durch das Pausieren des SPiels in der vertikalen Ansicht deaktivierten Pause-Button
 }
 
+/**
+ * Starts the vertical view of the game on mobile devices.
+ * @function initVerticalView
+ */
 function initVerticalView() {
     document.getElementById('startImg').classList.add('startImgMobileVertical');
     document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
@@ -841,6 +1113,11 @@ function initVerticalView() {
     hideShowContent('nav', 'remove');
 }
 
+/**
+ * Starts all the actions if the device is hold vertically. 
+ * Shows the notification "Turn Your Device" and pauses the game.
+ * @function initGameStartedVerticalView
+ */
 function initGameStartedVerticalView() {
     hideShowContent('turnDeviceTxtDiv', 'remove');   // div "Turn Your device" einblenden
     pauseGame();         // pausiert das Spiel, wenn das Smartphone vertikal gehalten wird
@@ -849,6 +1126,10 @@ function initGameStartedVerticalView() {
     document.body.classList.add('no-scroll');
 }
 
+/**
+ * Checks whether the obout btns are shown. If so, it hides them.
+ * @function initSmallVertikal
+ */
 function initSmallVertikal() {
     if (document.getElementById('about-btns')) {
         hideShowContent('about-btns', 'add');
@@ -893,14 +1174,26 @@ function fullScreenMobile() {
     this.addIntervalToIntervalArray(interval);
 }
 
+/**
+ * Adds the css properties to sound btn if mobile view is active.
+ * @function soundBtnMobile
+ */
 function soundBtnMobile() {
     document.getElementById('soundBtn').classList.add('soundBtnMobile');
 }
 
+/**
+ * Removes mobile css properties of the sound btn if desktop view is active.
+ * @function soundBtnDesktop
+ */
 function soundBtnDesktop() {
     document.getElementById('soundBtn').classList.remove('soundBtnMobile');
 }
 
+/**
+ * Shows the about panel.
+ * @function showAboutPanel
+ */
 function showAboutPanel() {
     hideShowContent('regelnDiv', 'remove');
 }
@@ -930,6 +1223,10 @@ function showMobileAboutMenu() {
     }
 }
 
+/**
+ * Hides or shows the mobile about menu.
+ * @function hideShowContentAndMenu
+ */
 function hideShowContentAndMenu() {
     showMobileAboutMenu();
     hideShowContent('mobileAboutDiv', 'add');
