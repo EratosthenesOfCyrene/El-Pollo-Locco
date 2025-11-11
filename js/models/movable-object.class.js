@@ -161,7 +161,6 @@ class MovableObject extends DrawableObject {
      * @param {object} movingObject - The object (the character) the collission against is to be checked. 
      * @param {object} this.x - the x-coordinate of the thrown bottle
      * @returns {boolean} `true` if the character is colliding with the bottle, otherwise `false`.
-     * @returns 
      */
     isCollidingBottleCharacter(movingObject) {
         return this.x + this.width > (movingObject.x) &&

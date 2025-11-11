@@ -511,7 +511,7 @@ class World {
     /**
      * Renders all the objects of the game onto the map.
      * 
-     * @param {all objects} objects - all the abjects that are to be rendered to the map.
+     * @param {objects} objects - all the abjects that are to be rendered to the map.
      * @method addObjectsToMap
      * @memberof world
      */
