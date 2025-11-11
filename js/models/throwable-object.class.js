@@ -109,21 +109,39 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Checks for collissions of thrown bottles whith enemies
+     * This function cecks for collissions of thrown bottles whith enemies. It then pushen the hit enemies into an array and 
+     * calls afunction that iterates through this array.
      * 
      * @method checkForCollissions
      * @memberof ThrowableObject
      */
     checkForCollissions() {
+        const enemiesToDelete = [];
         this.checkForCollissionIntervalID = setInterval(() => {  // Checking for collisions of thrown bottles whith enemies (Chickens)
             this.world.level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (this.world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
-                    this.testIfChickenOrEndbossIsHit(indexOfEnemy);
+                    enemiesToDelete.push(indexOfEnemy);
                     this.bottleCollides = true;
                 }
             });
+            this.iterateThroughEnemiesToDelete(enemiesToDelete);
             this.world.intervals.addIntervalToIntervalArray(this.checkForCollissionIntervalID);
         }, 200);
+    }
+
+    /**
+     * This function iterates through the array which contains the enemies that are to be deleted.
+     * For each enemy, the further cascade of testing and deleting is initialized.
+     * 
+     * @param {string} enemiesToDelete - The array of the enemies that are to be deleted
+     * @method iterateThroughEnemiesToDelete
+     * @memberof ThrowableObject
+     */
+    iterateThroughEnemiesToDelete(enemiesToDelete) {
+        enemiesToDelete.sort((a, b) => b - a); // von hinten nach vorne löschen
+        enemiesToDelete.forEach(indexOfEnemy => {
+            this.testIfChickenOrEndbossIsHit(indexOfEnemy, this.world.level.enemies[indexOfEnemy]);
+        });
     }
 
     /**
@@ -237,10 +255,11 @@ class ThrowableObject extends MovableObject {
      * @method testIfChickenOrEndbossIsHit
      * @memberof ThrowableObject
      */
-    testIfChickenOrEndbossIsHit(indexOfEnemy) {
+    testIfChickenOrEndbossIsHit(indexOfEnemy, enemy) {
         let indexOfEndboss = this.world.level.enemies.length - 1;
         if (indexOfEnemy != indexOfEndboss) {   // prüft anhand des Index, ob es sich bei dem getroffenen Objekt um den Endboss handelt
-            this.playDeadChickenAnimation(indexOfEnemy);
+            this.playDeadChickenAnimation(enemy);
+
         } else if (indexOfEnemy == indexOfEndboss) {
             this.world.level.enemies[indexOfEndboss].endbossHit = true;
             this.world.level.enemies[indexOfEndboss].playHurtAnimation = false;
@@ -271,8 +290,8 @@ class ThrowableObject extends MovableObject {
      * @method playDeadChickenAnimation
      * @memberof ThrowableObject
      */
-    playDeadChickenAnimation(indexOfEnemy) {
-        let enemy = this.world.level.enemies[indexOfEnemy];
+    playDeadChickenAnimation(enemy) {
+        let indexOfEnemy = this.world.level.enemies.indexOf(enemy);
         const deadChickenIntervalID = setInterval(() => {
             if (enemy.chickenBig == true) {   // diese Abfrage prüft, ob es sich um ein großes oder ein kleines Ckicken handelt, damit im Folgenden das richtige Bild des toten Chicken geladen werden kann
                 enemy.loadImage(enemy.IMAGE_DEAD);
