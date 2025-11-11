@@ -147,6 +147,12 @@ class ThrowableObject extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
     }
 
+    /**
+     * Handles the animation and game pysics if the bottle has been thrown to the left.
+     * 
+     * @method throwBottleLeft
+     * @memberof ThrowableObject
+     */
     throwBottleLeft() {
         this.throwBottleIntervalID = setInterval(() => {
             this.x -= 10;
@@ -154,6 +160,19 @@ class ThrowableObject extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
     }
 
+    /**
+     *  Handles the animation and game pysics if the bottle has been thrown to the left.
+     * The function checks whether:
+     * the character is standing while throwing a bottle,
+     * the character is moving to the right while throwing a bottle,
+     * the x-coordinate of the level end has ben reached,
+     * the game is NOT paused
+     * and only if all of these conditions are met, the trowing of the bottle is executed.
+     * 
+     * @method throwBottleRight
+     * @memberof ThrowableObject
+     * 
+     */
     throwBottleRight() {
         this.throwBottleIntervalID = setInterval(() => {
             if (this.bottleThrownStanding == false && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {  // diese Abfrage prüft, ob der Character gerade läuft, wenn eine Flasche geworfen wird. Wenn ja, wird die Geschwindigkeit des Characters zur x-Geschwindigkeit der Flasche hinuaddiert, da der character sons unter der Flasche durch rennt;
@@ -181,6 +200,14 @@ class ThrowableObject extends MovableObject {
         this.actualizeBottlesBar();  // aktualisiert die Bottles-Bar
     }
 
+    /**
+     * Handles the animation of the splash animation when a thrown bottle hits an object 
+     * (enemy, main character or floor). The thrown bottle is the deleted from the bottles array.
+     * 
+     * @returns {boolean} Always returns true once the splash animation is triggered.
+     * @method playSplashAnimation
+     * @memberof ThrowableObject
+     */
     playSplashAnimation() {
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteThrownBottle();
@@ -191,6 +218,12 @@ class ThrowableObject extends MovableObject {
         return true;
     }
 
+    /**
+     * Deletes the bottle that has been thrown. 
+     * 
+     * @method deleteThrownBottle
+     * @memberof ThrowableObject
+     */
     deleteThrownBottle() {
         setTimeout(() => {
             this.world.collectedThrowableObjects.splice(0, 1);
@@ -216,6 +249,13 @@ class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * Deletes the endboss once it has been defeated and the game has been won.
+     * 
+     * @param {number} indexOfEndboss - The index of the endboss in the enemies array.
+     * @method deleteEndboss
+     * @memberof ThrowableObject
+     */
     deleteEndboss(indexOfEndboss) {
         if (this.world.level.enemies[indexOfEndboss].endbossLife < 20) {
             setTimeout(() => {
@@ -250,6 +290,13 @@ class ThrowableObject extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
+    /**
+     * Deletes the killed enemy
+     * 
+     * @param {number} indexOfEnemy - The index of the chicken that is to be deleted in the enemies array.
+     * @method deleteHitEnemy
+     * @memberof ThrowableObject
+     */
     deleteHitEnemy(indexOfEnemy) {  // deletes the hit enemy
         this.world.level.enemies.splice(indexOfEnemy, 1);
         this.world.character.regainLife();  // erhöht das Leben des Characters, wenn ein enemy getötet wurde
@@ -257,17 +304,36 @@ class ThrowableObject extends MovableObject {
         this.world.killedEnemies++;   // erhöht den Counter der getöteten Enemies, damit die Zahl der getöteten Enemies im Camnvas aktualisiert werden kann
     }
 
+    /**
+     * Updates the bar which shows how many bottles have been collected by the character.
+     * 
+     * @method actualizeBottlesBar
+     * @memberof ThrowableObject
+     */
     actualizeBottlesBar() {
         this.world.statusBarBottles.collectedBottles--;  // verringert den Wert der gesammelten Flaschen für die Bottle-Status-Bar
         this.world.statusBarBottles.setBottleNumber(this.world.statusBarBottles.collectedBottles);  // aktualisiert die Anzeige der Bottle-Status-Bar
     }
 
+    /**
+     * Handles the playing of the sound that is played whn the character regains health.
+     * 
+     * @method playRegainHealthSound
+     * @memberof ThrowableObject
+     */
     playRegainHealthSound() {
-        if (this.world.character.energy < 99) {
+        if (this.world.character.energy <= 99) {
             window.world.sounds.playSound(this.world.character.healthRecharge_sound);
         }
     }
 
+    /**
+     * This function initiates the trowing of a bottle by the endboss.
+     * 
+     * @method throwEndboss
+     * @memberof ThrowableObject
+     * 
+     */
     throwEndboss() {
         this.collidedWithCharacter = false;
         this.x -= 10;
@@ -276,12 +342,29 @@ class ThrowableObject extends MovableObject {
         this.checkForCollissionEndbossThrownBottleWithCharacter();
     }
 
+    /**
+     * Moves the bottle that was thrown by the endboss to the left.
+     * 
+     * @method endbossThrows
+     * @memberof ThrowableObject
+     */
     endbossThrows() {
         this.throwEndbossInterval = setInterval(() => {
             this.x -= this.speedX;
         }, 25);
     }
 
+    /**
+     * This function checks for collissions of the bottle thrown by the endboss with the character.
+     * If this is true, it:
+     * ends the throwEndbossInterval,
+     * hadles the splashanimation,
+     * and stops the movement of the bottle.
+     * 
+     * @method checkForCollissionEndbossThrownBottleWithCharacter
+     * @memberof ThrowableObject
+     * 
+     */
     checkForCollissionEndbossThrownBottleWithCharacter() {
         this.checkCollisionInterval = setInterval(() => {
             if (!this.collidedWithCharacter && this.isCollidingBottleCharacter(window.world.character)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...  // enemy, indexOfEnemy
@@ -297,11 +380,23 @@ class ThrowableObject extends MovableObject {
         }, 50);
     }
 
+    /**
+     * Plays the splash animation of a botte that has been thrown by the endboss.
+     * 
+     * @method playEdbossSplashAnimation
+     * @memberof ThrowableObject
+     */
     playEdbossSplashAnimation() {
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteEndbossThrownBottle();
     }
 
+    /**
+     * Delets the bottle after 300ms which was thrown by the endboss.
+     * 
+     * @method deleteEndbossThrownBottle
+     * @memberof ThrowableObject
+     */
     deleteEndbossThrownBottle() {
         setTimeout(() => {
             const index = this.endboss.bottles.indexOf(this);
