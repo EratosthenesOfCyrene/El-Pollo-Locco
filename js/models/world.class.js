@@ -52,6 +52,13 @@ class World {
         this.adjustLevelEnd();
     }
 
+    /**
+     * Creates the initial background so that there is no lagging when the game starts.
+     * 
+     * @returns bg - the background
+     * @method createInitialBackground
+     * @memberof world
+     */
     createInitialBackground() {
         const bg = [];
         for (let i = 0; i < 14; i++) {
@@ -64,6 +71,11 @@ class World {
         return bg;
     }
 
+    /**
+     * This function initiates the game world.
+     * 
+     * 
+     */
     initWorld() {
         this.setLevel();
         this.character = new Character(this);
@@ -102,6 +114,13 @@ class World {
         this.defineEndboss();
     }
 
+    /**
+     * First checks if the world and the clouds have already been loaded (to avoid louding errors)
+     * and then starts the movement of the clouds.
+     * 
+     * @method initializeCloudMovement
+     * @memberof world
+     */
     initializeCloudMovement() {
         const checkCloudsInterval = setInterval(() => {
             if (window.world && Array.isArray(window.world.level.clouds)) {
@@ -111,6 +130,12 @@ class World {
         }, 100);
     }
 
+    /**
+     * Checks whether the chickens have been loaded and then corrects the speed of ach chicken. 
+     * 
+     * @method correctChickenSpeed
+     * @memberof world
+     */
     correctChickenSpeed() {
         const interval = setInterval(() => {
             if (typeof Chicken !== 'undefined' && Chicken.correctSpeedOfEachChicken) {
@@ -120,6 +145,12 @@ class World {
         }, 100);
     }
 
+    /**
+     * This function checks which level has been chosen and defines the endboss accordingly.
+     * 
+     * @method defineEndboss
+     * @memberof world
+     */
     defineEndboss() {
         if (this.selectedLevel === 1) {
             this.definedEndboss = this.level.enemies[11];
@@ -128,6 +159,13 @@ class World {
         }
     }
 
+    /**
+     * hecks if level 1 or level 2 has been selected and initiates the level accordingly.
+     * If no level has been chosen, it starts level 1 as default.
+     * 
+     * @method setLevel
+     * @memberof world
+     */
     setLevel() {
         if (this.selectedLevel === 1) {  //startLevel1
             this.level = new Level1(this);
