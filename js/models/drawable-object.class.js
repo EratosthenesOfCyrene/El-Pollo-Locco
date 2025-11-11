@@ -22,6 +22,14 @@ class DrawableObject {
     currentImage = 0;
     imageCache = [];
 
+
+    /**
+     * Loads an image from the given path and assigns it to `this.img`.
+     * This can be used to dynamically change the image source of an HTML <img> element.
+     *
+     * @param {string} path - The file path to the image (e.g., 'img/test-img.png').
+     * @returns {void}
+     */
     loadImage(path) {  // path ist der Pfad zum Bild z.B. 'img/test-img.png'
         this.img = new Image();   // this.img == document.getElementById('image') <img id="image">
         this.img.src = path;

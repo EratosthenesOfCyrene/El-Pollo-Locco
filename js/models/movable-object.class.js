@@ -39,13 +39,8 @@ class MovableObject extends DrawableObject {
             if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
                 this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
                 this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
-                console.log(this.speedY, this.y);
-
-
             } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
                 this.speedY = 0;
-                console.log(this.speedY);
-
             }
             this.resetYtoNormal();
         }, 1000 / 25);
@@ -69,7 +64,6 @@ class MovableObject extends DrawableObject {
     resetYtoNormal() {
         if (this instanceof Character && this.y != 168 && !this.isAboveGround()) {
             this.y = 168;  // der y-wert des Characters muss auf 168 gesetzt werden, da sonst die collission-detection fälschlicherweise feststellt, dass der character auf das chicken hüpft und dieses somit gelöscht wird, anstatt dem character Schaden zu geben.
-            console.log(this.speedY, this.y);
         }
     }
 
@@ -213,9 +207,15 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Reduces the character's energy by 15 percent if it was hit by a bottle.
+     * If the enrgy is beloy zero, it sets the energy to zero.
+     * If not, the exact date of the last hit is stored.
+     * 
+     * @method hitByBottle
+     * @memberof MovableObject
+     */
     hitByBottle() {
-        console.log('Hiiiiiittttt');
-
         this.energy -= 15;
         if (this.energy < 0) {
             this.energy = 0;
@@ -240,11 +240,25 @@ class MovableObject extends DrawableObject {
         return timepassed < 2;
     }
 
+    /**
+     * Checks whether the character is dead and
+     * sets the `characterIsAlive` flag to false if energy has reached zero.
+     * 
+     * @returns {boolean} Returns true if the character's energy is 0, otherwise false.
+     */
     isDead() {
         this.characterIsAlive = false;
         return this.energy == 0;
     }
 
+    /**
+     * Checks whether the character is alive (the chracter's energy is above zero)
+     * and heightens the character's enrgy by 25 each time this function is called. 
+     * It then checks whether the character's energy is above 100. If so, it sets the energy to exactly 100.
+     * 
+     * @method regainLife
+     * @memberof MovableObject
+     */
     regainLife() {
         if (window.world.character.energy > 0) {
             window.world.character.energy += 25;
@@ -271,6 +285,15 @@ class MovableObject extends DrawableObject {
         this.moveEndossLeft(path);
     }
 
+    /**
+     * Moves the endboss to the left. It checks whether the path includes the image ('G18.png').
+     * It then checks how often the endboss has been hit by a character's bottle.
+     * At the third hit, the endboss is made to throe bottles himself.
+     *
+     * @param {string} path - The file path of the current animation frame used to determine movement behavior.
+     * @method moveEndossLeft
+     * @memberof MovableObject
+     */
     moveEndossLeft(path) {
         if (path.includes('G18.png') && this instanceof Endboss) {
             if (this.testHit2 === true && (this.oldX - 800) < this.x) {
@@ -284,14 +307,32 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Moves an object to the right.
+     * 
+     * @method moveRight
+     * @memberof MovableObject
+     */
     moveRight() {
         this.x += this.speed;
     }
 
+    /**
+     * Moves an object to the left.
+     * 
+     * @method moveLeft
+     * @memberof MovableObject
+     */
     moveLeft() {
         this.x -= this.speed;
     }
 
+    /**
+     * Moves an objct to the air (for example if the character jumps)
+     * 
+     * @method jump
+     * @memberof MovableObject
+     */
     jump() {
         this.speedY = 30;
     }

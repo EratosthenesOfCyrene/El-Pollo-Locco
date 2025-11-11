@@ -60,6 +60,12 @@ class Coin extends MovableObject {
         this.tryAddInterval(interval);
     }
 
+    /**
+     * Animates the coins.
+     * 
+     * @method animate
+     * @memberof Coin
+     */
     animate() {
         const interval = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
@@ -67,6 +73,13 @@ class Coin extends MovableObject {
         this.tryAddInterval(interval);
     }
 
+    /**
+     * Adds the interval to the intervals array in class intervals.
+     * 
+     * @param {number} interval 
+     * @method tryAddInterval
+     * @memberof Coin
+     */
     tryAddInterval(interval) {  // falls class world noch nicht geladen hat wenn die Intervalle in clas coins  zum Intervalarray hinzugefügt werden sollen, prüft diese Funktion mit einer if/else-Abfrage, ob world bereits geladen hat.
         if (window.world?.intervals) {
             window.world.intervals.addIntervalToIntervalArray(interval);

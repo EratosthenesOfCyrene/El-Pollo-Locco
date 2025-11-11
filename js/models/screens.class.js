@@ -38,7 +38,7 @@ class Screens extends DrawableObject {
     }
 
     /**
-     * Shows the game-won or game-lost screen depending if the game was lost or won
+     * Calls the game-won or game-lost screen function depending if the game was lost or won
      * 
      * @method showScreen
      * @memberof Screens
@@ -60,6 +60,14 @@ class Screens extends DrawableObject {
         this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
+    /**
+     * Handles all the events related to a loss.
+     * Loads the game lost image, handles the game lost sounds, pause the game, reactivates the 
+     * play button in moble view, shows the level selection div and stops all sounds.
+     * 
+     * @method gameLost
+     * @memberof Screens
+     */
     gameLost() {
         this.loadImage(this.IMAGE_LOSS);
         window.world.sounds.hanndleGameLostSounds();
@@ -71,6 +79,14 @@ class Screens extends DrawableObject {
         window.world.sounds.stopAllSounds();
     }
 
+    /**
+     * Handles all the events related to a win.
+     * Loads the game won image, handles the game lost sounds, pause the game, reactivates the 
+     * play button in moble view, shows the level selection div and deletes all remaining enemies.
+     * 
+     * @method gameWon
+     * @memberof Screens
+     */
     gameWon() {
         this.loadImage(this.IMAGE_WON);
         window.world.sounds.handleGameWonSounds();

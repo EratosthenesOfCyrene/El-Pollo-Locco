@@ -227,6 +227,13 @@ class Character extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
+    /**
+     * Handles the movement of the character to the right. It checks if the character is on or above the ground and plays the 
+     * correct sound accordingly.
+     * 
+     * @method moveCharacterRight
+     * @memberof Character
+     */
     moveCharacterRight() {
         this.moveRight();
         this.otherdirection = false;  // wenn die rechte-Pfeil-Taste gedrückt wird, wird die variable auf false gesetzt und das Spiegeln des Characters beendet
@@ -239,17 +246,13 @@ class Character extends MovableObject {
         }
     }
 
-    testWalkSound() {
-        setInterval(() => {
-            if (!this.walking_sound.paused) {
-                console.log('WALK!!! ✅');
-            } else {
-                console.log('Sound ist pausiert oder gestoppt ⏸️');
-            }
-
-        }, 900);
-    }
-
+    /**
+     * Handles the movement of the character to the left. It checks if the character is on or above the ground and plays the 
+     * correct sound accordingly.
+     * 
+     * @method moveCharacterLeft
+     * @memberof Character
+     */
     moveCharacterLeft() {
         this.moveLeft();
         this.otherdirection = true;  // wenn die linke-Pfeil-Taste gedrückt wird, wird die variable auf true gesetzt und der Character gespiegelt
@@ -340,6 +343,12 @@ class Character extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(this.counterInveralID);
     }
 
+    /**
+     * Resets the timeout that handles the idle animation of the character.
+     * 
+     * @method resetIdleTimeout
+     * @memberof Character
+     */
     resetIdleTimeout() {
         this.idleAnimation = false;
         clearInterval(this.counterInveralID);

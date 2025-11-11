@@ -96,21 +96,35 @@ class Endboss extends MovableObject {
         this.playImagesWalking = false;
         this.animate();
         this.checkForAttack();
-            this.bottles = this.createBottles(17);  // creates 17 bottles
-            this.bottleIndex = 0;
+        this.bottles = this.createBottles(17);  // creates 17 bottles
+        this.bottleIndex = 0;
     }
 
+    /**
+     * Creates the bottle for the endboss to throw at he character.
+     * 
+     * @param {number} count - The amount of bottles created for the endboss at the beginning of the game.
+     * @returns {ThrowableObject[]} bottles - The array containing the created bottle objects.
+     * @method createBottles
+     * @memberof Endboss
+     */
     createBottles(count) {
         const bottles = [];
         for (let i = 0; i < count; i++) {
             const bottle = new ThrowableObject(this.x, this.world);  // Position und world mitgeben
             bottle.endboss = this; // jeder Bottle die Daten des Endboss mitgeben, damit später bei bedarf darauf zugegriffen werden kann
             bottle.visible = false;  // bottles werden erst sichtbar, wenn sie geworfen wurden
-            bottles.push(bottle);            
+            bottles.push(bottle);
         }
         return bottles;
     }
 
+    /**
+     * Handles the throwing of the bottle by the endboss.
+     * 
+     * @method endbossThrowBottle
+     * @memberof Endboss
+     */
     endbossThrowBottle() {
         if (this.bottleIndex < this.bottles.length) {  // if-Abfrage, damit man nicht versucht, auf eine nicht vorhandene Flasche zuzugreifen
             const bottle = this.bottles[this.bottleIndex];
@@ -121,7 +135,12 @@ class Endboss extends MovableObject {
             this.bottleIndex++;
         }
     }
-
+/**
+ * Handles the animation of the thrown bottle.
+ * 
+ * @method animate
+ * @memberof Endboss
+ */
     animate() {
         this.playAnimationIntervallID = setInterval(() => {
             if (this.playImagesWalking == false) {
@@ -186,7 +205,7 @@ class Endboss extends MovableObject {
      * If that isn't the case, then the hurtAnimation will be played and
      * the playbackrate of the background_sound is set to 1.2. 
      * 
-     * If the hurtAnimation ins not playing by the moment `hit2()` is called, 
+     * If the hurtAnimation ins not playing by the moment 'hit2()' is called, 
      * a timeout is started which will - after 1 second - move the endboss leftward.
      * 
      * @method hit2
@@ -207,6 +226,19 @@ class Endboss extends MovableObject {
         }, 1000);
     }
 
+     /**
+     * This function is executed when the endbos was hit for
+     * the third time. 
+     * It check whether the hurtAnimation ia´s currently playing. 
+     * If that isn't the case, then the hurtAnimation will be played and
+     * the playbackrate of the background_sound is set to 1.4. 
+     * 
+     * If the hurtAnimation ins not playing by the moment 'hit2()' is called, 
+     * a timeout is started which will - after 1 second - move the endboss leftward.
+     * 
+     * @method hit3
+     * @memberof Endboss
+     */
     hit3() {
         this.testHit3 = true;
         if (this.playHurtAnimation == false) {
@@ -222,6 +254,19 @@ class Endboss extends MovableObject {
         }, 2000);
     }
 
+     /**
+     * This function is executed when the endbos was hit for
+     * the forth time. 
+     * It check whether the hurtAnimation ia´s currently playing. 
+     * If that isn't the case, then the hurtAnimation will be played and
+     * the playbackrate of the background_sound is set to 1.7. 
+     * 
+     * If the hurtAnimation ins not playing by the moment 'hit2()' is called, 
+     * a timeout is started which will - after 4 seconds - move the endboss leftward.
+     * 
+     * @method hit4
+     * @memberof Endboss
+     */
     hit4() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
@@ -233,10 +278,23 @@ class Endboss extends MovableObject {
                 this.playHurtAnimationTest3 = true;
             }
             this.playAnimation(this.IMAGES_ATTACK);
-              window.world.character.testEndbossHit_4 = true;
+            window.world.character.testEndbossHit_4 = true;
         }, 4000);
     }
 
+     /**
+     * This function is executed when the endbos was hit for
+     * the fith time. 
+     * It check whether the hurtAnimation ia´s currently playing. 
+     * If that isn't the case, then the hurtAnimation will be played and
+     * the playbackrate of the background_sound is set to 2. 
+     * 
+     * If the hurtAnimation ins not playing by the moment 'hit2()' is called, 
+     * a timeout is started which will - after 1 second - move the endboss leftward.
+     * 
+     * @method hit5
+     * @memberof Endboss
+     */
     hit5() {
         if (this.playHurtAnimation == false) {
             this.playAnimation(this.IMAGES_HURT);
@@ -255,35 +313,14 @@ class Endboss extends MovableObject {
         }, 1000);
     }
 
-    endbossMoveLeft() {
-        clearInterval(this.playAnimationIntervallID);
-        this.x -= this.endBossSpeed;
-    }
-
-    endbossMoveLeftHit2() {
-        console.log(this.x, this.endBossSpeed);
-        if ((this.oldX - 300) < this.x) {
-            this.x -= this.endBossSpeed;
-        }
-    }
-
-    moveEndboss() {
-        if (this.otherDirection) {
-            this.x -= this.endBossSpeed;
-
-            if (this.x - window.world.camera_x <= 100) {
-                this.otherDirection = false; // Drehen
-            }
-        } else {
-            this.x += this.endBossSpeed;
-
-            if (this.x - window.world.camera_x >= canvas.width - 100) {
-                this.otherDirection = true; // Drehen
-            }
-        }
-    }
-
-     tryAddInterval(interval) {  // falls class world noch nicht geladen hat wenn die Intervalle in clas coins  zum Intervalarray hinzugefügt werden sollen, prüft diese Funktion mit einer if/else-Abfrage, ob world bereits geladen hat.
+    /**
+     * Adds the Interval to the global interval array
+     * 
+     * @param {string} interval 
+     * @method tryAddInterval
+     * @memberof Endboss
+     */
+    tryAddInterval(interval) {  // falls class world noch nicht geladen hat wenn die Intervalle in clas coins  zum Intervalarray hinzugefügt werden sollen, prüft diese Funktion mit einer if/else-Abfrage, ob world bereits geladen hat.
         if (window.world?.intervals) {
             window.world.intervals.addIntervalToIntervalArray(interval);
         } else {
@@ -291,7 +328,7 @@ class Endboss extends MovableObject {
         }
     }
 
-    
+
 
 
 

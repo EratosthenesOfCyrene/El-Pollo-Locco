@@ -169,6 +169,13 @@ class Chicken extends MovableObject {
         this.loadImage(this.IMAGE_DEAD_SMALL);
     }
 
+    /**
+     * Checks if the game has started and - if true - handles the animation of the enemies.
+     * 
+     * @param {string[]} images - Array of image paths of the images which are to be animated. 
+     * @method animate
+     * @memberof Chicken
+     */
     animate(images) {
         const checkInterval = setInterval(() => {
             if (window.world.gameStarted === true) {
