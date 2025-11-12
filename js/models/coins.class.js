@@ -29,9 +29,9 @@ class Coin extends MovableObject {
         this.height = 70;
         this.width = 65;
         this.x = 300 + Math.random() * 5000;
-        this.y = 50 + Math.random() * 300;
+        this.y = Math.random() * 330;
         this.animate();
-        this.id = Coin.i;      // Statische Variablen gehören zur Klasse selbst und nicht zu einer Instanz der Klasse. Daher verwendet man BottleOnFloor.i um sie anzusprechen und nicht this.i !!!
+        this.id = Coin.i;   // Statische Variablen gehören zur Klasse selbst und nicht zu einer Instanz der Klasse. Daher verwendet man BottleOnFloor.i um sie anzusprechen und nicht this.i !!!
         Coin.i++;
     }
 
