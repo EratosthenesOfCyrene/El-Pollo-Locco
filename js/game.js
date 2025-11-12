@@ -202,7 +202,7 @@ document.addEventListener('fullscreenchange', () => {
     } else {
         // Fullscreen betreten
         resizeCanvasToFullscreen();
-         resizeCanvasToFullscreen2();
+        resizeCanvasToFullscreen2();
     }
 });
 
@@ -833,11 +833,18 @@ function bindBtnsPressEvents() {
     document.getElementById('mobileBtnJump').addEventListener('mousedown', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
+        jumpsStartTime = Date.now();
+        testPressTimeJump();
     });
 
     document.getElementById('mobileBtnJump').addEventListener('mouseup', (event) => {
         event.preventDefault();
         keyboard.SPACE = false;
+        jumpStart = false;
+        if (jumpInterval) {
+            clearInterval(jumpInterval);
+            jumpInterval = null;
+        }
     });
 
     document.getElementById('mobileBtnThrow').addEventListener('mousedown', (event) => {
