@@ -400,12 +400,14 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     * Plays the splash animation of a botte that has been thrown by the endboss.
+     * Plays the splash animation an sound of a botte that has been thrown by the endboss.
      * 
      * @method playEdbossSplashAnimation
      * @memberof ThrowableObject
      */
     playEdbossSplashAnimation() {
+        window.world.sounds.stopSound(window.world.character.enemyHit_sound);
+        window.world.sounds.playSound(window.world.character.enemyHit_sound);
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteEndbossThrownBottle();
     }
