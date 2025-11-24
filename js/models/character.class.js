@@ -160,7 +160,7 @@ class Character extends MovableObject {
      */
     placeCharacter() {
         setInterval(() => {
-            if (!this.isAboveGround() && !this.placeCharacterExecuted) {
+            if (!this.isAboveGround() && !this.placeCharacterExecuted && window.world.gameStarted) {
                 this.y = 160;
                 this.placeCharacterExecuted = true;  // placeCharacterExecuted muss noch irgendwo wieder auf false gesetzt werden...
             }

@@ -30,7 +30,8 @@
  * @property {boolean} isMuted - Indicates whether the sound is muted. Defaults to false.
  * @property {HTMLAudioElement} background_sound - Background music audio element.
  * @property {Array<Object>} gameIntervals - The array into which all intervalls are pushed for easier handling during game restart.
- *  
+ * @property {boolean} enemyHitSoundPlaying - Indicates whether the sound of a hit enemy is already playing.
+ * 
  * @class World
  */
 
@@ -112,6 +113,7 @@ class World {
         this.correctChickenSpeed();
         this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
         this.defineEndboss();
+        this.enemyHitSoundPlaying = false;
     }
 
     /**
@@ -378,8 +380,7 @@ class World {
                 if (this.character.isJumpingOnEnemy(enemy) && enemy != this.definedEndboss) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
                     enemy.isDeadChicken = true;
-                    this.sounds.stopSound(this.character.enemyDeleted_sound);
-                    this.sounds.playSound(this.character.enemyDeleted_sound);  // spielt den Sound ab, dass ein enemy getötet wurde
+                    this.handleEnemyHitSounds();
                 }
             });
         }, 20);
@@ -448,6 +449,14 @@ class World {
         this.intervals.addIntervalToIntervalArray(interval);
     }
 
+    handleEnemyHitSounds() {
+        if (!this.enemyHitSoundPlaying) {
+            this.sounds.stopSound(this.character.enemyDeleted_sound);
+            this.sounds.playSound(this.character.enemyDeleted_sound);  // spielt den Sound ab, dass ein enemy getötet wurde
+            this.enemyHitSoundPlaying = true;
+        }
+    }
+
     /**
      * Checks whether a big or small chicken is dead and plays the animation of the dead chicken accordingly.
      * 
@@ -484,6 +493,7 @@ class World {
         if (indexOfEnemy !== -1) {
             this.level.enemies.splice(indexOfEnemy, 1);
             this.killedEnemies++;
+            this.enemyHitSoundPlaying = false;  // resets the enemy hit sounds flag
         }
     }
 
