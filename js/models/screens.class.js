@@ -72,7 +72,8 @@ class Screens extends DrawableObject {
         this.loadImage(this.IMAGE_LOSS);
         window.world.sounds.hanndleGameLostSounds();
         pauseGame();
-        toggleBtn('resumeGameBtnMobile', true);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
+        toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "resumeGame-Button" der mobilen Ansicht
+        toggleBtn('resumeGameBtn', true); // deaktiviert den zuvor deaktivierten "resumeGame-Button" der desktop-Ansicht
         setTimeout(() => {
             showLevelSelection();
         }, 4600);
@@ -91,7 +92,8 @@ class Screens extends DrawableObject {
         this.loadImage(this.IMAGE_WON);
         window.world.sounds.handleGameWonSounds();
         pauseGame();
-        toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
+        toggleBtn('resumeGameBtnMobile', true);  // deaktiviert den zuvor deaktivierten "resumeGame-Button" der mobilen Ansicht
+        toggleBtn('resumeGameBtn', true);  // deaktiviert den zuvor deaktivierten "resumeGame-Button" der Desktop-Ansicht
         setTimeout(() => {
             showLevelSelection();
         }, 3600);
