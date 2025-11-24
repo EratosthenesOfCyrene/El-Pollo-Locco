@@ -99,8 +99,38 @@ class Screens extends DrawableObject {
         this.world.deleteAllEnemies();
     }
 
-    
-   
+    /**
+     * Draws the screens onto the canvas. This has to be done in this seperate 
+     * function because - unlike the other objects in the game world - the screens
+     * have to be drawn over the full height and width of the canvas. 
+     * This is necessary because screens behave differently from other drawable objects in the game world. 
+     * All other objcts are drawn into the given x and y coordinates and use their 
+     * own width and height. The screens however have to be drawn over the entire canvas.
+     * 
+     * @param {object} movingObject - Not used by screens, but required to maintain 
+     *                                compatibility with the world's generic 
+     *                                draw pipeline.
+     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context used to 
+     *                                         draw the image onto the canvas.
+     * @returns {void} Exits early if no image is available or draws the screen image fullscreen.
+     */
+    draw(movingObject, ctx) {
+        if (!this.img) return; // checks if the image is loaded and stops the process of drawing if not to avoid errors
+
+        ctx.drawImage(
+            this.img,
+            0,
+            0,
+            canvas.width, // setzt die Breite des zu zeichnenden Bildes/Screens auf die Breite de Canvas, damit das Bild über den gesamten Canvas gezeichnet wird. 
+            canvas.height
+        );
+    }
+
+
+
+
+
+
 
 
 }

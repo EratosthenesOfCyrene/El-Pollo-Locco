@@ -109,7 +109,7 @@ class World {
         this.adjustToggleBtnsForStart();
         window.addEventListener("resize", testWindowWidth);
         this.initializeCloudMovement();
-        this.correctChickenSpeed();        
+        this.correctChickenSpeed();
         this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
         this.defineEndboss();
     }
@@ -246,7 +246,6 @@ class World {
      * @memberof World
      */
     draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);  // cleared bzw. löscht den Inhalt des Canvas vor jedem neuen Zeichnen
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.backgroundObjects);  // Background
         this.ctx.translate(-this.camera_x, 0); // verschiebt die Kamera vor den Zeichnen der StatusBar zurück

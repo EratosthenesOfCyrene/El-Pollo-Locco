@@ -200,9 +200,7 @@ document.addEventListener('fullscreenchange', () => {
         // Fullscreen verlassen
         resizeCanvasBackToNormal();
     } else {
-        // Fullscreen betreten
-        resizeCanvasToFullscreen();
-        resizeCanvasToFullscreen2();
+        return
     }
 });
 
@@ -212,6 +210,7 @@ document.addEventListener('fullscreenchange', () => {
  * @function resizeCanvasToFullscreen
  */
 function resizeCanvasToFullscreen() {
+    
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -606,7 +605,6 @@ function enterFullscreen(element) {
     } else if (element.webkitRequestFullscreen) {  // iOS Safari
         element.webkitRequestFullscreen();
     }
-    resizeCanvasToFullscreen();
     resizeCanvasToFullscreen2();
 }
 
