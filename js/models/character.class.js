@@ -150,6 +150,7 @@ class Character extends MovableObject {
         this.speedYtoZero();
         this.walking_sound.playbackRate = 1.5; // passt die Abspielgeschwindigkeit an
         this.placeCharacter();
+        this.handleIsJumpingInterval();
     }
 
     /**
@@ -185,6 +186,8 @@ class Character extends MovableObject {
         this.runIdleIntervall(); //-- The interval that plays the idle animation if the character is idle.
     }
 
+    isJumping = false;
+
     /**
      * Starts the interval that enables the Character to move if an UI-Event occured.
      * 
@@ -206,15 +209,15 @@ class Character extends MovableObject {
                     this.moveCharacterLeft();
                 }
                 //-- Springen
-                if (this.world.keyboard.SPACE && !this.isAboveGround() /*&& this.world.gamePaused == false*/) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
-
+                if (this.world.keyboard.SPACE && this.isAboveGround() && !this.isJumping && this.world.gamePaused == false) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
+                    this.isJumping = true;
                     //console.log(this.clampedTime);
                     //this.speedY = 10 + this.clampedTime / 100 * 6;
                     //console.log(this.totalSpeed, this.speedY);
-
                     //this.speedY = 30;
+
+
                     window.world.sounds.stopSound(this.spinJump_sound);
-                    //this.spinJump_sound.play();
                     window.world.sounds.playSound(this.spinJump_sound);
                 }
                 //-- Idle/Schlafen beenden
@@ -225,6 +228,14 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 100;  // immer wenn durch einen Tastendruck der Character entlang der X-Achse bewegt wurde, wird dies Funktion aufgerufen. Sie gleicht den Kameraausschnitt auf der X-Achse in entgegengesetzter Richtung an. Und zwar um den Wert, um den die X-Achse in den Zeilen zuvot verändert wurde! Damit der Character nicht aus dem Canvas herausläuft
         }, 1000 / 60);
         this.world.intervals.addIntervalToIntervalArray(interval);
+    }
+
+    handleIsJumpingInterval() {
+        setInterval(() => {
+            if (!this.isAboveGround()) {
+                this.isJumping = false;
+            }
+        }, 20);
     }
 
     /**
@@ -241,7 +252,7 @@ class Character extends MovableObject {
             window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            window.world.sounds.playSound(this.spinJump_sound);
+           // window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
     }
@@ -260,7 +271,7 @@ class Character extends MovableObject {
             window.world.sounds.playSound(this.walking_sound);
             this.spinJump_sound.pause();
         } else if (this.isAboveGround()) {
-            window.world.sounds.playSound(this.spinJump_sound);
+            //window.world.sounds.playSound(this.spinJump_sound);
             this.walking_sound.pause();
         }
     }
@@ -289,16 +300,31 @@ class Character extends MovableObject {
                     this.playAnimation(this.IMAGES_HURT);
                     window.world.sounds.playSound(this.hurt_sound);
                 }
-                // Jump-Animation
-                else if (this.isAboveGround()) {
-                    this.playAnimation(this.IMAGES_JUMPING);
-                }
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {  // "||" ist ein logisches "oder" und hei?t, dass der Code in den geschweiften Klammern entweder ausgeführt wird, wenn die rechts- oder die links-Taste gedrückt wurde
+                if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.isHurt()) {  // "||" ist ein logisches "oder" und hei?t, dass der Code in den geschweiften Klammern entweder ausgeführt wird, wenn die rechts- oder die links-Taste gedrückt wurde
                     // Walk-Animation
                     this.playAnimation(this.IMAGES_WALKING);
                 }
             }
         }, 50);
+        this.jumpAnimation();
+        this.world.intervals.addIntervalToIntervalArray(interval);
+    }
+
+    /**
+     * This function checks whether the character is 
+     * - above ground
+     * - keyboard.RIGHT and keyboard.LEFT are not pressed.
+     * 
+     * If these conditions are met, the jump animation is being played.
+     * @method jumpAnimation
+     * @memberof Character
+     */
+    jumpAnimation() {
+        const interval = setInterval(() => {
+            if (this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            }
+        }, 160);
         this.world.intervals.addIntervalToIntervalArray(interval);
     }
 

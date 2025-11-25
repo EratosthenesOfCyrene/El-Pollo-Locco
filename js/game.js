@@ -210,7 +210,7 @@ document.addEventListener('fullscreenchange', () => {
  * @function resizeCanvasToFullscreen
  */
 function resizeCanvasToFullscreen() {
-    
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -677,22 +677,39 @@ window.addEventListener("keydown", (event) => {
 /**
  * This function calculates the time of the keydown/press-event. 
  * The function is checks if the intervall it intends to strt is already running AND 
- * whether the character is NOT above ground, and only starts the interval if both conditions are negative.
- * It also heightens the value of character.speedY by 24 every 20 miliseconds, 
- * which allows the character to jump higher if the key is pressed longer.
+ * whether the character is NOT above ground and whether the left or right key is pressed
+ * and only starts the jump-interval if both conditions are negative.
+ * It then heightens the value of character.speedY by 24 every 20 miliseconds for the duration
+ * of the time the scpace key is pressed, which allows the character to jump higher if the key is pressed longer.
+ * 
+ * If however the aforemetnioned condition is not met, the function tests whether the
+ * - space key is pressed
+ * - the character is on the floss
+ * - game is not paused. 
+ * 
+ * If these criteria are met, the speedY of the character is set to 30,
+ * which in turn makes the character jump normally.
  *  
  * @function testPressTimeJump 
  */
 function testPressTimeJump() {
-    if (!jumpInterval && !window.world.character.isAboveGround()) {
+    if (!jumpInterval && !window.world.character.isAboveGround() && (keyboard.RIGHT || keyboard.LEFT)) {
         jumpInterval = setInterval(() => {
             jumpingTime = Date.now() - jumpsStartTime;
             if (jumpingTime >= 300) {
                 jumpingTime = 300;
                 clearInterval(jumpInterval);
             }
+
+            //window.world.sounds.stopSound(window.world.character.spinJump_sound);
+            //window.world.sounds.playSound(window.world.character.spinJump_sound);
             window.world.character.speedY = 24 //+ jumpingTime / 100 * 2;
         }, 20);
+    }
+    else if (window.world.keyboard.SPACE && !window.world.character.isAboveGround() && window.world.gamePaused == false) {
+        window.world.character.speedY = 30;
+        //window.world.sounds.stopSound(window.world.character.spinJump_sound);
+        //window.world.sounds.playSound(window.world.character.spinJump_sound);
     }
 }
 
