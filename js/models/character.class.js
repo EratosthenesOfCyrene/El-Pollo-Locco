@@ -211,12 +211,6 @@ class Character extends MovableObject {
                 //-- Springen
                 if (this.world.keyboard.SPACE && this.isAboveGround() && !this.isJumping && this.world.gamePaused == false) {  // das "!" drückt aus, diese Bedingung NICHT stimmt. Also dass die Pfeil-nach-oben-Taste gedrücckt wurde und (&&) dass "this.isAboveGround()" nicht ("!") stimmt. 
                     this.isJumping = true;
-                    //console.log(this.clampedTime);
-                    //this.speedY = 10 + this.clampedTime / 100 * 6;
-                    //console.log(this.totalSpeed, this.speedY);
-                    //this.speedY = 30;
-
-
                     window.world.sounds.stopSound(this.spinJump_sound);
                     window.world.sounds.playSound(this.spinJump_sound);
                 }
@@ -230,6 +224,13 @@ class Character extends MovableObject {
         this.world.intervals.addIntervalToIntervalArray(interval);
     }
 
+    /**
+     * This function checks whether the character is above the ground. 
+     * If it is not above the ground/on the ground, the isJumping flag is set to false.
+     * 
+     * @method handleIsJumpingInterval
+     * @memberof Character
+     */
     handleIsJumpingInterval() {
         setInterval(() => {
             if (!this.isAboveGround()) {

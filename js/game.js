@@ -700,16 +700,11 @@ function testPressTimeJump() {
                 jumpingTime = 300;
                 clearInterval(jumpInterval);
             }
-
-            //window.world.sounds.stopSound(window.world.character.spinJump_sound);
-            //window.world.sounds.playSound(window.world.character.spinJump_sound);
             window.world.character.speedY = 24 //+ jumpingTime / 100 * 2;
         }, 20);
     }
     else if (window.world.keyboard.SPACE && !window.world.character.isAboveGround() && window.world.gamePaused == false) {
         window.world.character.speedY = 30;
-        //window.world.sounds.stopSound(window.world.character.spinJump_sound);
-        //window.world.sounds.playSound(window.world.character.spinJump_sound);
     }
 }
 

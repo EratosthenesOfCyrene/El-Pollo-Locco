@@ -477,7 +477,7 @@ class World {
         setTimeout(() => {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(enemy);
-        }, 1500);
+        }, 500);
         this.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
