@@ -332,9 +332,9 @@ class Character extends MovableObject {
         this.counterInveralID = setInterval(() => {
             this.counter++;
             if (this.world.gameOver === false) {
-                if (this.counter > 0 && this.counter <= 16) {
+                if (this.counter > 0 && this.counter <= 6) {
                     this.playAnimation(this.IMAGES_IDLE);
-                } else if (this.counter > 15) {
+                } else if (this.counter > 5) {
                     this.playAnimation(this.IMAGES_LONGIDLE);
                     this.world.background_sound.playbackRate = 0.8;
                 }

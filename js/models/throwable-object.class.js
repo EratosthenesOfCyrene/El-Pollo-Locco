@@ -68,12 +68,12 @@ class ThrowableObject extends MovableObject {
      */
     throw() {
         this.world.bottleInAir = true;  // gibt an, dass sich gerade eine Flasche in der Luft befindet        
-        this.x = this.world.character.x + 100;
+        this.x = this.world.character.x + 80;
         if (this.world.character.otherdirection == true) {   // Anpassen des x-Wertes der Flasche, wenn nach links geworfen wird
             this.x = this.world.character.x
         };
-        this.y = this.world.character.y;
-        this.speedY = 30;
+        this.y = this.world.character.y + 100;
+        this.speedY = 33;
         this.applyGravity();
         this.testThrowDirection();
         this.playAnimationImgThrow();
@@ -119,6 +119,8 @@ class ThrowableObject extends MovableObject {
         const enemiesToDelete = [];
         this.checkForCollissionIntervalID = setInterval(() => {  // Checking for collisions of thrown bottles whith enemies (Chickens)
             this.world.level.enemies.forEach((enemy, indexOfEnemy) => {
+                console.log("Bottle Y:", this.world.collectedThrowableObjects[0].y);
+                console.log("Chicken Y:", enemy.y, " height:", enemy.height);
                 if (this.world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
                     enemiesToDelete.push(indexOfEnemy);
                     this.bottleCollides = true;
@@ -126,7 +128,7 @@ class ThrowableObject extends MovableObject {
             });
             this.iterateThroughEnemiesToDelete(enemiesToDelete);
             this.world.intervals.addIntervalToIntervalArray(this.checkForCollissionIntervalID);
-        }, 200);
+        }, 20);
     }
 
     /**
@@ -179,7 +181,7 @@ class ThrowableObject extends MovableObject {
     }
 
     /**
-     *  Handles the animation and game pysics if the bottle has been thrown to the left.
+     * Handles the animation and game pysics if the bottle has been thrown to the left.
      * The function checks whether:
      * the character is standing while throwing a bottle,
      * the character is moving to the right while throwing a bottle,
@@ -195,9 +197,12 @@ class ThrowableObject extends MovableObject {
         this.throwBottleIntervalID = setInterval(() => {
             if (this.bottleThrownStanding == false && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {  // diese Abfrage prüft, ob der Character gerade läuft, wenn eine Flasche geworfen wird. Wenn ja, wird die Geschwindigkeit des Characters zur x-Geschwindigkeit der Flasche hinuaddiert, da der character sons unter der Flasche durch rennt;
                 this.x += 10 + this.world.character.speed + 4; // character.speed = 10. Man könnte auch einfach this.x += 24;.
+                console.log('x:', this.x, 'y:', this.y);
+
             } else {
                 this.x += 10;
                 this.bottleThrownStanding = true;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand. Ohne diese Abfrage kann es passieren, dass wenn eine Flasche geworfen wird und der character erst danach bewegt wird, dass die Flasche sich vom Character und von dem Ort, an dem Sie den Boden berühren soll, entfernt und man sein Ziel verfehlt.
+                console.log('x:', this.x, 'y:', this.y);
             }
         }, 25);
         this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
