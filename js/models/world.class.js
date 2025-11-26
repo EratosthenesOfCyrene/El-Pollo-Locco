@@ -195,7 +195,7 @@ class World {
      */
     adjustLevelEnd() {
         if (this.testIfLevel2 === false) {
-            this.level.level_end_x = 5100
+            this.level.level_end_x = 5700
         } if (this.testIfLevel2 === true) {
             this.level.level_end_x = 8100
         }

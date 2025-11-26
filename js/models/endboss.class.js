@@ -10,7 +10,21 @@
  * @property {boolean} endbossHit - Indicates whether the endoss was hit by abottle. Defaults to false.
  * @property {boolean} playImagesAttack - Indicates whether the attack images are currently played. Defaults to false.
  * @property {number} playAnimationIntervallID - ID of the interval that initiates the animation of the endboss.
- * @property {boolean} playHurtAnimation - Indicates wheter the hurt-animation (if the endboss is hurt) is currently played.#
+ * @property {boolean} playHurtAnimation - Indicates wheter the hurt-animation (if the endboss is hurt) is currently played and is set to true if the hurt animation needs to be stopped.
+ * @property {boolean} playHurtAnimationTest - False by default. Is used to only trigger one event during an intervall. Is the set to true.
+ * @property {boolean} playHurtAnimationTest2 - False by default. Is used to only trigger one event during an intervall. Is the set to true.
+ * @property {boolean} playHurtAnimationTest3 - False by default. Is used to only trigger one event during an intervall. Is the set to true.
+ * @property {boolean} playHurtAnimationTest4 - False by default. Is used to only trigger one event during an intervall. Is the set to true.
+ * @property {boolean} timeoutHit2IntervalID - The ID of the Timout that handles the stop of the hurt animation of the second hit.
+ * @property {boolean} timeoutHit3IntervalID - The ID of the Timout that handles the stop of the hurt animation of the third hit.
+ * @property {boolean} timeoutHit4IntervalID - The ID of the Timout that handles the stop of the hurt animation of the fouth hit.
+ * @property {number} oldX - The value of the initial x value of the endboss.
+ * @property {boolean} testHit1 - Checks whether the endboss was hit for the first time.
+ * @property {boolean} testHit2 - Checks whether the endboss was hit for the second time.
+ * @property {boolean} testHit3 - Checks whether the endboss was hit for the third time.
+ * @property {boolean} testHit4 - Checks whether the endboss was hit for the fourth time.
+ * @property {boolean} movesRight_1 - Checks whether the endboss moves to the right after the first hit.
+ * @property {boolean} movesRight_2 - Checks whether the endboss moves to the right after the second hit.
  * 
  * 
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
@@ -20,7 +34,7 @@
  */
 
 class Endboss extends MovableObject {
-
+    
     height = 400;
     width = 250;
     y = 60;
@@ -39,9 +53,12 @@ class Endboss extends MovableObject {
     timeoutHit3IntervalID;
     timeoutHit4IntervalID;
     oldX = this.x;
+    testHit1 = false;
     testHit2 = false;
     testHit3 = false;
     testHit4 = false;
+    movesRight_1 = true;
+    movesRight_2 = true;
 
 
     IMAGES_WALKING = [
@@ -196,6 +213,7 @@ class Endboss extends MovableObject {
     hit1() {
         clearInterval(this.playAnimationIntervallID);
         this.playAnimation(this.IMAGES_ATTACK);
+        this.testHit1 = true;
     }
 
     /**

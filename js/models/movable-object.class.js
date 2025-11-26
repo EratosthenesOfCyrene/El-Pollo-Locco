@@ -295,8 +295,16 @@ class MovableObject extends DrawableObject {
      */
     moveEndossLeft(path) {
         if (path.includes('G18.png') && this instanceof Endboss) {
-            if (this.testHit2 === true && (this.oldX - 800) < this.x) {
+            if (this.testHit1 === true && (this.oldX - 800) < this.x && this.movesRight_1 === true && window.world.character.energy > 0) {
+                this.x += 250;
+                this.movesRight_1 = false;
+                this.endbossThrowBottle();
+            }
+            if (this.testHit2 === true && (this.oldX - 800) < this.x && this.movesRight_2 === true && window.world.character.energy > 0) {
+                this.x += 250;
+                this.movesRight_2 = false;
                 this.x -= this.endBossSpeed;
+                this.endbossThrowBottle();
             } if (this.testHit3 === true && (this.oldX - 800 - 1100) < this.x && window.world.character.energy > 0) {
                 this.x -= (this.endBossSpeed + 50);
                 this.endbossThrowBottle();
