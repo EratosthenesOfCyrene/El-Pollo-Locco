@@ -121,6 +121,12 @@ let jumpingTime = null;
 let jumpStart = false;
 
 /**
+ * Indicates whether fullscreenmode is active.
+ * @type {boolean}
+ */
+fullscreenActive = false;
+
+/**
  * 
  * This function initiates the page
  *  Shrinks the start image, checks button events, and enables fullscreen for mobile view.
@@ -229,6 +235,7 @@ function resizeCanvasBackToNormal() {
 
     canvas.style.width = "720px";
     canvas.style.height = "480px";
+    fullscreenActive = false;
 }
 
 /**
@@ -625,9 +632,8 @@ function resizeCanvasToFullscreen2() {
     canvas.height = window.innerHeight / 1.53;
     canvas.style.width = '100%';
     canvas.style.height = '100%';
+    fullscreenActive = true;
 }
-
-
 
 /**
  * Handles `keydown` events and updates the `keyboard` state object based on 
@@ -979,6 +985,24 @@ function initMobileLandscapeView() {
 }
 
 /**
+ * This midiaquery checks whether the screen width is between 800 and 1200 px.
+ */
+const mediaQuery2 = window.matchMedia('(min-width: 800px) and (max-width: 1200px)');
+
+/**
+ * This event listender checks whether the screen size is changed.
+ */
+mediaQuery2.addEventListener('change', (e) => {
+    if (e.matches) {
+        document.getElementById('canvas').style.width = '100vw';
+    } else {
+        if (fullscreenActive === false) {
+            document.getElementById('canvas').style.width = ''; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+        }
+    }
+});
+
+/**
  * Starts the mobile view while playing the game.
  * Shows the mobile setting buttons and removes the hamburger menu as well as the mobile about div.
  * @function initMobileGameView 
@@ -989,6 +1013,9 @@ function initMobileGameView() {
     hideShowContent('mobileCtrlBtnDiv2', 'remove');
     hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
     hideShowContent('mobileAboutDiv', 'add'); //blenet die mobileAboutDiv aus
+    if (fullscreenActive === false) {
+        document.getElementById('canvas').style.width = 'auto'; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+    }
 }
 
 /**
@@ -1002,6 +1029,9 @@ function initDesktopView() {
     hideMobileGameUI();
     testIfButtonBoardMustBeShown();
     soundBtnDesktop(); //bringt den SoundBtn wieder an die rechte Seite
+    if (fullscreenActive === false) {
+        document.getElementById('canvas').style.width = ''; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+    }
 }
 
 /**
@@ -1126,7 +1156,10 @@ function initGameStartedHorizontalView() {
 function initVerticalView() {
     document.getElementById('startImg').classList.add('startImgMobileVertical');
     document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
-    document.getElementById('canvas').style.height = 'auto';
+    if (fullscreenActive === false) {
+        document.getElementById('canvas').style.height = 'auto'; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+    }
+    //document.getElementById('canvas').style.height = 'auto';
     hideShowContent('nav', 'remove');
 }
 
@@ -1184,7 +1217,10 @@ function fullScreenMobile() {
             document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
             document.getElementById('startImg').classList.remove('startImgMobileVertical');
             document.getElementById('canvas').classList.remove('canvasMaxHeight');  //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
-            /* !!!! diese Zeile überschreibt den Wert der Höhe des canvas in der desktop-fullscreen-Ansicht */ document.getElementById('canvas').style.height = '480px';    //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
+            if (fullscreenActive === false) {
+         /* !!!! diese Zeile überschreibt den Wert der Höhe des canvas in der desktop-fullscreen-Ansicht */ document.getElementById('canvas').style.height = '480px';    //-- beendet Fullscreen wenn keine mobile Ansicht mehr vorliegt
+            }
+
             hideShowContent('nav', 'remove');
         }
     }, 200);
@@ -1267,8 +1303,37 @@ function addIntervalToIntervalArray(param) {
     }
 }
 
+/**
+ * This function prevents zooming into the page, either by touchpad or by mousewheel.
+ */
+document.addEventListener("wheel", (e) => {
+    if (e.ctrlKey) {
+        e.preventDefault();
+    }
+}, { passive: false });
 
+// Verhindert Pinch-Zoom (Safari + verschiedene Browser)
+document.addEventListener("gesturestart", (e) => e.preventDefault());
+document.addEventListener("gesturechange", (e) => e.preventDefault());
+document.addEventListener("gestureend", (e) => e.preventDefault());
 
+/**
+ * This function updates the height of the start image by setting the height value of the image to the height of the canvas.
+ */
+function updateStartImgHeight() {
+    if (window.innerWidth < 700) {
+        const canvasHeight = canvas.clientHeight;
+        startImg.style.height = canvasHeight + 'px';
+    } else {
+        startImg.style.height = '';
+    }
+}
+
+// Event Listener für Resize
+window.addEventListener('resize', updateStartImgHeight);
+
+// Beim Laden der Seite ausführen
+window.addEventListener('load', updateStartImgHeight);
 
 
 

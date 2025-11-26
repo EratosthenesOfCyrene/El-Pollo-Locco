@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>El Pollo Loco</title>
     <link rel="icon" type="image/x-icon" href="img_pollo_locco/fav_icon_img/fav_icon_img.png"> <!--Fav-Icon-->
 
@@ -65,7 +65,7 @@
         <button onclick="pauseGame()" id="pauseGameBtn" class="btn">Pause Game</button>
         <button onclick="resumeGame()" id="resumeGameBtn" class="btn">Resume Game</button>
         <button onclick="fullScreen()" class="btn">Fullscreen</button>
-        <button onclick="location.reload()" class="btn">Restart Game</button>
+        <button onclick="showLevelSelectionFast()" class="btn">Restart Game</button>
     </div>
 
 
@@ -88,6 +88,7 @@
             <p>Pfeil nach rechts: Pepe läuft nach rechts</p>
             <p>Pfeil nach links: Pepe läuft nach links</p>
             <p>C-Taste: Pepe springt</p>
+            <p>C-Taste lange gedrückt halten und Pfeil nach links oder rechts: Pepe springt höher</p>
             <p>D-Taste: Pepe wirft eine Flasche</p>
         </div>
         <button onclick="hideShowContent('buttonBoard', 'add'), adjustButtonBoardFlag('false')"
@@ -157,7 +158,7 @@
         <h3>Please turn Your device to play...</h3>
     </div>
 
-     <!-- Levelselection Panel Mobile -->
+    <!-- Levelselection Panel Mobile -->
     <div id="outerMobileLevelSelectionDiv" class="outerMobileLevelSelectionDiv d-none">
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
@@ -244,7 +245,7 @@
             Tel. 01543/452751 <br>
             Mail: mayer-developments@gmx.de <br>
             <div class="impressumBtnDiv">
-                <button onclick="hideShowContent('impressumDivId', 'add')" class="rulesBtn ">
+                <button onclick="hideShowContent('impressumDivId', 'add'), resumeGame()" class="rulesBtn ">
                     Back
                 </button>
             </div>

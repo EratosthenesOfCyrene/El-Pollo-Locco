@@ -2,6 +2,9 @@
     overflow-x: hidden;
 }*/
 
+
+
+
 body {
     display: flex;
     flex-direction: column;
@@ -20,7 +23,7 @@ body {
 
 @font-face {
     font-family: 'zabars';
-    src: url('fonts/Zabars.ttf') format('truetype'); 
+    src: url('fonts/Zabars.ttf') format('truetype');
     /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
@@ -76,7 +79,14 @@ canvas {
 
 .canvasMaxHeight {
     height: 100vh !important;
-    width: auto !important;
+    /*width: auto !important;*/
+    width: 100vw;
+}
+
+.canvasStartSize {
+    height: 100vh !important;
+    /*width: auto !important;*/
+    width: 100vw;
 }
 
 .background-image {
@@ -91,7 +101,8 @@ canvas {
 
 .startImgMobileHorizontal {
     height: 100vh;
-    width: auto;
+    /*width: auto;*/
+    width: 100vw;
 }
 
 .startImgMobileVertical {
@@ -549,7 +560,7 @@ body.no-scroll {
     position: absolute;
 }
 */
- 
+
 .impressumTxtDivMobile {
     position: absolute;
     top: 30px;
@@ -569,12 +580,12 @@ body.no-scroll {
 }
 
 .h4-h5 {
-    padding-top:38px;
+    padding-top: 38px;
 }
 
- .impressumTxtNormal {
+.impressumTxtNormal {
     padding-top: 76px;
- }
+}
 
 .impressumBtnDiv {
     bottom: 40px;
@@ -706,6 +717,14 @@ body.no-scroll {
         width: 180px;
         left: 10px;
     }
+
+    .levelselectionCactusLeft {
+        left: 0vw;
+    }
+
+    .levelselectionCactusRight {
+        right: 0vw;
+    }
 }
 
 @media (min-width: 1201px) {
@@ -781,6 +800,14 @@ body.no-scroll {
         height: 0px;
     }
 
+     .levelselectionCactusLeft {
+        left: -5vw;
+    }
+
+    .levelselectionCactusRight {
+        right: -5vw;
+    }
+
 
 
 
@@ -799,6 +826,14 @@ body.no-scroll {
         left: 30%;
     }
 
+     .levelselectionCactusLeft {
+        display: none;
+    }
+
+    .levelselectionCactusRight {
+        right: 18vw;
+    }
+
 
 
 }
@@ -814,6 +849,16 @@ body.no-scroll {
 
     .pause-end-game-btns {
         left: 3vw;
+    }
+
+    .levelselectionCactusRight {
+        right: 15vw;
+    }
+}
+
+@media (max-width: 580px) {
+    .levelselectionCactusRight {
+        right: 9vw;
     }
 }
 
@@ -835,5 +880,9 @@ body.no-scroll {
     .impressumTxtDivMobile {
         flex-direction: column;
         justify-content: flex-start;
+    }
+
+    .levelselectionCactusRight {
+        right: 1vw;
     }
 }

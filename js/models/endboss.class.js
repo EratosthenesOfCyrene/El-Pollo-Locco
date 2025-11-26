@@ -26,7 +26,6 @@
  * @property {boolean} movesRight_1 - Checks whether the endboss moves to the right after the first hit.
  * @property {boolean} movesRight_2 - Checks whether the endboss moves to the right after the second hit.
  * 
- * 
  * @property {function(CanvasRenderingContext2D):void} draw - Draws the chicken to the canvas context.
  * 
  * @class Endboss
@@ -34,7 +33,7 @@
  */
 
 class Endboss extends MovableObject {
-    
+
     height = 400;
     width = 250;
     y = 60;
