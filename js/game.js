@@ -138,7 +138,7 @@ function init() {
     shrinkStartImage();
     bindBtnsPressEvents();
     fullScreenMobile();
-    if (!window.world) {  // prüft, ob bereits eine level ausgewählt wurde; wenn nicht, dann wird level 1 initialisiert
+    if (!window.world) {  // prüft, ob bereits ein level ausgewählt wurde; wenn nicht, dann wird level 1 initialisiert
         chooseLevel1();
     }
 
@@ -186,6 +186,19 @@ function noLevelChosen() {
     window.world = new World(canvas, keyboard, 3, intervals);
 }
 
+function backToHome() {
+    window.world.gameStarted = false;
+    stopBackgroundMusic();
+    pauseGame();
+    resetIntervals();
+    //init();
+    document.getElementById('startImg').classList.remove('d-none');
+    document.getElementById('startGameBtn').classList.remove('d-none');
+    bindBtnsPressEvents();
+    fullScreenMobile();
+    chooseLevel1();
+    hideShowContent('pauseEndGameBtns', 'add');
+}
 
 /**
  * Inits canvas and the game world.

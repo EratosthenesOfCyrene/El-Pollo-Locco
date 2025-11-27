@@ -59,7 +59,6 @@ class Sounds {
      handleGameWonSounds() {
         window.world.character.characterYeah_sound.play();
         setTimeout(() => {
-            //window.world.character.gameWon_sound.volume = 0.7;
             window.world.character.gameWon_sound.play();
         }, 1000);
     }
