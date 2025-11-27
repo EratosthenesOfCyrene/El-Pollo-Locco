@@ -130,7 +130,7 @@ class Character extends MovableObject {
 
 
     constructor(world) {
-        super().loadImage('../img_pollo_locco/img/2_character_pepe/2_walk/W-21.png');
+        super().loadImage('img_pollo_locco/img/2_character_pepe/2_walk/W-21.png');
 
         this.world = world
         this.energy = 100;
