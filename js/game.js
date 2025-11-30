@@ -188,12 +188,32 @@ function noLevelChosen() {
 
 function backToHome() {
     window.world.gameStarted = false;
+    gameStarted = false;
+    handleBackToHomeDesktop();
+    handleBackToHomeMobile();
+}
+
+function handleBackToHomeDesktop() {
     stopBackgroundMusic();
     pauseGame();
     resetIntervals();
     //init();
     document.getElementById('startImg').classList.remove('d-none');
     document.getElementById('startGameBtn').classList.remove('d-none');
+    document.getElementById('buttonBoard').classList.remove('d-none');
+    bindBtnsPressEvents();
+    fullScreenMobile();
+    chooseLevel1();
+    hideShowContent('pauseEndGameBtns', 'add');
+}
+
+function handleBackToHomeMobile() {
+    stopBackgroundMusic();
+    pauseGame();
+    resetIntervals();
+    hideMobileGameUI();
+    hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
+    hideShowContent('soundBtn', 'add');
     bindBtnsPressEvents();
     fullScreenMobile();
     chooseLevel1();
