@@ -186,6 +186,9 @@ function noLevelChosen() {
     window.world = new World(canvas, keyboard, 3, intervals);
 }
 
+/**
+ * This function handles the back to home functionality.
+ */
 function backToHome() {
     window.world.gameStarted = false;
     gameStarted = false;
@@ -193,11 +196,13 @@ function backToHome() {
     handleBackToHomeMobile();
 }
 
+/**
+ * This function handles the back to home functionality in the desktop mode.
+ */
 function handleBackToHomeDesktop() {
     stopBackgroundMusic();
     pauseGame();
     resetIntervals();
-    //init();
     document.getElementById('startImg').classList.remove('d-none');
     document.getElementById('startGameBtn').classList.remove('d-none');
     document.getElementById('buttonBoard').classList.remove('d-none');
@@ -207,13 +212,16 @@ function handleBackToHomeDesktop() {
     hideShowContent('pauseEndGameBtns', 'add');
 }
 
+/**
+ * This function handles the back to home functionality in the mobile mode.
+ */
 function handleBackToHomeMobile() {
     stopBackgroundMusic();
     pauseGame();
     resetIntervals();
     hideMobileGameUI();
     hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
-    hideShowContent('soundBtn', 'add');
+    hideShowContent('soundBtn', 'add');     // blendet den Soundbutton aus
     bindBtnsPressEvents();
     fullScreenMobile();
     chooseLevel1();
@@ -541,14 +549,14 @@ function pauseGame() {
     if (mobileWindow == false) {
         toggleBtn('pauseGameBtn', true);   // die parameter true und false dürfen nicht in Anführungszeichen stehen, da die aufgerufene Funktion diese nicht als String, sondern als Booleiische Variable braucht!
         toggleBtn('resumeGameBtn', false);  // aktiviert den zuvor deaktivierten "play-Button" der Desktop Ansicht
-    } else if (mobileWindow == true) {
+    } else if (mobileWindow == true && gameStarted === true) {
         toggleBtn('pauseGameBtnMobile', true);   // die parameter true und false dürfen nicht in Anführungszeichen stehen, da die aufgerufene Funktion diese nicht als String, sondern als Booleiische Variable braucht!
         toggleBtn('resumeGameBtnMobile', false);  // aktiviert den zuvor deaktivierten "play-Button" der mobilen Ansicht
         toggleBtn('mobileBtnLeft', true);
         toggleBtn('mobileBtnRight', true);
     }
 
-    if (!window.world.gameOver) {
+    if (!window.world.gameOver && gameStarted === true) {
         window.world.gamePaused = true;
         pauseChicken();
     }

@@ -1,7 +1,6 @@
-/*html, body {
-    overflow-x: hidden;
-}*/
 
+
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
 
 
 
@@ -602,7 +601,7 @@ body.no-scroll {
 
 
 
-@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
 
 .menu-board {
     background-size: cover;
@@ -727,7 +726,7 @@ body.no-scroll {
     }
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 1201px) and (hover: hover) and (pointer: fine) {
     /* .fullscreen {
         width: 720px !important;
         height: 480px !important;
@@ -799,18 +798,18 @@ body.no-scroll {
         /*Da diese Div sonst in der mobilen Ansicht aus dem Body hinausläuft*/
         height: 0px;
     }
+}
 
-     .levelselectionCactusLeft {
+
+
+@media (max-width: 1000px) and (hover: hover) and (pointer: fine) {
+    .levelselectionCactusLeft {
         left: -5vw;
     }
 
     .levelselectionCactusRight {
-        right: -5vw;
+        /* right: -5vw; */
     }
-
-
-
-
 }
 
 
@@ -825,17 +824,16 @@ body.no-scroll {
     .impressumBtn {
         left: 30%;
     }
+}
 
-     .levelselectionCactusLeft {
+@media (max-width: 800px) and (hover: hover) and (pointer: fine) {
+    .levelselectionCactusLeft {
         display: none;
     }
 
     .levelselectionCactusRight {
         right: 18vw;
     }
-
-
-
 }
 
 @media (max-width: 750px) {
@@ -850,13 +848,15 @@ body.no-scroll {
     .pause-end-game-btns {
         left: 3vw;
     }
+}
 
+@media (max-width: 750px) and (hover: hover) and (pointer: fine) {
     .levelselectionCactusRight {
         right: 15vw;
     }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 580px) and (hover: hover) and (pointer: fine) {
     .levelselectionCactusRight {
         right: 9vw;
     }
@@ -881,8 +881,14 @@ body.no-scroll {
         flex-direction: column;
         justify-content: flex-start;
     }
+}
 
+@media (max-width: 500px) {
     .levelselectionCactusRight {
-        right: 1vw;
+        display: none;
+    }
+
+    .levelselectionCactusLeft {
+        display: none;
     }
 }
