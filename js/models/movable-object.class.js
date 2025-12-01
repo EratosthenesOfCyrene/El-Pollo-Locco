@@ -115,16 +115,40 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     isColliding(movingObject) {
-        return (this.x + 30) + (this.width - 74) > movingObject.x + 10 &&
+        return (this.x + 30) + (this.width - 80) > movingObject.x + 10 &&
+            this.y + this.height > movingObject.y &&
+            this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
+            this.y + 50 < movingObject.y - 50 + movingObject.height;
+    }
+
+     /**
+     * Checks if the character is colliding whith a big chicken.
+     * 
+     * The method uses bounding box collision detection with adjusted hitboxes
+     * (e.g., insets/margins) to allow for more accurate collision handling.
+     * It compares positions and dimensions of the current object (`this`) with
+     * the passed `movingObject`.
+     *
+     * @param {Object} movingObject - The other object to check collision with.
+     * @param {number} movingObject.x - The x-position of the other object.
+     * @param {number} movingObject.y - The y-position of the other object.
+     * @param {number} movingObject.width - The width of the other object.
+     * @param {number} movingObject.height - The height of the other object.
+     * @returns {boolean} True if the two objects are colliding; otherwise, false.
+     * @method isColliding
+     * @memberof MovableObject
+     */
+    isCollidingChickenBig(movingObject) {
+        return (this.x + 30) + (this.width - 68) > movingObject.x + 10 &&
             this.y + this.height > movingObject.y &&
             this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
             this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
 
     isCollidingJumpingOnEnemy(movingObject) {
-        return (this.x + 30) + (this.width - 60) > movingObject.x + 10 &&
-            this.y + this.height > movingObject.y - 12 &&     // Die -100 (px) machen das objekt etwas höher, sodass eine Kolission, wenn Pepe von oben darauf springt, leichter detektiert werden kann.
-            this.x + 30 < movingObject.x + 10 + movingObject.width - 10 &&
+        return (this.x + 30) + (this.width - 50) > movingObject.x + 10 &&
+            this.y + this.height > movingObject.y + 10 &&     // Die -100 (px) machen das objekt etwas niedriger, sodass eine Kolission, wenn Pepe von oben darauf springt, erst ausgelöst wird, wenn er den enmy wirklich berührt.
+            this.x + 40 < movingObject.x + 10 + movingObject.width - 10 &&
             this.y + 50 < movingObject.y - 50 + movingObject.height;
     }
 
@@ -178,9 +202,11 @@ class MovableObject extends DrawableObject {
      * @memberof MovableObject
      */
     isJumpingOnEnemy(movingObject) {
+        console.log(this.world.character.isJumping, this.speedY);
+        
         this.world.indexOfCurrentEnemy = movingObject;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
-        if (this.isCollidingJumpingOnEnemy(movingObject) &&
-            this.speedY < 0) {
+        if (this.isCollidingJumpingOnEnemy(movingObject) && /*this.world.character.isJumping &&*/ this.speedY < 0
+            /*this.speedY < 0*/) {
             this.jumpingOnEnemy = true;
             return true;
         }

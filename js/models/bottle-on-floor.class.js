@@ -32,7 +32,7 @@ class BottleOnFloor extends MovableObject {
         this.height = 70;
         this.width = 65;
         this.x = 300 + Math.random() * 5000;
-        this.y = 360;
+        this.y = 368;
         this.id = BottleOnFloor.i;      // Statische Variablen gehören zur Klasse selbst und nicht zu einer Instanz der Klasse. Daher verwendet man BottleOnFloor.i um sie anzusprechen und nicht this.i !!!
         BottleOnFloor.i++;
     }

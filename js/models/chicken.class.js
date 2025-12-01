@@ -17,6 +17,7 @@ class Chicken extends MovableObject {
     chickenBig;
     chickenSmall;
     isDeadChicken = false;
+    size;
     
 
     //  Images BIG Chicken
@@ -49,8 +50,10 @@ class Chicken extends MovableObject {
         let randomNumber = Math.random();   //  erzeugt ene zufüllige Zahl zwischen 0 und 1, von deren Größe abhängt, ob ein großes oder kleines Chicken erzeugt wird
         if (randomNumber > 0.65) {
             this.loadPropertiesChickenBig();
+             this.size = 'big'; 
         } else {
             this.loadPropertiesChickenSmall();
+             this.size = 'small'; 
         }
     }
 
@@ -140,7 +143,7 @@ class Chicken extends MovableObject {
         this.chickenBig = true;
         this.width = 70;
         this.height = 70;
-        this.y = 360;
+        this.y = 368;
         this.x = 800;
         this.loadImage('./img_pollo_locco/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -160,7 +163,7 @@ class Chicken extends MovableObject {
         this.chickenBig = false;
         this.width = 40;
         this.height = 50;
-        this.y = 380;
+        this.y = 384;
         this.x = 800;
         this.loadImage('./img_pollo_locco/img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.currentspeed = this.speed;

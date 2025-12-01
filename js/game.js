@@ -141,6 +141,7 @@ function init() {
     if (!window.world) {  // prüft, ob bereits ein level ausgewählt wurde; wenn nicht, dann wird level 1 initialisiert
         chooseLevel1();
     }
+    loadSoundSettings();
 
     const urlParams = new URLSearchParams(window.location.search);
     const level = urlParams.get('level') || '1'; // Standardmäßig Level 1
@@ -197,7 +198,7 @@ function backToHome() {
 }
 
 /**
- * This function handles the back to home functionality in the desktop mode.
+ * This function handles the back to home functionality in desktop mode.
  */
 function handleBackToHomeDesktop() {
     stopBackgroundMusic();
@@ -213,7 +214,7 @@ function handleBackToHomeDesktop() {
 }
 
 /**
- * This function handles the back to home functionality in the mobile mode.
+ * This function handles the back to home functionality in mobile mode.
  */
 function handleBackToHomeMobile() {
     stopBackgroundMusic();
@@ -221,7 +222,7 @@ function handleBackToHomeMobile() {
     resetIntervals();
     hideMobileGameUI();
     hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
-    hideShowContent('soundBtn', 'add');     // blendet den Soundbutton aus
+    //hideShowContent('soundBtn', 'add');     // blendet den Soundbutton aus
     bindBtnsPressEvents();
     fullScreenMobile();
     chooseLevel1();
@@ -370,7 +371,7 @@ function startGame() {
         document.getElementById('pauseEndGameBtns').classList.remove('d-none');
         document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
         document.getElementById('soundBtn').classList.remove('d-none');
-        document.getElementById('soundBtn').classList.add('soundBtn');
+       // document.getElementById('soundBtn').classList.add('soundBtn');
         loadSoundSettings();
         playBackgroundMusic();
         gameStarted = true;

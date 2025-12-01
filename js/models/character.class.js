@@ -33,7 +33,7 @@
 class Character extends MovableObject {
     height = 280;
     width = 160;
-    y = 60;
+    y = 710;
     speed = 10;
     longIdle = false;
     idle = false;

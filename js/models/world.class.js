@@ -356,26 +356,69 @@ class World {
      * @method checkForCollisionsWhithEnemies
      * @memberof World
      */
+
+    /*
     checkForCollisionsWhithEnemies() {
         const interval = setInterval(() => {   // Checking for Collisions whith Enemies
             this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
-                    this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
+                if (this.enemy.size === 'big') {
+                    if (this.character.isCollidingChickenBig(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
+                        this.character.hit();
+                        this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
+                    }
+                }
+                else {
+                    this.level.enemies.forEach((enemy) => {
+                        if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.isDeadChicken) {
+                            this.character.hit();
+                            this.statusBar.setPercentage(this.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
+                        }
+                    });
+                });
+        } 
+        }
+
+}, 20);
+this.intervals.addIntervalToIntervalArray(interval);
+    }    */
+
+    /**
+       * Checks for Collisions of the character and the Enemies. The function checks whether 
+       * the character collides whith a bog or a small chicken and runs the customized collision check accordingly.
+       * 
+       * @method checkForCollisionsWhithEnemies
+       * @memberof World
+       */
+    checkForCollisionsWhithEnemies() {
+        const interval = setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                // überspringe bereits tote Gegner
+                if (enemy.isDeadChicken) return;
+
+                if (enemy.size === 'big') {
+                    if (this.character.isCollidingChickenBig(enemy) && !this.character.isAboveGround()) {
+                        this.character.hit();
+                        this.statusBar.setPercentage(this.character.energy);
+                    }
+                } else {
+                    if (this.character.isColliding(enemy) && !this.character.isAboveGround()) {
+                        this.character.hit();
+                        this.statusBar.setPercentage(this.character.energy);
+                    }
                 }
             });
         }, 20);
-        this.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
-     * Checks if Character jumps on Enemy.
+     * Checks if Character jumps on Enemy. The check is called as often as possible via the requestAnimationFrame method.
      * 
      * @method checkIfCharacterJumpsOnEnemy
      * @memberof World
      */
     checkIfCharacterJumpsOnEnemy() {
-        const interval = setInterval(() => {   // Checking if Character jumps on Enemy
+        const loop = () => {
+            //const interval = setInterval(() => {   // Checking if Character jumps on Enemy            
             this.level.enemies.forEach((enemy, indexOfEnemy) => {
                 if (this.character.isJumpingOnEnemy(enemy) && enemy != this.definedEndboss) {   // der erste Teil der Condition prüft, ob überhaupt eine Kollision mit einem Enemy vorliegt, und der zweite Teil der Condition prüft, ob der Character dabei von oben kommend mit dem Enemy kolliediert. 
                     this.playDeadChickenAnimation(enemy);  // hier wird das ganze getroffene Objekt (enemy) übergeben und nicht nur dessen index, da sich dieser rasch ändern kann, z.B. wennn ein enemy gelöscht wurde, sodass es zu fehlern kommen kann
@@ -383,8 +426,12 @@ class World {
                     this.handleEnemyHitSounds();
                 }
             });
-        }, 20);
-        this.intervals.addIntervalToIntervalArray(interval);
+            // }, 15);
+            requestAnimationFrame(loop); // nächster Frame
+        };
+
+        requestAnimationFrame(loop); // Start
+       // this.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
