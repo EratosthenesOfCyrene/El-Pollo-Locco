@@ -114,6 +114,7 @@ class World {
         this.definedEndboss;  // variable that carries the information of where in the enemies array the endboss is
         this.defineEndboss();
         this.enemyHitSoundPlaying = false;
+        this.bottleHitSound = false;
     }
 
     /**

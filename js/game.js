@@ -301,6 +301,7 @@ function resetGameBtns() {
  * @function showLevelSelection
  */
 function showLevelSelection() {
+    hideBurgerMenu();  // Blendet das Hamburger Menu aus.
     document.getElementById('outerMobileLevelSelectionDiv').classList.remove('d-none');
     document.getElementById('mobileLevelSelectionDiv').classList.remove('d-none');
 }
@@ -371,7 +372,7 @@ function startGame() {
         document.getElementById('pauseEndGameBtns').classList.remove('d-none');
         document.getElementById('pauseEndGameBtns').classList.add('pause-end-game-btns');
         document.getElementById('soundBtn').classList.remove('d-none');
-       // document.getElementById('soundBtn').classList.add('soundBtn');
+        // document.getElementById('soundBtn').classList.add('soundBtn');
         loadSoundSettings();
         playBackgroundMusic();
         gameStarted = true;
@@ -916,6 +917,26 @@ function bindBtnsPressEvents() {
     });
 }
 
+const mediaQuery_Desktop = window.matchMedia(
+    '(min-width: 1200px) and (hover: hover) and (pointer: fine)'
+);
+
+const mediaQuery_Desktop_Small = window.matchMedia(
+    '(max-width: 1200px) and (hover: hover) and (pointer: fine)' /*and (hover: none) and (pointer: coarse)'*/
+);
+
+const mediaQuery_Mobile = window.matchMedia(
+    '(max-width: 1200px) and (hover: none) and (pointer: coarse)'
+);
+
+const mediaQuery_Tablet = window.matchMedia(
+    '(min-width: 1000px) and (min-height: 599px) and (hover: none) and (pointer: coarse)'
+);
+
+const mediaQuery = window.matchMedia(
+    '(max-width: 1200px)' /*and (hover: none) and (pointer: coarse)'*/
+);
+
 /**
  * this function checks the window width to determine
  * whether the application is being viewed on a mobile or desktop device, and
@@ -952,48 +973,90 @@ function bindBtnsPressEvents() {
  * @returns {void}
  */
 function testWindowWidth() {  // prüft, ob mobil-Ansicht vorliegt
-    const mediaQuery = window.matchMedia('(max-width: 1200px)');
-
-    //-- Mobile View
-    if (mediaQuery.matches) {
+    if (window.innerWidth > window.innerHeight) {
         testIfDeviceIsVertivalOrHorizontal();
-        initMobileView();
     }
 
-    if (mediaQuery.matches && window.innerWidth > window.innerHeight) {
+    if (mediaQuery_Mobile.matches || mediaQuery_Tablet.matches) {
+        initMobileView();
         mobileWindow = true;
         initMobileLandscapeView();  //-- blendet alles Notwendige für mobile Breitbildansicht ein bzw. aus
 
-        if (gameStarted == true) {
-            initMobileGameView();  //-- blendet UI-content ein
-        } if (window.innerWidth < 700) {
-            hideShowContent('pauseEndGameBtns', 'add');
-            document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
+        setInterval(() => {
+            //console.log(gameStarted);
+
+            if (gameStarted == true && (mediaQuery_Mobile.matches || mediaQuery_Tablet.matches)) {
+                initMobileGameView();  //-- blendet UI-content ein
+                // } if (window.innerWidth < 700) {
                 hideShowContent('pauseEndGameBtns', 'add');
-            });
-        }
-    } else {
-        if (!mediaQuery.matches) {
-            mobileWindow = false;
-        } else if (mediaQuery.matches) {
-            mobileWindow = true;
-        }
-        hideShowContent('mobileMenu', 'add');     //blendet die Einstellungsbuttons mit den Symbolen aus
-        if (gameStarted == true) {
-            hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
-        } if (gameStarted == true && window.innerWidth > 700) {
-            hideShowContent('pauseEndGameBtns', 'remove');
-        }
+                document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
+                    hideShowContent('pauseEndGameBtns', 'add');
+                });
+            }
+        }, 200);
+
     }
 
-    //-- Desktop-View
-    if (!mediaQuery.matches) {
+    setInterval(() => {
+        if (mediaQuery_Tablet.matches && gameStarted === true) {
+            document.getElementById('soundBtn').classList.add('soundBtn-tablet-gameStarted');
+            document.getElementById('mobileAboutMenu').classList.add('mobileAboutMenu-tablet-gameStarted');
+            console.log(gameStarted);
+        } else if (mediaQuery_Tablet.matches && gameStarted === false) {
+            document.getElementById('soundBtn').classList.remove('soundBtn-tablet-gameStarted');
+            document.getElementById('mobileAboutMenu').classList.remove('mobileAboutMenu-tablet-gameStarted');
+            console.log(gameStarted);
+        } else if (mediaQuery_Mobile.matches) {
+            document.getElementById('soundBtn').classList.remove('soundBtn-tablet-gameStarted');
+            document.getElementById('mobileAboutMenu').classList.remove('mobileAboutMenu-tablet-gameStarted');
+            console.log(gameStarted);
+        }
+
+    }, 200);
+
+//-- Mobile View
+testIfDeviceIsVertivalOrHorizontal();
+//initMobileView();
+console.log('mediaquery matches!!!');
+
+
+if (mediaQuery.matches && window.innerWidth > window.innerHeight) {
+    /* mobileWindow = true;
+     initMobileLandscapeView();  //-- blendet alles Notwendige für mobile Breitbildansicht ein bzw. aus
+ 
+     if (gameStarted == true) {
+         initMobileGameView();  //-- blendet UI-content ein
+     } if (window.innerWidth < 700) {
+         hideShowContent('pauseEndGameBtns', 'add');
+         document.addEventListener("DOMContentLoaded", () => {   //sorgt dafür, dass hideShowContent erst ausgeführt wird, wenn es om Dom vorhanden ist
+             hideShowContent('pauseEndGameBtns', 'add');
+         });
+     } */
+} else {
+    if (mediaQuery_Desktop.matches) {
+        mobileWindow = false;
         initDesktopView();
+    }  /* else if (mediaQuery.matches) {
+            mobileWindow = true;
+        } */
+    hideShowContent('mobileMenu', 'add');     //blendet die mobilen Einstellungsbuttons mit den Symbolen aus
+    if (gameStarted == true && !window.innerWidth > window.innerHeight) {
+        hideShowContent('mobileAboutMenu', 'add');  //blendet das Hamburger-Menu aus wenn das Handy hochkant gehalten wird und das spiel bereits gestartet wurde
+    } if (gameStarted == true && window.innerWidth > 700) {
+        hideShowContent('pauseEndGameBtns', 'remove');
     }
 }
 
+//-- Desktop-View
+if (mediaQuery_Desktop_Small.matches) {
+    showBurgerMenu();
+    //  initDesktopView();
+}
+}
+
+
 /**
- * Initiates the mobile view. Shows the hamburger-menue, hides the desktop menue and hides the button bar of the desktop view.
+ * Initiates the mobile view. Shows the hamburger-menu, hides the desktop menue and hides the button bar of the desktop view.
  * @function initMobileView
  */
 function initMobileView() {
@@ -1039,7 +1102,7 @@ mediaQuery2.addEventListener('change', (e) => {
         document.getElementById('canvas').style.width = '100vw';
     } else {
         if (fullscreenActive === false) {
-            document.getElementById('canvas').style.width = ''; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+            document.getElementById('canvas').style.width = ''; // setzt den Wert des canvas wieder auf den Standartwert von 720 px
         }
     }
 });
@@ -1053,10 +1116,20 @@ function initMobileGameView() {
     hideShowContent('mobileMenu', 'remove');     //zeigt die Einstellungsbuttons mit den Symbolen an
     hideShowContent('mobileCtrlBtnDiv1', 'remove');
     hideShowContent('mobileCtrlBtnDiv2', 'remove');
-    hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
-    hideShowContent('mobileAboutDiv', 'add'); //blenet die mobileAboutDiv aus
+    //   hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
+    //   hideShowContent('mobileAboutDiv', 'add'); //blenet die mobileAboutDiv aus
     if (fullscreenActive === false) {
-        document.getElementById('canvas').style.width = 'auto'; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+        document.getElementById('canvas').style.width = 'auto'; // setzt den Wert des canvas wieder auf den Standartwert von 720 px
+    }
+}
+
+function hideBurgerMenu() {
+    hideShowContent('mobileAboutMenu', 'add'); //blendet das Hamburger-Menu aus
+}
+
+function showBurgerMenu() {
+    if (!mediaQuery_Desktop.matches) {
+        hideShowContent('mobileAboutMenu', 'remove'); //blendet das Hamburger-Menu ein
     }
 }
 
@@ -1200,8 +1273,8 @@ function initVerticalView() {
     document.getElementById('startImg').classList.remove('startImgMobileHorizontal');
     if (fullscreenActive === false) {
         document.getElementById('canvas').style.height = 'auto'; // setzt den Wert des canvas wieder auf den Standarrtwert von 720 px
+        updateStartImgHeight();  // die Funktion muss hier extra aufgerufen werden, da zu dem Zeitpunkt, wo der zugehörige eventlistener greift, canvas noch eine Höhe von 100vh hat und erst danach von der hierüberliegenden Zeile aktualisiert wird.
     }
-    //document.getElementById('canvas').style.height = 'auto';
     hideShowContent('nav', 'remove');
 }
 
@@ -1216,6 +1289,7 @@ function initGameStartedVerticalView() {
     hideShowContent('pauseEndGameBtns', 'add');
     hideShowContent('fullscreen', 'add');
     document.body.classList.add('no-scroll');
+    hideBurgerMenu();  // blendet das Hamburger Menu aus
 }
 
 /**
@@ -1326,6 +1400,7 @@ function hideShowContentAndMenu() {
     showMobileAboutMenu();
     hideShowContent('mobileAboutDiv', 'add');
     hideShowContent('greyBgrDiv', 'add');
+    hideBurgerMenu();
 }
 
 /**
@@ -1361,20 +1436,42 @@ document.addEventListener("gestureend", (e) => e.preventDefault());
 
 /**
  * This function updates the height of the start image by setting the height value of the image to the height of the canvas.
- */
+ */ /*
 function updateStartImgHeight() {
-    if (window.innerWidth < 700) {
-        const canvasHeight = canvas.clientHeight;
-        startImg.style.height = canvasHeight + 'px';
-    } else {
-        startImg.style.height = '';
-    }
+if (window.innerWidth < 700) {
+const canvasHeight = canvas.clientHeight;
+startImg.style.height = canvasHeight + 'px';
+} else {
+startImg.style.height = '';
+}
 }
 
 // Event Listener für Resize
 window.addEventListener('resize', updateStartImgHeight);
 
 // Beim Laden der Seite ausführen
+window.addEventListener('load', updateStartImgHeight);
+*/
+
+
+function updateStartImgHeight() {
+    const canvasHeight = canvas.clientHeight;
+    const startImg = document.getElementById('startImg'); // falls ID
+    if (window.innerWidth < 700) {
+        // Temporär Transition deaktivieren
+        startImg.style.transition = 'none';
+        startImg.style.height = canvasHeight + 'px';
+        // Transition wieder aktivieren (optional)
+        requestAnimationFrame(() => {
+            startImg.style.transition = '';
+        });
+    } else {
+        startImg.style.height = '';
+    }
+}
+
+// Event Listener
+window.addEventListener('resize', updateStartImgHeight);
 window.addEventListener('load', updateStartImgHeight);
 
 

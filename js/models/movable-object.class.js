@@ -44,7 +44,26 @@ class MovableObject extends DrawableObject {
             }
             this.resetYtoNormal();
         }, 1000 / 25);
-        this.world.intervals.addIntervalToIntervalArray(interval);
+        //this.world.intervals.addIntervalToIntervalArray(interval);
+    }
+
+     /**
+     * Creates the illusion of creativity for a bottle thrown by he endboss.
+     * 
+     * @method applyGravityEndBossBottle
+     * @memberof MovableObject
+     */
+    applyGravityEndBossBottle() {  // die Illusion von Schwerkraft erzeugen
+        const interval = setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {  // diese if-Abfrage prüft, ob der y-Wert unter 160 ODER der speed über null ist. Wenn dies nicht der Fall ist, wird der darunter stehende Block Code nicht ausgeführt, und der Fall der Figur hört be 160 pixeln von oben gerrechnet auf. Bei 160 pixeln von oben befindet sich der Boden.
+                this.y -= this.speedY;    // vom y-Wert des MovableObjects wird der Wert von SpeedY abgezogen
+                this.speedY -= this.acceleration;  // hier wird die acceleration von speedY abgezogen
+            } else if (this.speedY <= -32) {  // setzt den speedY wieder auf null zurück, wenn er kleiner als -33 ist, also wenn die Figur auf dem Boden angekommmen ist. Dies braucht man, um in der Funktion 'isJumpingOnEnemy()' zu prüfen, ob der character von oben auf ein Huhn hüpft.
+                this.speedY = 0;
+            }
+            this.resetYtoNormal();
+        }, 1000 / 25);
+        window.world.intervals.addIntervalToIntervalArray(interval);
     }
 
     /**
@@ -188,7 +207,7 @@ class MovableObject extends DrawableObject {
      */
     isCollidingBottleCharacter(movingObject) {
         return this.x + this.width > (movingObject.x) &&
-            this.y + this.height > movingObject.y &&
+            this.y + this.height > movingObject.y + 150 &&
             this.x < (movingObject.x - 15) + movingObject.width &&
             this.y < movingObject.y + movingObject.height;
     }
@@ -201,9 +220,7 @@ class MovableObject extends DrawableObject {
      * @method isJumpingOnEnemy
      * @memberof MovableObject
      */
-    isJumpingOnEnemy(movingObject) {
-        console.log(this.world.character.isJumping, this.speedY);
-        
+    isJumpingOnEnemy(movingObject) {        
         this.world.indexOfCurrentEnemy = movingObject;   // der Wert von 'movingObject' muss der Variablen 'indexOfCurrentEnemy' zugeordnet werden, damit wenn in der Klasse Character() abgefragt wird, ob es sich um eine Kollision handelt oder ob der Character von oben auf den Enemay springt, Werte für einen Enemy vorhanden sind, da es sonst zu einem Fehler kommt, wenn die Funktion ' isJumpingOnEnemy()' ausgeführt wird. 
         if (this.isCollidingJumpingOnEnemy(movingObject) && /*this.world.character.isJumping &&*/ this.speedY < 0
             /*this.speedY < 0*/) {

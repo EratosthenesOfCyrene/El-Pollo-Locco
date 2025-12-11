@@ -160,6 +160,14 @@
 
     <!-- Levelselection Panel Mobile -->
     <div id="outerMobileLevelSelectionDiv" class="outerMobileLevelSelectionDiv d-none">
+        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add'), showBurgerMenu()"
+            id="outerMobileLevelSelectionDivBtn" class="mobileAboutMenu">
+            <svg id="mobileAboutMenuXImg" class="mobileAboutMenuXImg" width="50" height="50" viewBox="0 0 50 50"
+                xmlns="http://www.w3.org/2000/svg">
+                <line x1="10" y1="10" x2="40" y2="40" stroke="white" stroke-width="8" stroke-linecap="round" />
+                <line x1="40" y1="10" x2="10" y2="40" stroke="white" stroke-width="8" stroke-linecap="round" />
+            </svg>
+        </div>
         <img class="levelselectionCactusLeft" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_1.png" alt="">
         <img class="levelselectionCactusRight" src="img_pollo_locco/img/2_character_pepe/7_Cactus/Cactus_2.png" alt="">
         <div id="mobileLevelSelectionDiv" class="mobileLevelSelectionDiv d-none">
@@ -168,9 +176,11 @@
             <div onclick="hideMobileLevelSelectionDiv(), stopBackgroundMusic(), pauseGame(), chooseLevel1(), resetIntervals(), startGame() "
                 class="mobileAboutDivBtn levelSelectionBtn">Play Level 1</div>
         </div>
-        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add'), backToHome()" class="mobileAboutDivBtn cancelLevelBtn">
+        <div onclick="hideShowContent('outerMobileLevelSelectionDiv', 'add'), backToHome()"
+            class="mobileAboutDivBtn cancelLevelBtn">
             Home</div>
     </div>
+
 
     <!-- , window.location.href = window.location.pathname + '?level=1' 
         window.location.href = window.location.pathname + '?level=2'
@@ -215,7 +225,8 @@
             </p>
 
             <div class="rulesBtnDiv">
-                <button onclick="hideShowContent('regelnDiv', 'add'),  hideShowContent2('mobileAboutMenu', 'remove');"
+                <button
+                    onclick="hideShowContent('regelnDiv', 'add'),  hideShowContent2('mobileAboutMenu', 'remove'), showBurgerMenu()"
                     class="rulesBtn">zurück zum Spiel</button>
             </div>
 
@@ -245,7 +256,8 @@
             Tel. 01543/452751 <br>
             Mail: mayer-developments@gmx.de <br>
             <div class="impressumBtnDiv">
-                <button onclick="hideShowContent('impressumDivId', 'add'), resumeGame()" class="rulesBtn ">
+                <button onclick="hideShowContent('impressumDivId', 'add'), resumeGame(), showBurgerMenu()"
+                    class="rulesBtn ">
                     Back
                 </button>
             </div>

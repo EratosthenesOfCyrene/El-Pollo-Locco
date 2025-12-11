@@ -25,7 +25,7 @@ class ThrowableObject extends MovableObject {
     checkForYOrCollissionIntervalID;
     bottleCollides = false;
     bottleThrownStanding = false;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand.
-
+    
 
     IMAGES_THROW = [
         './img_pollo_locco/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -58,6 +58,13 @@ class ThrowableObject extends MovableObject {
         this.throwEndbossInterval;
         this.checkCollisionInterval;
         this.collidedWithCharacter = false;
+        this.testinterval();
+    }
+
+    testinterval() {
+        setInterval(() => {
+            // console.log(window.world.bottleHitSound);
+        }, 250);
     }
 
     /**
@@ -78,7 +85,7 @@ class ThrowableObject extends MovableObject {
         this.testThrowDirection();
         this.playAnimationImgThrow();
         this.checkForCollissions();
-        this.checkForYOrCollossion();
+        this.checkForYOrCollossion(this.world.character);
     }
 
     /**
@@ -119,8 +126,8 @@ class ThrowableObject extends MovableObject {
         const enemiesToDelete = [];
         this.checkForCollissionIntervalID = setInterval(() => {  // Checking for collisions of thrown bottles whith enemies (Chickens)
             this.world.level.enemies.forEach((enemy, indexOfEnemy) => {
-                console.log("Bottle Y:", this.world.collectedThrowableObjects[0].y);
-                console.log("Chicken Y:", enemy.y, " height:", enemy.height);
+                // console.log("Bottle Y:", this.world.collectedThrowableObjects[0].y);
+                //console.log("Chicken Y:", enemy.y, " height:", enemy.height);
                 if (this.world.collectedThrowableObjects[0].isCollidingBottleEnemy(enemy, indexOfEnemy)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...
                     enemiesToDelete.push(indexOfEnemy);
                     this.bottleCollides = true;
@@ -153,9 +160,12 @@ class ThrowableObject extends MovableObject {
      * @method checkForYOrCollossion
      * @memberof ThrowableObject
      */
-    checkForYOrCollossion() {
+    checkForYOrCollossion(target) {
         this.checkForYOrCollissionIntervalID = setInterval(() => {
-            this.world.character.enemyHit_sound.pause();
+            //this.world.character.enemyHit_sound.pause();
+            if (target && target.enemyHit_sound) {
+                target.enemyHit_sound.pause();
+            }
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
@@ -164,7 +174,73 @@ class ThrowableObject extends MovableObject {
                 this.bottleThrownStanding = false;
             }
         }, 25);
-        this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
+        //  this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
+    }
+
+    /**
+    * Checks, if the thrown bottle collides vertically whith an enemy or whith the floor
+    * (this is the case if this.y > 360).
+    * 
+    * @method checkForYOrCollossionEndBossBottle
+    * @memberof ThrowableObject
+    */
+    checkForYOrCollossionEndBossBottle() {
+        this.checkForYOrCollissionIntervalID = setInterval(() => {
+            window.world.character.enemyHit_sound.pause();
+
+            if (this.y > 360 || this.bottleCollides == true) {
+                this.resetBottleIntervalsEndboss();
+                this.bottleCollides = false;
+                handleBottleHitSound();
+                //window.world.sounds.stopSound(window.world.character.enemyHit_sound);
+                //window.world.sounds.playSound(window.world.character.enemyHit_sound);
+                //const sound = new Audio(window.world.character.enemyHit_sound.src);
+                //sound.play();
+                this.bottleThrownStanding = false;
+            }
+        }, 25);
+        //  this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
+    }
+
+    handleBottleHitSound() {
+        if (!window.world.bottleHitSound) {
+            window.world.sounds.stopSound(window.world.character.enemyHit_sound);
+            window.world.sounds.playSound(window.world.character.enemyHit_sound);
+        }
+    }
+
+    resetBottleIntervalsEndboss() {
+        clearInterval(this.checkForYOrCollissionIntervalID);
+        clearInterval(this.throwBottleIntervalID);
+        clearInterval(this.playAnimationIntervalID);
+        clearInterval(this.checkForCollissionIntervalID);
+        clearInterval(this.throwEndbossInterval);
+        this.playEndbossSplashAnimation();
+        // this.playSplashAnimationEndboss();
+        // this.actualizeBottlesBar();  // aktualisiert die Bottles-Bar
+    }
+
+    /*
+    playSplashAnimationEndboss() {
+        this.playAnimation(this.IMAGES_SPLASH);
+        this.deleteThrownBottleEndBoss();
+        setTimeout(() => {   // das Timeout entspricht den 300ms bis in deleteThrownBottle() das timeout verstrichen ist und die Flasche gelöscht wird. Wenn nämlich bottleInAir zu früh auf false zurückgesetzt wird, kann zu schnell eine neue Flasche geworfen werden, während die alte noch im Spiel ist. Dann käme es zu Fehlern.
+         //   window.world.bottleInAir = false;   // zurückgeben, dass KEINE Flasche (mehr) in der Luft ist
+        }, 300);
+
+        return true;
+    }*/
+
+    /**
+ * Deletes the bottle that has been thrown. 
+ * 
+ * @method deleteThrownBottleEndBoss
+ * @memberof ThrowableObject
+ */
+    deleteThrownBottleEndBoss() {
+        setTimeout(() => {
+            window.world.definedEndboss.bottles.splice(0, 1);
+        }, 300);
     }
 
     /**
@@ -197,12 +273,10 @@ class ThrowableObject extends MovableObject {
         this.throwBottleIntervalID = setInterval(() => {
             if (this.bottleThrownStanding == false && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {  // diese Abfrage prüft, ob der Character gerade läuft, wenn eine Flasche geworfen wird. Wenn ja, wird die Geschwindigkeit des Characters zur x-Geschwindigkeit der Flasche hinuaddiert, da der character sons unter der Flasche durch rennt;
                 this.x += 10 + this.world.character.speed + 4; // character.speed = 10. Man könnte auch einfach this.x += 24;.
-                console.log('x:', this.x, 'y:', this.y);
 
             } else {
                 this.x += 10;
                 this.bottleThrownStanding = true;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand. Ohne diese Abfrage kann es passieren, dass wenn eine Flasche geworfen wird und der character erst danach bewegt wird, dass die Flasche sich vom Character und von dem Ort, an dem Sie den Boden berühren soll, entfernt und man sein Ziel verfehlt.
-                console.log('x:', this.x, 'y:', this.y);
             }
         }, 25);
         this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
@@ -360,10 +434,14 @@ class ThrowableObject extends MovableObject {
      */
     throwEndboss() {
         this.collidedWithCharacter = false;
-        this.x -= 10;
-        this.playAnimationImgThrow();
+        //this.x -= 10;
+        this.speedY = 30;
+        this.applyGravity();
         this.endbossThrows();
+        this.playAnimationImgThrow();
         this.checkForCollissionEndbossThrownBottleWithCharacter();
+        // this.checkForYOrCollossion(window.world.definedEndboss);
+        this.checkForYOrCollossionEndBossBottle();
     }
 
     /**
@@ -374,7 +452,7 @@ class ThrowableObject extends MovableObject {
      */
     endbossThrows() {
         this.throwEndbossInterval = setInterval(() => {
-            this.x -= this.speedX;
+            this.x -= 15 /*(this.speedX + 75)*/;
         }, 25);
     }
 
@@ -392,6 +470,10 @@ class ThrowableObject extends MovableObject {
     checkForCollissionEndbossThrownBottleWithCharacter() {
         this.checkCollisionInterval = setInterval(() => {
             if (!this.collidedWithCharacter && this.isCollidingBottleCharacter(window.world.character)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...  // enemy, indexOfEnemy
+                //window.world.sounds.stopSound(window.world.character.enemyHit_sound);
+                //window.world.sounds.playSound(window.world.character.enemyHit_sound);
+                const sound = new Audio(window.world.character.enemyHit_sound.src);
+                sound.play();
                 clearInterval(this.throwEndbossInterval);
                 window.world.character.hitByBottle();
                 window.world.statusBar.setPercentage(window.world.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
@@ -399,7 +481,8 @@ class ThrowableObject extends MovableObject {
                 clearInterval(this.playAnimationIntervalID);
                 this.speedX = 0;
                 this.speedY = 0;
-                this.playEdbossSplashAnimation();
+                this.playEndbossSplashAnimation();
+                window.world.bottleHitSound = true;
             }
         }, 50);
     }
@@ -407,12 +490,12 @@ class ThrowableObject extends MovableObject {
     /**
      * Plays the splash animation an sound of a botte that has been thrown by the endboss.
      * 
-     * @method playEdbossSplashAnimation
+     * @method playEndbossSplashAnimation
      * @memberof ThrowableObject
      */
-    playEdbossSplashAnimation() {
-        window.world.sounds.stopSound(window.world.character.enemyHit_sound);
-        window.world.sounds.playSound(window.world.character.enemyHit_sound);
+    playEndbossSplashAnimation() {
+        //window.world.sounds.stopSound(window.world.character.enemyHit_sound);
+        //window.world.sounds.playSound(window.world.character.enemyHit_sound);
         this.playAnimation(this.IMAGES_SPLASH);
         this.deleteEndbossThrownBottle();
     }
