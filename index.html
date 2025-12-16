@@ -31,6 +31,7 @@
     <script src="js/models/bottle-on-floor.class.js"></script>
     <script src="js/models/throwable-object.class.js"></script>
     <script src="js/models/endboss.class.js"></script>
+    <script src="js/models/endboss-bottle.class.js"></script>
     <script src="js/levels/level1.js"></script>
     <script src="js/levels/level2.js"></script>
     <!--// das 'defer'-Attribut im folgenden Script wird verwendet, um dafür zu sorgen, dass dieses Script bzw. das ihm zugeordnete JS-File erst ausgeführt wird, nachdem das gesamte HTML-dokument vollständig geladen wurde. dies braucht man, da sonst der eventListener, der prüft, ob auf den Button 'Pause Game' geklickt wurde, ausgeführt wird, bevor der Button im Script geladen wurde.-->
@@ -226,7 +227,7 @@
 
             <div class="rulesBtnDiv">
                 <button
-                    onclick="hideShowContent('regelnDiv', 'add'),  hideShowContent2('mobileAboutMenu', 'remove'), showBurgerMenu()"
+                    onclick="hideShowContent('regelnDiv', 'add'),  hideShowContent2('mobileAboutMenu', 'remove'), showBurgerMenu(), resumeGame()"
                     class="rulesBtn">zurück zum Spiel</button>
             </div>
 
@@ -293,7 +294,7 @@
             </div>
         </div>
         <div class="impressumBtnDiv">
-            <button onclick="hideShowContent('impressumDivIdMobile', 'add')" class="rulesBtn">
+            <button onclick="hideShowContent('impressumDivIdMobile', 'add'), resumeGame(), showBurgerMenu()" class="rulesBtn">
                 Back
             </button>
         </div>

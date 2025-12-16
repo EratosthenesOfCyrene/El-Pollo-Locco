@@ -400,7 +400,9 @@ body.no-scroll {
 .mobileAboutMenu {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
-    top: 50px;
+   /* top: 50px; */
+    top: 20px;
+    right: 2vw;
     right: 50px;
     padding-right: 6px;
     padding-left: 6px;
@@ -906,7 +908,7 @@ body.no-scroll {
 
     #canvas {
         width: 90vw;
-        height: auto;
+        max-height: 100vh;
     }
 
     .impressumBtn {

@@ -25,7 +25,7 @@ class ThrowableObject extends MovableObject {
     checkForYOrCollissionIntervalID;
     bottleCollides = false;
     bottleThrownStanding = false;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand.
-    
+
 
     IMAGES_THROW = [
         './img_pollo_locco/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
@@ -43,6 +43,7 @@ class ThrowableObject extends MovableObject {
         './img_pollo_locco/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
     ];
 
+
     constructor(x, world) {
         super().loadImage('img_pollo_locco/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
 
@@ -58,7 +59,22 @@ class ThrowableObject extends MovableObject {
         this.throwEndbossInterval;
         this.checkCollisionInterval;
         this.collidedWithCharacter = false;
-        this.testinterval();
+        // this.testinterval();
+
+        setTimeout(() => {
+            //  this.x = x;
+            //  this.world = world;
+
+            this.hasHit = false;
+            //  this.visible = false;
+
+            //  Sound gehört zur Flasche
+            this.hitSound = new Audio(
+                window.world.character.enemyHit_sound.src
+            );
+            // this.hitSound.volume = 0.5;
+            this.endbossThrownBottleIsOnFloor = false; // Diese Variable prüft, ob eine vom Endboss geworfene Flasche auf dem Boden ist, damit bei einer Kollissionn mit einer solchen Flasche kein Schaden beim Character ausgelöst wird.
+        }, 3000);
     }
 
     testinterval() {
@@ -169,8 +185,9 @@ class ThrowableObject extends MovableObject {
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervals();
                 this.bottleCollides = false;
-                this.world.sounds.stopSound(this.world.character.enemyHit_sound);
-                window.world.sounds.playSound(this.world.character.enemyHit_sound);
+                //  this.world.sounds.stopSound(this.world.character.enemyHit_sound);
+                //  window.world.sounds.playSound(this.world.character.enemyHit_sound);
+                this.hit();
                 this.bottleThrownStanding = false;
             }
         }, 25);
@@ -191,7 +208,14 @@ class ThrowableObject extends MovableObject {
             if (this.y > 360 || this.bottleCollides == true) {
                 this.resetBottleIntervalsEndboss();
                 this.bottleCollides = false;
-                handleBottleHitSound();
+                //    const sound = new Audio(window.world.character.enemyHit_sound.src);
+                //    sound.play();
+                clearInterval(this.throwEndbossInterval);
+                clearInterval(this.playAnimationIntervalID);
+                this.hit();
+                this.endbossThrownBottleIsOnFloor = true;
+                //   this.playEndbossSplashAnimation();
+                // this.handleBottleHitSound();
                 //window.world.sounds.stopSound(window.world.character.enemyHit_sound);
                 //window.world.sounds.playSound(window.world.character.enemyHit_sound);
                 //const sound = new Audio(window.world.character.enemyHit_sound.src);
@@ -202,12 +226,31 @@ class ThrowableObject extends MovableObject {
         //  this.world.intervals.addIntervalToIntervalArray(this.checkForYOrCollissionIntervalID);
     }
 
+    /**
+     * Checks if the hitSound of the current Bottle has already been played. 
+     * If so, the function returns; if not, the sound is played.
+     * 
+     * @returns  {void}
+     * @method hit
+     * @memberof ThrowableObject
+     */
+    hit() {
+        if (this.hasHit) return;
+        this.hasHit = true;
+        //  const sound = new Audio(window.world.character.enemyHit_sound.src);
+        // sound.play();
+        this.hitSound.currentTime = 0;
+        this.hitSound.play();
+
+    }
+
+    /*
     handleBottleHitSound() {
         if (!window.world.bottleHitSound) {
             window.world.sounds.stopSound(window.world.character.enemyHit_sound);
             window.world.sounds.playSound(window.world.character.enemyHit_sound);
         }
-    }
+    } */
 
     resetBottleIntervalsEndboss() {
         clearInterval(this.checkForYOrCollissionIntervalID);
@@ -231,12 +274,13 @@ class ThrowableObject extends MovableObject {
         return true;
     }*/
 
+
     /**
- * Deletes the bottle that has been thrown. 
- * 
- * @method deleteThrownBottleEndBoss
- * @memberof ThrowableObject
- */
+    * Deletes the bottle that has been thrown. 
+    * 
+    * @method deleteThrownBottleEndBoss
+    * @memberof ThrowableObject
+    */
     deleteThrownBottleEndBoss() {
         setTimeout(() => {
             window.world.definedEndboss.bottles.splice(0, 1);
@@ -378,13 +422,14 @@ class ThrowableObject extends MovableObject {
                 enemy.loadImage(enemy.IMAGE_DEAD_SMALL);
             }
             enemy.speed = 0;  //-- Stops the movement of the hit enemy
-            window.world.sounds.playSound(this.world.character.enemyDeleted_sound);
+            //  window.world.sounds.playSound(this.world.character.enemyDeleted_sound);
+            this.hit();
         }, 200);
 
         setTimeout(() => {
             clearInterval(deadChickenIntervalID);
             this.deleteHitEnemy(indexOfEnemy);
-        }, 1500);
+        }, 500);
         this.world.intervals.addIntervalToIntervalArray(deadChickenIntervalID);
     }
 
@@ -451,6 +496,8 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     endbossThrows() {
+        const index = this.endboss.bottles.indexOf(this);
+        console.log('index of thrown bottle:', index);
         this.throwEndbossInterval = setInterval(() => {
             this.x -= 15 /*(this.speedX + 75)*/;
         }, 25);
@@ -469,11 +516,11 @@ class ThrowableObject extends MovableObject {
      */
     checkForCollissionEndbossThrownBottleWithCharacter() {
         this.checkCollisionInterval = setInterval(() => {
-            if (!this.collidedWithCharacter && this.isCollidingBottleCharacter(window.world.character)) {   // oder:  this.level.collectedBottle.isColliding(enemy)...  // enemy, indexOfEnemy
+            if (!this.collidedWithCharacter && this.isCollidingBottleCharacter(window.world.character) && this.endbossThrownBottleIsOnFloor === false) {   // oder:  this.level.collectedBottle.isColliding(enemy)...  // enemy, indexOfEnemy
                 //window.world.sounds.stopSound(window.world.character.enemyHit_sound);
                 //window.world.sounds.playSound(window.world.character.enemyHit_sound);
-                const sound = new Audio(window.world.character.enemyHit_sound.src);
-                sound.play();
+                //    const sound = new Audio(window.world.character.enemyHit_sound.src);
+                //   sound.play();
                 clearInterval(this.throwEndbossInterval);
                 window.world.character.hitByBottle();
                 window.world.statusBar.setPercentage(window.world.character.energy);  // weist dem Prozentwert 'percentage' den aktuellen Wert zu in der Klasse Status-bar
@@ -482,6 +529,7 @@ class ThrowableObject extends MovableObject {
                 this.speedX = 0;
                 this.speedY = 0;
                 this.playEndbossSplashAnimation();
+                this.hit();
                 window.world.bottleHitSound = true;
             }
         }, 50);
@@ -509,6 +557,8 @@ class ThrowableObject extends MovableObject {
     deleteEndbossThrownBottle() {
         setTimeout(() => {
             const index = this.endboss.bottles.indexOf(this);
+            console.log('index of deleted bottle:', index);
+
             if (index > -1) {
                 this.endboss.bottles.splice(index, 1);
             }
