@@ -294,11 +294,23 @@ class ThrowableObject extends MovableObject {
      * @memberof ThrowableObject
      */
     throwBottleLeft() {
+         this.throwBottleIntervalID = setInterval(() => {
+            if (this.bottleThrownStanding == false && this.world.keyboard.LEFT && this.x < this.world.level.level_end_x && this.world.gamePaused == false) {  // diese Abfrage prüft, ob der Character gerade läuft, wenn eine Flasche geworfen wird. Wenn ja, wird die Geschwindigkeit des Characters zur x-Geschwindigkeit der Flasche hinuaddiert, da der character sons unter der Flasche durch rennt;
+                this.x -= 10 + this.world.character.speed + 4; // character.speed = 10. Man könnte auch einfach this.x += 24;.
+
+            } else {
+                this.x -= 10;
+                this.bottleThrownStanding = true;  // Diese Variable prüft, ob die Flasche geworfen wurde, während der Character still stand. Ohne diese Abfrage kann es passieren, dass wenn eine Flasche geworfen wird und der character erst danach bewegt wird, dass die Flasche sich vom Character und von dem Ort, an dem Sie den Boden berühren soll, entfernt und man sein Ziel verfehlt.
+            }
+        }, 25);
+        this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
+    }
+        /*
         this.throwBottleIntervalID = setInterval(() => {
             this.x -= 10;
         }, 25);
         this.world.intervals.addIntervalToIntervalArray(this.throwBottleIntervalID);
-    }
+    } */
 
     /**
      * Handles the animation and game pysics if the bottle has been thrown to the left.

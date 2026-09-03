@@ -144,9 +144,9 @@ canvas {
 }
 
 .soundBtnMobile {
-   /* top: 10vh; */
+    /* top: 10vh; */
     top: 20px;
-  /*  left: 3vw; */
+    /*  left: 3vw; */
     left: 12px;
 }
 
@@ -290,7 +290,11 @@ canvas {
     width: 100vw;
     position: fixed;
     top: 0;
-    background-color: red;
+    /*  background-color: red;   */
+    background-image: url('img_pollo_locco/turn_device/turn_device_img.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
     overflow: hidden;
 }
 
@@ -400,7 +404,7 @@ body.no-scroll {
 .mobileAboutMenu {
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
-   /* top: 50px; */
+    /* top: 50px; */
     top: 20px;
     right: 2vw;
     right: 50px;
@@ -684,7 +688,7 @@ body.no-scroll {
 }
 
 .mobileAboutMenu-tablet-gameStarted {
-   /* display: flex !important; */
+    /* display: flex !important; */
     top: 4vh;
     right: 20vw;
 }
@@ -775,6 +779,12 @@ body.no-scroll {
 
 }
 
+@media (max-width: 299px) and (hover: hover) and (pointer: fine) {
+    #h3 {
+        left: 27px;
+    }
+}
+
 
 /* Tablet*/
 
@@ -798,7 +808,7 @@ body.no-scroll {
     }
 
     .mobileAboutMenu {
-       /* display: flex !important; */
+        /* display: flex !important; */
         top: 3vh;
         right: 2vw;
     }
@@ -825,7 +835,7 @@ body.no-scroll {
 
     .pause-end-game-btns {
         width: 480px;
-       /* left: 10vw; */ 
+        /* left: 10vw; */
     }
 
     .btn {
