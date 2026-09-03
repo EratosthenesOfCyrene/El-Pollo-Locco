@@ -6,11 +6,11 @@ The project was created as a learning project with a strong focus on object-orie
 
 ## Preview
 
-![El Pollo Loco overview](./assets/Screenshot_main.png)
+## Gameplay Demo
 
-### Gameplay
+[![Watch the El Pollo Loco gameplay demo](./assets/Screenshot%202026-09-04%20011433.png)](https://www.youtube.com/watch?v=ceiBZy0hrBY)
 
-![El Pollo Loco gameplay](./assets/Screenshot_gameplay.png)
+[▶ Watch the full gameplay demo on YouTube](https://www.youtube.com/watch?v=ceiBZy0hrBY)
 
 ## Features
 
